@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Activités - Aideline</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    
+    <style>
+        :root { 
+            --primary: #640C31;
+            --white: #FFFFFF;
+            --gray-bg: #F5F5F5;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Rubik', sans-serif; -webkit-tap-highlight-color: transparent;}
+        
+        body { 
+            width: 100vw; height: 100vh; overflow: hidden; 
+            background: var(--white); display: flex; flex-direction: column;
+        }
+
+        /* HEADER */
+        .top-header {
+            position: relative; display: flex; align-items: center; justify-content: center;
+            padding: 24px 16px 20px 16px; background: var(--white); z-index: 10;
+        }
+        .back-btn {
+            position: absolute; left: 16px; background: none; border: none; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .back-btn .material-symbols-outlined { font-size: 28px; color: #000; font-weight: 500;}
+        .top-header h1 { font-size: 20px; font-weight: 500; color: #000; }
+
+        /* HORIZONTAL CATEGORIES */
+        .categories-scroll {
+            display: flex; overflow-x: auto; padding: 0 16px 16px 16px; gap: 8px;
+            scrollbar-width: none; -ms-overflow-style: none; border-bottom: 1px solid #EEE;
+        }
+        .categories-scroll::-webkit-scrollbar { display: none; }
+        .cat-pill {
+            padding: 8px 16px; border-radius: 20px; background: #eee;
+            font-size: 14px; font-weight: 600; color: #555; cursor: pointer;
+            white-space: nowrap; transition: 0.2s; border: 2px solid transparent;
+        }
+        .cat-pill.active {
+            background: rgba(100, 12, 49, 0.1); border: 2px solid var(--primary); color: var(--primary);
+        }
+
+        /* CONTENT */
+        .content-scroll {
+            flex: 1; overflow-y: auto; padding: 16px 16px 90px 16px;
+        }
+        
+        /* CARDS */
+        .activity-card {
+            display: flex; gap: 16px; border-radius: 16px; border: 1px solid rgba(0,0,0,0.05); padding: 12px; margin-bottom: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); cursor: pointer; transition: 0.2s;
+        }
+        .activity-card:active { background: #F9F9F9; transform: scale(0.98); }
+        .activity-img {
+            width: 80px; height: 80px; border-radius: 12px; background: #DDD; object-fit: cover;
+        }
+        .activity-info {
+            flex: 1; display: flex; flex-direction: column; justify-content: center;
+        }
+        .activity-title { font-size: 16px; font-weight: 700; color: #111; margin-bottom: 4px; }
+        .activity-meta { font-size: 13px; font-weight: 500; color: #666; display: flex; align-items: center; gap: 4px; margin-bottom: 4px;}
+        .activity-badges { display: flex; gap: 4px; }
+        .badge { padding: 4px 8px; font-size: 11px; font-weight: 700; border-radius: 6px; background: #EEE; color: #555; }
+        .badge.accessible { background: rgba(76, 175, 80, 0.1); color: #4CAF50; }
+
+        /* NAVBAR BAS */
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 70px;
+            background-color: var(--primary); display: flex; justify-content: space-around; align-items: center; z-index: 100;
+        }
+        .nav-item {
+            display: flex; flex-direction: column; align-items: center;
+            color: var(--white); cursor: pointer; text-decoration: none; opacity: 0.7;
+        }
+        .nav-item.active { opacity: 1; }
+        .nav-item .material-symbols-outlined { font-size: 28px; margin-bottom: 4px; }
+        .nav-item .nav-text { font-size: 14px; font-weight: 500; }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <div class="top-header">
+        <button class="back-btn" onclick="window.location.href='map.html'">
+            <span class="material-symbols-outlined">arrow_back</span>
+        </button>
+        <h1>Activités pour vous</h1>
+    </div>
+
+    <!-- TABS -->
+    <div class="categories-scroll">
+        <div class="cat-pill active" onclick="activatePill(this)">Toutes</div>
+        <div class="cat-pill" onclick="activatePill(this)">Théâtre</div>
+        <div class="cat-pill" onclick="activatePill(this)">Cinéma</div>
+        <div class="cat-pill" onclick="activatePill(this)">Sport Doux</div>
+        <div class="cat-pill" onclick="activatePill(this)">Balade</div>
+        <div class="cat-pill" onclick="activatePill(this)">Art</div>
+    </div>
+
+    <div class="content-scroll">
+        
+        <div style="font-size: 15px; font-weight: 600; color: #555; margin-bottom: 16px;">Recommandations à proximité</div>
+
+        <!-- ACTIVITY 1 -->
+        <div class="activity-card" onclick="window.location.href='activite_detail.html'">
+            <img src="https://images.unsplash.com/photo-1579930467727-b50a2575e9f8?auto=format&fit=crop&w=200&q=80" class="activity-img" alt="Theâtre">
+            <div class="activity-info">
+                <div class="activity-title">Théâtre : Le Misanthrope</div>
+                <div class="activity-meta"><span class="material-symbols-outlined" style="font-size:16px;">schedule</span> Aujourd'hui, 15H00</div>
+                <div class="activity-badges">
+                    <span class="badge">Culture</span>
+                    <span class="badge accessible">Rythme adapté</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ACTIVITY 2 -->
+        <div class="activity-card" onclick="window.location.href='activite_detail.html'">
+            <img src="https://images.unsplash.com/photo-1510251197825-4b35e412b186?auto=format&fit=crop&w=200&q=80" class="activity-img" alt="Gym douce">
+            <div class="activity-info">
+                <div class="activity-title">Gym Douce Sénior</div>
+                <div class="activity-meta"><span class="material-symbols-outlined" style="font-size:16px;">schedule</span> Demain, 10H00</div>
+                <div class="activity-badges">
+                    <span class="badge">Sport Doux</span>
+                    <span class="badge accessible">Accessible Access PMR</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ACTIVITY 3 -->
+        <div class="activity-card" onclick="window.location.href='activite_detail.html'">
+            <img src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=200&q=80" class="activity-img" alt="Cinema">
+            <div class="activity-info">
+                <div class="activity-title">Ciné-Club Classique</div>
+                <div class="activity-meta"><span class="material-symbols-outlined" style="font-size:16px;">schedule</span> Jeu. 24, 14H30</div>
+                <div class="activity-badges">
+                    <span class="badge">Cinéma</span>
+                    <span class="badge accessible">Son amplicado</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ACTIVITY 4 -->
+        <div class="activity-card" onclick="window.location.href='activite_detail.html'">
+            <img src="https://images.unsplash.com/photo-1544070019-33dd11ca47d8?auto=format&fit=crop&w=200&q=80" class="activity-img" alt="Peinture">
+            <div class="activity-info">
+                <div class="activity-title">Atelier Aquarelle Guidée</div>
+                <div class="activity-meta"><span class="material-symbols-outlined" style="font-size:16px;">schedule</span> Sam. 26, 15H00</div>
+                <div class="activity-badges">
+                    <span class="badge">Art</span>
+                    <span class="badge accessible">Rythme adapté</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- BOTTOM NAVBAR -->
+    <style>.bottom-nav a { text-decoration: none !important; }</style>
+    <div class="bottom-nav">
+        <a href="map.html" class="nav-item" id="nav-carte"><span class="material-symbols-outlined">location_on</span><span class="nav-text">Carte</span></a>
+        <a href="agenda.html" class="nav-item" id="nav-agenda"><span class="material-symbols-outlined">calendar_today</span><span class="nav-text">Agenda</span></a>
+        <a href="contact.html" class="nav-item" id="nav-appel"><span class="material-symbols-outlined">call</span><span class="nav-text">Appel</span></a>
+        <a href="parametre.html" class="nav-item" id="nav-param"><span class="material-symbols-outlined">settings</span><span class="nav-text">Paramètre</span></a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Activer carte par defaut pour activités puisque ça part de la map
+            document.getElementById('nav-carte').classList.add('active');
+        });
+
+        function activatePill(elem) {
+            document.querySelectorAll('.cat-pill').forEach(el => el.classList.remove('active'));
+            elem.classList.add('active');
+        }
+    </script>
+</body>
+</html>
