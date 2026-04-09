@@ -63,6 +63,22 @@
             color: #555; font-size: 20px; margin-right: 12px;
         }
 
+        /* CATEGORIES */
+        .categories-container {
+            display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px;
+        }
+        .category-pill {
+            padding: 8px 16px; border-radius: 20px; background: #eee;
+            font-size: 14px; font-weight: 600; color: #555; cursor: pointer;
+            border: 2px solid transparent;
+        }
+        .category-pill.active {
+            background: #FFF5F7; border: 2px solid var(--primary); color: var(--primary);
+        }
+        .category-pill.add-custom {
+            background: transparent; border: 2px dashed #ccc; color: #777;
+        }
+
         /* DATES ROW */
         .dates-row {
             display: flex; gap: 16px; margin-bottom: 16px;
@@ -111,6 +127,21 @@
         <div class="input-box">
             <span class="material-symbols-outlined">near_me</span>
             <input type="text" placeholder="Emplacement">
+        </div>
+
+        <div style="font-size: 16px; font-weight: 700; color: #000; margin-bottom: 12px; margin-top: 12px;">Étiquette de l'évènement</div>
+        <div class="categories-container" id="categories-container">
+            <div class="category-pill active" onclick="selectCategory(this)">Médecin</div>
+            <div class="category-pill" onclick="selectCategory(this)">RDV</div>
+            <div class="category-pill" onclick="selectCategory(this)">Activité</div>
+            <div class="category-pill add-custom" id="btn-add-custom" onclick="openCustomCategoryBox()">+ Nouvelle</div>
+        </div>
+        
+        <div id="custom-cat-box" style="display:none; margin-bottom:24px;">
+            <div class="input-box" style="margin-bottom: 8px;">
+                <input type="text" id="custom-cat-input" placeholder="Nom de l'étiquette (ex: Sport)">
+            </div>
+            <button class="btn-save" style="margin-top:0; padding:10px; font-size:14px; width: auto; padding: 10px 24px;" onclick="addCustomCategory()">Ajouter</button>
         </div>
 
         <div class="dates-row">
@@ -164,6 +195,42 @@
                 if(document.getElementById('nav-carte')) document.getElementById('nav-carte').classList.add('active'); 
             }
         });
+
+        function selectCategory(elem) {
+            document.querySelectorAll('.category-pill:not(.add-custom)').forEach(el => el.classList.remove('active'));
+            elem.classList.add('active');
+        }
+
+        function openCustomCategoryBox() {
+            const box = document.getElementById('custom-cat-box');
+            box.style.display = box.style.display === 'none' ? 'block' : 'none';
+            if (box.style.display === 'block') {
+                document.getElementById('custom-cat-input').focus();
+            }
+        }
+
+        function addCustomCategory() {
+            const val = document.getElementById('custom-cat-input').value.trim();
+            if (val) {
+                const container = document.getElementById('categories-container');
+                const btnCustom = document.getElementById('btn-add-custom');
+                
+                const newCat = document.createElement('div');
+                newCat.className = 'category-pill active';
+                newCat.textContent = val;
+                newCat.onclick = function() { selectCategory(this); };
+
+                // Enlever le focus des autres
+                document.querySelectorAll('.category-pill:not(.add-custom)').forEach(el => el.classList.remove('active'));
+                
+                // Insérer avant le bouton + Nouvelle
+                container.insertBefore(newCat, btnCustom);
+                
+                // Réinitialiser et cacher
+                document.getElementById('custom-cat-input').value = '';
+                document.getElementById('custom-cat-box').style.display = 'none';
+            }
+        }
     </script>
 </body>
 </html>
