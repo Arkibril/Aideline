@@ -212,7 +212,12 @@
             <input type="text" placeholder="Ex: Carte vitale, clés, ordonnance...">
         </div>
 
-        <button class="btn-save" onclick="window.location.href='agenda.html'">Enregistrer l'événement</button>
+        <button class="btn-save" onclick="saveEvent()">Enregistrer l'événement</button>
+
+        <!-- TOAST COMPONENT -->
+        <div id="toast" style="display:none; position:fixed; top:80px; left:50%; transform:translateX(-50%); background:#333; color:white; padding:12px 24px; border-radius:30px; font-size:14px; font-weight:600; z-index:9999; box-shadow:0 4px 12px rgba(0,0,0,0.15); transition:opacity 0.3s;">
+            Message
+        </div>
 
     </div>
 
@@ -540,6 +545,45 @@
                 document.getElementById('fin-text').style.color = '#000';
             }
             closeCalendar();
+        }
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.innerText = msg;
+            t.style.display = 'block';
+            t.style.opacity = '1';
+            setTimeout(() => {
+                t.style.opacity = '0';
+                setTimeout(() => t.style.display = 'none', 300);
+            }, 3000);
+        }
+
+        function saveEvent() {
+            const title = document.querySelector('input[placeholder="Ex: Rendez-vous médical, Théâtre..."]').value;
+            const location = document.getElementById('emplacement-input').value;
+            const activeCat = document.querySelector('.category-pill.active');
+            const debutText = document.getElementById('debut-text').innerText;
+
+            if(!title.trim()) {
+                showToast("Veuillez entrer un titre pour l'évènement.");
+                return;
+            }
+            if(!location.trim()) {
+                showToast("Veuillez indiquer le lieu de l'évènement.");
+                return;
+            }
+            if(!activeCat) {
+                showToast("Veuillez sélectionner une catégorie.");
+                return;
+            }
+            if(debutText.includes('Sélectionnez')) {
+                showToast("Veuillez définir l'heure de début.");
+                return;
+            }
+
+            showToast("Évènement enregistré avec succès !");
+            document.querySelector('.btn-save').innerText = 'Chargement...';
+            setTimeout(() => window.location.href = 'agenda.html', 1500);
         }
     </script>
 </body>

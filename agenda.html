@@ -165,8 +165,11 @@
             Ajouter un évènement
         </button>
 
-        </button>
-
+    </div>
+    
+    <!-- TOAST COMPONENT -->
+    <div id="toast" style="display:none; position:fixed; top:80px; left:50%; transform:translateX(-50%); background:#333; color:white; padding:12px 24px; border-radius:30px; font-size:14px; font-weight:600; z-index:9999; box-shadow:0 4px 12px rgba(0,0,0,0.15); transition:opacity 0.3s; pointer-events: none; white-space: nowrap;">
+        Message
     </div>
 
     <!-- CALENDAR PERMISSION OVERLAY -->
@@ -268,6 +271,39 @@
             document.getElementById('events-container').style.display = 'block';
         }
 
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.innerText = msg;
+            t.style.display = 'block';
+            t.style.opacity = '1';
+            setTimeout(() => {
+                t.style.opacity = '0';
+                setTimeout(() => t.style.display = 'none', 300);
+            }, 2500);
+        }
+
+        function handleCellClick(cell, hasEvent) {
+            document.querySelectorAll('.day-cell').forEach(c => {
+                if(!c.classList.contains('faded')) {
+                     c.style.border = 'none';
+                     c.style.background = c.classList.contains('active') ? 'var(--primary)' : 'transparent';
+                     c.style.color = c.classList.contains('active') ? 'white' : 'var(--text-dark)';
+                }
+            });
+            
+            if(!cell.classList.contains('active')) {
+                cell.style.background = 'rgba(100, 12, 49, 0.1)';
+                cell.style.color = 'var(--primary)';
+            }
+
+            if(hasEvent) {
+                showEvents();
+            } else {
+                document.getElementById('events-container').style.display = 'none';
+                showToast("Aucun évènement pour ce jour.");
+            }
+        }
+
         function renderDynamicCalendar() {
             const today = new Date();
             const year = today.getFullYear();
@@ -293,9 +329,9 @@
                 if (i < date) {
                     gridMois.innerHTML += `<div class="day-cell faded">${i}</div>`;
                 } else if (i === date) {
-                    gridMois.innerHTML += `<div class="day-cell active" onclick="showEvents()">${i}</div>`;
+                    gridMois.innerHTML += `<div class="day-cell active" onclick="handleCellClick(this, true)">${i}</div>`;
                 } else {
-                    gridMois.innerHTML += `<div class="day-cell">${i}</div>`;
+                    gridMois.innerHTML += `<div class="day-cell" onclick="handleCellClick(this, false)">${i}</div>`;
                 }
             }
             
@@ -322,7 +358,7 @@
                 if (isFaded) cls += ' faded';
                 if (isActive) cls += ' active';
 
-                gridSemaine.innerHTML += `<div class="${cls}" ${isActive ? 'onclick="' + "showEvents()" + '"' : ''}>${d.getDate()}</div>`;
+                gridSemaine.innerHTML += `<div class="${cls}" onclick="handleCellClick(this, ${isActive ? 'true' : 'false'})">${d.getDate()}</div>`;
             }
         }
     </script>
