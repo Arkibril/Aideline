@@ -186,6 +186,9 @@
         </div>
 
         <div class="filters-scroll">
+            <div class="filter-pill" onclick="filterMap('activite')">
+                <span class="material-symbols-outlined">palette</span>Activités
+            </div>
             <div class="filter-pill" onclick="filterMap('epicerie')">
                 <span class="material-symbols-outlined">storefront</span>Epiceries
             </div>
@@ -220,7 +223,7 @@
         </div>
         <div class="sheet-actions">
             <button class="sheet-btn sheet-btn-secondary" onclick="window.location.href='contact.html'"><span class="material-symbols-outlined">call</span>Appeler</button>
-            <button class="sheet-btn sheet-btn-primary" onclick="window.location.href='itineraire.html'"><span class="material-symbols-outlined">directions_walk</span>Y aller</button>
+            <button id="sheet-action-btn" class="sheet-btn sheet-btn-primary" onclick="window.location.href='itineraire.html'"><span class="material-symbols-outlined">directions_walk</span>Y aller</button>
         </div>
     </div>
 
@@ -308,6 +311,8 @@
 
         // Base de POC de lieux fictifs
         const dbItems = [
+            { type: 'activite', lat: 48.8018, lng: 2.1270, name: 'Atelier Peinture sur Céramique' },
+            { type: 'activite', lat: 48.8050, lng: 2.1330, name: 'Yoga Doux Séniors' },
             { type: 'boulangerie', lat: 48.8020, lng: 2.1320, name: 'La Flûte Enchantée' },
             { type: 'boulangerie', lat: 48.7995, lng: 2.1285, name: 'Boulangerie Paul' },
             { type: 'sante', lat: 48.8040, lng: 2.1310, name: 'Dr. Martin - Généraliste' },
@@ -325,6 +330,7 @@
             let colorClass = 'custom-marker';
 
             switch(type) {
+                case 'activite': iconText = 'palette'; break;
                 case 'boulangerie': iconText = 'bakery_dining'; break;
                 case 'sante': iconText = 'medical_services'; break;
                 case 'parc': iconText = 'park'; break;
@@ -367,14 +373,27 @@
 
         function openSheet(item) {
             document.getElementById('sheet-title').textContent = item.name;
-            const categoryMap = { 'boulangerie': 'Boulangerie', 'sante': 'Médecin / Santé', 'parc': 'Parc / Espace Vert', 'epicerie': 'Épicerie', 'resto': 'Restaurant' };
+            const categoryMap = { 'activite': 'Activité Proche', 'boulangerie': 'Boulangerie', 'sante': 'Médecin / Santé', 'parc': 'Parc / Espace Vert', 'epicerie': 'Épicerie', 'resto': 'Restaurant' };
             const dist = (Math.random() * 3 + 1).toFixed(0);
             document.getElementById('sheet-category').textContent = categoryMap[item.type] + ' • À ' + dist + ' min à pied';
             document.getElementById('sheet-rating-text').textContent = (Math.random() * (5 - 3.8) + 3.8).toFixed(1) + ' (Plus de 50 avis)';
             
             // Generate a nice gradient background image placeholder
-            document.getElementById('sheet-img').src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(item.name) + '&background=random&color=fff&size=500&font-size=0.1';
+            if (item.type === 'activite') {
+                document.getElementById('sheet-img').src = 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?q=80&w=500&auto=format&fit=crop';
+            } else {
+                document.getElementById('sheet-img').src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(item.name) + '&background=random&color=fff&size=500&font-size=0.1';
+            }
             
+            const btn = document.getElementById('sheet-action-btn');
+            if(item.type === 'activite') {
+                btn.innerHTML = '<span class="material-symbols-outlined">info</span>Voir détails';
+                btn.onclick = () => window.location.href = 'activite_detail.html';
+            } else {
+                btn.innerHTML = '<span class="material-symbols-outlined">directions_walk</span>Y aller';
+                btn.onclick = () => window.location.href = 'itineraire.html';
+            }
+
             document.getElementById('bottom-sheet').classList.add('open');
         }
 
