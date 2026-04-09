@@ -402,20 +402,49 @@
         suggestionsBox.innerHTML = '<div style="padding:16px; font-style:italic; font-family:Rubik, sans-serif; color:#555;">Recherche...</div>';
         
         try {
-            const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=5&addressdetails=1&countrycodes=fr`);
-            const data = await response.json();
+            // Recherche en parallèle sur OSM (pour les lieux, parcs, restaurants) et sur l'API adresse du gouvernement (pour les adresses très précises)
+            const [resNom, resGouv] = await Promise.all([
+                fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=4&addressdetails=1&countrycodes=fr`).catch(() => null),
+                fetch(`https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(query)}&limit=4`).catch(() => null)
+            ]);
             
+            const dataNom = resNom && resNom.ok ? await resNom.json() : [];
+            const rawGouv = resGouv && resGouv.ok ? await resGouv.json() : {features:[]};
+            
+            // Formater l'API gouv pour correspondre au format local
+            const dataGouv = (rawGouv.features || []).map(f => {
+                const p = f.properties;
+                return {
+                    name: p.name,
+                    display_name: p.context ? p.context : (p.city || ''),
+                    type: p.type === 'housenumber' ? 'residential' : 'address',
+                    class: p.type === 'municipality' ? 'boundary' : 'highway'
+                };
+            });
+
+            // Combiner d'abord l'API gouvernementale (idéale pour des adresses avec numéros) puis OSM (idéal pour les restaurants/commerces)
+            let combined = [...dataGouv, ...dataNom];
+
+            // Retirer les doublons sur le nom
+            const seen = new Set();
+            combined = combined.filter(item => {
+                const nom = item.name || (item.address && (item.address.road || item.address.city)) || "Lieu inconnu";
+                if(seen.has(nom.toLowerCase())) return false;
+                seen.add(nom.toLowerCase());
+                return true;
+            }).slice(0, 6);
+
             suggestionsBox.innerHTML = '';
             
-            if(data.length === 0) {
+            if(combined.length === 0) {
                 suggestionsBox.innerHTML = '<div style="padding:16px; font-style:italic; font-family:Rubik, sans-serif; color:#555;">Aucun résultat trouvé.</div>';
                 return;
             }
 
-            data.forEach(item => {
-                const name = item.name || item.address.road || item.address.city || "Lieu inconnu";
-                const details = item.display_name;
-                const placeInfo = getPlaceInfo(item.type, item.class); // Nominatim utilise 'class' pas 'category'
+            combined.forEach(item => {
+                const name = item.name || (item.address && (item.address.road || item.address.city)) || "Lieu inconnu";
+                const details = item.display_name || "";
+                const placeInfo = getPlaceInfo(item.type, item.class);
                 
                 const div = document.createElement('div');
                 div.className = 'suggestion-item';
