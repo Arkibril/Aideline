@@ -217,12 +217,13 @@
         <img src="" id="sheet-img" class="sheet-img" alt="Lieu">
         <div id="sheet-title" class="sheet-title">Nom du lieu</div>
         <div id="sheet-category" class="sheet-category">Catégorie • À 5 min</div>
-        <div class="sheet-rating">
+        <div id="sheet-rating" class="sheet-rating">
             <span class="material-symbols-outlined">star</span>
             <span id="sheet-rating-text">4.5 (120 avis)</span>
         </div>
+        <div id="sheet-description" style="display:none; font-size:15px; color:#555; text-align:center; padding: 0 10px 15px 10px; font-weight:500;"></div>
         <div class="sheet-actions">
-            <button class="sheet-btn sheet-btn-secondary" onclick="window.location.href='contact.html'"><span class="material-symbols-outlined">call</span>Appeler</button>
+            <button id="sheet-call-btn" class="sheet-btn sheet-btn-secondary" onclick="window.location.href='contact.html'"><span class="material-symbols-outlined">call</span>Appeler</button>
             <button id="sheet-action-btn" class="sheet-btn sheet-btn-primary" onclick="window.location.href='itineraire.html'"><span class="material-symbols-outlined">directions_walk</span>Y aller</button>
         </div>
     </div>
@@ -309,8 +310,10 @@
             maxZoom: 19
         }).addTo(map);
 
-        // Base de POC de lieux fictifs
         const dbItems = [
+            { type: 'banc', lat: 48.8010, lng: 2.1335, name: 'Banc public' },
+            { type: 'banc', lat: 48.8028, lng: 2.1295, name: 'Banc repos' },
+            { type: 'banc', lat: 48.8000, lng: 2.1310, name: 'Banc sous les arbres' },
             { type: 'activite', lat: 48.8018, lng: 2.1270, name: 'Atelier Peinture sur Céramique' },
             { type: 'activite', lat: 48.8050, lng: 2.1330, name: 'Yoga Doux Séniors' },
             { type: 'boulangerie', lat: 48.8020, lng: 2.1320, name: 'La Flûte Enchantée' },
@@ -328,6 +331,7 @@
         function createIcon(type) {
             let iconText = 'location_on';
             let colorClass = 'custom-marker';
+            let extraStyle = '';
 
             switch(type) {
                 case 'activite': iconText = 'palette'; break;
@@ -336,11 +340,12 @@
                 case 'parc': iconText = 'park'; break;
                 case 'epicerie': iconText = 'storefront'; break;
                 case 'resto': iconText = 'restaurant'; break;
+                case 'banc': iconText = 'chair_alt'; extraStyle = 'background:#fff; color:#111; border:2px solid #111; display:flex; align-items:center; justify-content:center;'; break;
             }
 
             return L.divIcon({
                 className: 'custom-icon',
-                html: `<div class="${colorClass}" style="width:34px; height:34px;">${iconText}</div>`,
+                html: `<div class="${colorClass}" style="width:34px; height:34px;${extraStyle}">${iconText}</div>`,
                 iconSize: [34, 34],
                 iconAnchor: [17, 17]
             });
@@ -373,16 +378,29 @@
 
         function openSheet(item) {
             document.getElementById('sheet-title').textContent = item.name;
-            const categoryMap = { 'activite': 'Activité Proche', 'boulangerie': 'Boulangerie', 'sante': 'Médecin / Santé', 'parc': 'Parc / Espace Vert', 'epicerie': 'Épicerie', 'resto': 'Restaurant' };
+            const categoryMap = { 'activite': 'Activité Proche', 'boulangerie': 'Boulangerie', 'sante': 'Médecin / Santé', 'parc': 'Parc / Espace Vert', 'epicerie': 'Épicerie', 'resto': 'Restaurant', 'banc': 'Lieu de repos' };
             const dist = (Math.random() * 3 + 1).toFixed(0);
-            document.getElementById('sheet-category').textContent = categoryMap[item.type] + ' • À ' + dist + ' min à pied';
-            document.getElementById('sheet-rating-text').textContent = (Math.random() * (5 - 3.8) + 3.8).toFixed(1) + ' (Plus de 50 avis)';
             
-            // Generate a nice gradient background image placeholder
-            if (item.type === 'activite') {
-                document.getElementById('sheet-img').src = 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?q=80&w=500&auto=format&fit=crop';
+            document.getElementById('sheet-category').textContent = categoryMap[item.type] + ' • À ' + dist + ' min à pied';
+            
+            // Switch rating and text description
+            if(item.type === 'banc') {
+                document.getElementById('sheet-rating').style.display = 'none';
+                document.getElementById('sheet-description').style.display = 'block';
+                document.getElementById('sheet-description').textContent = "Idéal pour faire une pause. Vous pouvez vous asseoir ici pour vous reposer.";
+                document.getElementById('sheet-call-btn').style.display = 'none';
+                document.getElementById('sheet-img').src = 'https://images.unsplash.com/photo-1541525997972-0050d27038cf?q=80&w=500&auto=format&fit=crop';
             } else {
-                document.getElementById('sheet-img').src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(item.name) + '&background=random&color=fff&size=500&font-size=0.1';
+                document.getElementById('sheet-rating').style.display = 'flex';
+                document.getElementById('sheet-description').style.display = 'none';
+                document.getElementById('sheet-rating-text').textContent = (Math.random() * (5 - 3.8) + 3.8).toFixed(1) + ' (Plus de 50 avis)';
+                document.getElementById('sheet-call-btn').style.display = 'flex';
+                
+                if (item.type === 'activite') {
+                    document.getElementById('sheet-img').src = 'https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=500&auto=format&fit=crop';
+                } else {
+                    document.getElementById('sheet-img').src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(item.name) + '&background=random&color=fff&size=500&font-size=0.1';
+                }
             }
             
             const btn = document.getElementById('sheet-action-btn');
