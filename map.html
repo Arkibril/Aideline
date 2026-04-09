@@ -177,7 +177,7 @@
         <div class="search-bar-container" onclick="window.location.href='recherche.html'">
             <span class="material-symbols-outlined">search</span>
             <input type="text" placeholder="Ecrivez votre adresse ici..." readonly style="pointer-events:none;">
-            <span class="material-symbols-outlined" style="pointer-events: auto; padding: 10px; cursor: pointer;" onclick="event.stopPropagation(); openMicSheet(1);">mic</span>
+            <span class="material-symbols-outlined" style="pointer-events: auto; padding: 10px; cursor: pointer;" onclick="event.stopPropagation(); startMicFlow();">mic</span>
         </div>
 
         <div class="filters-scroll">
@@ -233,7 +233,7 @@
         <div class="mic-doc-icon" style="margin-bottom: 30px;">
             <span class="material-symbols-outlined doc" style="font-variation-settings: 'FILL' 1;">speaker_notes</span>
         </div>
-        <button class="sheet-btn sheet-btn-primary" style="width: 100%; border-radius: 8px; margin-bottom: 10px;" onclick="openMicSheet(2)">Continuer</button>
+        <button class="sheet-btn sheet-btn-primary" style="width: 100%; border-radius: 8px; margin-bottom: 10px;" onclick="localStorage.setItem('aideline_mic_intro', 'true'); openMicSheet(2)">Continuer</button>
         <button class="sheet-btn sheet-btn-primary" style="width: 100%; border-radius: 8px;" onclick="closeAllMicSheets()">Pas Maintenant</button>
     </div>
 
@@ -415,6 +415,14 @@
 
         // FLOW MIC
         let micTimeout = null;
+
+        function startMicFlow() {
+            if (localStorage.getItem('aideline_mic_intro') === 'true') {
+                openMicSheet(2);
+            } else {
+                openMicSheet(1);
+            }
+        }
 
         function openMicSheet(step) {
             document.getElementById('mic-sheet-1').classList.remove('open');
