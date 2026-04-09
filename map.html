@@ -244,7 +244,7 @@
             <span style="font-size: 16px; font-style: italic; color: #111;">Autoriser Aideline à enregistrer l'audio</span>
         </div>
         <div style="width: 100%; border-top: 1px solid #ccc;"></div>
-        <div style="width: 100%; padding: 16px; font-size: 18px; font-style: italic; color: #111; border-bottom: 1px solid #ccc; cursor: pointer; position: relative;" onclick="openMicSheet(3)">
+        <div style="width: 100%; padding: 16px; font-size: 18px; font-style: italic; color: #111; border-bottom: 1px solid #ccc; cursor: pointer; position: relative;" onclick="localStorage.setItem('aideline_mic_permission', 'always'); openMicSheet(3)">
             Quand vous utilisez l'application
         </div>
         <div style="width: 100%; padding: 16px; font-size: 18px; font-style: italic; color: #111; border-bottom: 1px solid #ccc; cursor: pointer;" onclick="openMicSheet(3)">Uniquement cette fois-ci</div>
@@ -417,7 +417,9 @@
         let micTimeout = null;
 
         function startMicFlow() {
-            if (localStorage.getItem('aideline_mic_intro') === 'true') {
+            if (localStorage.getItem('aideline_mic_permission') === 'always') {
+                openMicSheet(3);
+            } else if (localStorage.getItem('aideline_mic_intro') === 'true') {
                 openMicSheet(2);
             } else {
                 openMicSheet(1);
