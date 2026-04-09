@@ -226,8 +226,9 @@
         <!-- EN TÊTE (Temps + Info) -->
         <div class="summary-header">
             <div class="summary-left">
-                <span class="material-symbols-outlined">directions_walk</span>
+                <span class="material-symbols-outlined" style="font-size:32px;">directions_walk</span>
                 <div class="time-val">14<span>min</span></div>
+                <span class="material-symbols-outlined" style="font-size:24px; color:#777; margin: 0 4px;">arrow_forward</span>
                 <span class="material-symbols-outlined" style="font-size:32px;">sports_score</span>
             </div>
             <div class="summary-right">
@@ -235,29 +236,26 @@
             </div>
         </div>
 
-        <!-- PASTILLES DE RÉSUMÉ D'ITINÉRAIRE (Remplace les anciennes box verticales) -->
-        <div style="display:flex; align-items:center; justify-content: flex-start; gap:8px; margin-top:24px; overflow-x: auto; padding-bottom: 8px; width: 100%; scrollbar-width: none;">
-            <!-- ETAPE 1 -->
-            <div style="display:flex; align-items:center; gap:6px; border: 2px solid #2B3A64; border-radius: 20px; padding: 6px 16px; white-space: nowrap;">
-                <span class="material-symbols-outlined" style="color:#2B3A64; font-size:24px;">accessible_forward</span>
-                <span style="font-size:16px; font-weight:700; color:#2B3A64;">2 min</span>
-            </div>
-            
-            <span class="material-symbols-outlined" style="color:#2B3A64; font-size:24px; font-weight:700;">chevron_right</span>
-            
-            <!-- ETAPE 2 -->
-            <div style="display:flex; align-items:center; gap:6px; border: 2px solid #2B3A64; border-radius: 20px; padding: 6px 16px; white-space: nowrap;">
-                <span class="material-symbols-outlined" style="color:#2B3A64; font-size:24px;">directions_bus</span>
-                <span style="background:#B3C610; color:white; font-size:15px; font-weight:700; padding:2px 8px; border-radius:6px;">82</span>
-                <span style="font-size:16px; font-weight:700; color:#2B3A64;">6 min</span>
-            </div>
+        <!-- LISTE ETAPES (Boxes bordées) -->
+        <div class="step-item">
+            <div style="font-style: italic; font-size: 16px; font-weight: 500; color: #111;">Partir de chez vous à <strong style="font-weight: 800;">16H45</strong></div>
+            <div style="font-style: italic; font-size: 15px; color: #666; margin-top: 6px;">6 autres trajets possibles dans l'heure &gt;</div>
+        </div>
 
-            <span class="material-symbols-outlined" style="color:#2B3A64; font-size:24px; font-weight:700;">chevron_right</span>
+        <div class="step-item" style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 12px; flex: 1;">
+                <span class="material-symbols-outlined" style="font-size: 32px; color: #111;">directions_walk</span>
+                <span style="font-style: italic; font-size: 16px; font-weight: 500; color: #111; line-height: 1.2;">Marcher jusqu'au lieu de rendez vous</span>
+            </div>
+            <div style="font-style: italic; font-size: 14px; font-weight: 600; color: #111; text-align: right; min-width: 80px;">
+                Durée <strong style="font-weight: 800;">1min</strong>
+            </div>
+        </div>
 
-            <!-- ETAPE 3 -->
-            <div style="display:flex; align-items:center; gap:6px; border: 2px solid #2B3A64; border-radius: 20px; padding: 6px 16px; white-space: nowrap;">
-                <span class="material-symbols-outlined" style="color:#2B3A64; font-size:24px;">accessible_forward</span>
-                <span style="font-size:16px; font-weight:700; color:#2B3A64;">6 min</span>
+        <div class="step-item" style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="font-style: italic; font-size: 16px; font-weight: 600; color: #111; line-height: 1.2;">Vous arrivez à votre destination !</div>
+            <div style="font-style: italic; font-size: 14px; color: #111; font-weight: 600; text-align: right;">
+                Arriver à <strong style="font-weight: 800;">17h34</strong>
             </div>
         </div>
 
