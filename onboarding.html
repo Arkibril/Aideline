@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -142,7 +142,8 @@
         .control-btn { width: 100px;height: 48px;background-color: var(--primary);color: white;font-size: 24px;font-weight: 400;border: none;border-radius: 6px;margin-bottom: 8px;cursor: pointer;box-shadow: 0 2px 4px rgba(0,0,0,0.2);display: flex;align-items: center;justify-content: center; }
         .control-btn:active { opacity: 0.8;transform: scale(0.98); }
         .control-label { font-family: 'Rubik', sans-serif;font-size: 16px; color: #1A1A1A; }
-        .continue-btn-outline { width: 80%;height: 46px;border: 1px solid var(--primary);background-color: transparent;color: #333333;border-radius: 6px;font-family: 'Rubik', sans-serif;font-size: 16px;margin: 0 auto 30px auto;display: flex;align-items: center;justify-content: center;cursor: pointer;font-weight:600;}
+        .continue-btn-outline { width: 80%;height: 46px;border: 2px solid var(--primary);background-color: transparent;color: #333333;border-radius: 6px;font-family: 'Rubik', sans-serif;font-size: 16px;margin: 0 auto 30px auto;display: flex;align-items: center;justify-content: center;cursor: pointer;font-weight:600;}
+        .continue-btn-outline:active { background-color: rgba(156, 17, 50, 0.05); }
 
         /* TUTO 2 : SITUATION LIST */
         .situation-list { display: flex; flex-direction: column; width: 100%; padding: 0; margin-top: 40px; margin-bottom: 20px; overflow-y: auto; }
@@ -166,7 +167,7 @@
         .mock-search-bar .material-symbols-outlined { font-size: 28px; color: #000; }
         .mock-search-bar input { flex: 1; border: none; outline: none; margin: 0 12px; font-family: 'Rubik', sans-serif; font-style: italic; font-size: 16px; color: #555; background: transparent; }
         
-        .mock-tiles-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; width: 100%; }
+        .mock-tiles-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; width: 100%; }
         .mock-tile { background-color: #9C1132; border-radius: 8px; aspect-ratio: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; cursor: pointer;}
         .mock-tile .material-symbols-outlined { font-size: 24px; margin-bottom: 4px; }
         .mock-tile .tile-label { font-size: 16px; font-weight: 700; font-family: 'Rubik', sans-serif; text-align: center;}
@@ -256,7 +257,7 @@
         .event-grey-card { background-color: #EFEFEF; border-radius: 12px; padding: 16px; margin-top: 10px; width: 100%; box-sizing: border-box; }
 
         /* TUTO AGENDA FORMAULAIRE */
-        .add-event-btn { border: 1px solid #9C1132; border-radius: 40px; padding: 14px 20px; color: #000; font-weight: 700; font-size: 16px; font-family: 'Rubik', sans-serif; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; background: white; width: 80%; margin: 0 auto; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .add-event-btn { border: 2px solid #9C1132; border-radius: 40px; padding: 14px 20px; color: #000; font-weight: 700; font-size: 16px; font-family: 'Rubik', sans-serif; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; background: white; width: 80%; margin: 0 auto; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
         .add-event-btn:active { background-color: #f7e6ea; }
         .fake-input-form { background-color: #f0f0f0; border-radius: 4px; padding: 14px 16px; display: flex; align-items: center; gap: 8px; box-sizing: border-box;}
         .real-input { border: none; background: transparent; font-family: 'Rubik', sans-serif; font-size: 16px; color: #111; flex: 1; outline: none; padding: 0; min-width: 0; }
@@ -293,7 +294,7 @@
         <button class="primary-btn google-btn" style="margin-bottom: 24px;"><span class="g-icon-fallback">G</span>Via google</button>
         <div class="input-group" style="margin-bottom: 20px;"><label>Ecrivez votre email :</label><div class="input-wrapper" style="height: 39px;"><input type="email" placeholder="example@gmail.com"></div></div>
         <div class="input-group" style="margin-bottom: 24px;"><label>Ecrivez votre mot de passe :</label><div class="input-wrapper" style="height: 39px;"><input type="password" placeholder=""><span class="material-symbols-outlined eye-icon">visibility</span></div></div>
-        <button class="primary-btn" style="margin-bottom: 20px;">Se connecter</button>
+        <button class="primary-btn" style="margin-bottom: 20px;" onclick="window.location.href='index.html'">Se connecter</button>
         <div class="forgot-password">Mot de passe oublié?<br>Cliquez ici.</div>
         <div class="no-account-text">Vous n'avez pas de compte?</div>
         <div class="auth-link" onclick="switchAuthScreen('register')">S'inscrire</div>
@@ -306,11 +307,50 @@
         <div class="input-group" style="margin-bottom: 20px;"><label>Ecrivez votre email :</label><div class="input-wrapper" style="height: 36px;"><input type="email" placeholder="example@gmail.com"></div></div>
         <div class="input-group"><label>Ecrivez votre mot de passe :</label><div class="input-wrapper" style="height: 35px;"><input type="password" placeholder=""><span class="material-symbols-outlined eye-icon">visibility</span></div></div>
         <div class="checkbox-group"><input type="checkbox" id="terms" checked><label for="terms">J'accepte les <span>conditions g&eacute;n&eacute;rales</span> et la <span>politique de confidentialit&eacute;</span></label></div>
-        <button class="primary-btn" style="margin-bottom: 30px;">S'inscrire</button>
+        <button class="primary-btn" style="margin-bottom: 30px;" onclick="window.location.href='index.html'">S'inscrire</button>
         <div class="already-account">Vous avez d&eacute;j&agrave; un compte?<br>Cliquez ici.</div>
         <div class="auth-link" style="margin-top: 10px;" onclick="switchAuthScreen('login')">Se connecter</div>
     </div>
 
+
+    <!-- TUTO INTRO 1 : MAISON -->
+    <div class="tuto-screen" id="tuto-intro-1" style="display: none; justify-content: flex-start;">
+        <div class="tuto-header" style="justify-content: center; padding-top: 40px;">
+            <div style="font-family:'Rubik',sans-serif; font-weight:700; font-size:18px;">Configuration initiale</div>
+        </div>
+        <div class="tuto-subtitle"><strong>S&eacute;curit&eacute; & Confort :</strong><br><span>Quelle est votre adresse personnelle ?</span></div>
+        <div style="width: 100%; display: flex; flex-direction: column; gap: 16px; margin-top: 40px; padding: 0 16px; box-sizing: border-box;">
+            <div style="font-family:'Rubik', sans-serif; font-size:16px; text-align:center; color:#555; margin-bottom: 8px;">Ceci permettra de retrouver rapidement<br>le chemin de la maison.</div>
+            <div style="position:relative; width: 100%;">
+                <div class="fake-input-form" style="border: 1px solid #ccc; background: white;"><span class="material-symbols-outlined" style="color: #9C1132;">home</span> <input type="text" class="real-input" id="intro-address-input" oninput="searchIntroAddress(this.value)" placeholder="123 rue de la colombe, 75001 Paris"></div>
+                <div class="suggestions-box" id="intro-suggestions-box" style="position: absolute; top: calc(100% + 5px); left: 0; width: 100%; z-index: 10; display: none; margin: 0; max-height: 200px; overflow-y: auto;"></div>
+            </div>
+            <button class="event-submit-btn" style="margin-top: 30px; margin-bottom: 0;" onclick="goToTutoStep('tuto-intro-2')">Enregistrer l'adresse</button>
+            <button class="continue-btn-outline" style="margin-top: 10px; border:none; color: #777;" onclick="goToTutoStep('tuto-intro-2')">Passer cette &eacute;tape</button>
+        </div>
+    </div>
+
+    <!-- TUTO INTRO 2 : URGENCE -->
+    <div class="tuto-screen" id="tuto-intro-2" style="display: none; justify-content: flex-start;">
+        <div class="tuto-header" style="justify-content: center; padding-top: 40px;">
+            <div style="font-family:'Rubik',sans-serif; font-weight:700; font-size:18px;">Configuration initiale</div>
+        </div>
+        <div class="tuto-subtitle"><strong>S&eacute;curit&eacute; & Confort :</strong><br><span>Contact d'urgence (Famille/Amis)</span></div>
+        <div style="width: 100%; display: flex; flex-direction: column; gap: 16px; margin-top: 40px; padding: 0 16px; box-sizing: border-box; max-height: 70vh; overflow-y: auto;">
+            <div style="font-family:'Rubik', sans-serif; font-size:16px; text-align:center; color:#555; margin-bottom: 8px;">Permet d'appeler un proche avec le<br>bouton d'urgence tr&egrave;s facilement.</div>
+            <div id="intro-contacts-list" style="display:flex; flex-direction:column; gap:12px;">
+                <div class="contact-block" style="display:flex; flex-direction:column; gap:8px;">
+                    <div class="fake-input-form" style="border: 1px solid #ccc; background: white;"><span class="material-symbols-outlined" style="color: #9C1132;">person</span> <input type="text" class="real-input" placeholder="Nom du contact (ex: Cécile Dubois)"></div>
+                    <div class="fake-input-form" style="border: 1px solid #ccc; background: white;"><span class="material-symbols-outlined" style="color: #9C1132;">phone</span> <input type="tel" class="real-input" placeholder="Num&eacute;ro de t&eacute;l&eacute;phone"></div>
+                </div>
+            </div>
+            
+            <button class="continue-btn-outline" style="border: 2px dashed #9C1132; color: #9C1132; margin-top:10px; background: #fff4f6;" onclick="addIntroContact()">+ Ajouter un contact</button>
+
+            <button class="event-submit-btn" style="margin-top: 30px; margin-bottom: 0;" onclick="startTuto()">Enregistrer les contacts</button>
+            <button class="continue-btn-outline" style="margin-top: 10px; border:none; color: #777;" onclick="startTuto()">Passer cette &eacute;tape</button>
+        </div>
+    </div>
 
     <!-- TUTO STEP 0 : SPLASH 1 -->
     <div class="tuto-splash-screen" id="tuto-splash-1" style="display: none;">
@@ -757,7 +797,7 @@
 
 <script>
     // ONBOARDING
-    const steps = [ "Bienvenue !", "Je suis Aideline,\nvotre assistante de mobilité !", "Voulez-vous que je vous\nprésente l'application ?" ];
+    const steps = [ "Bienvenue !", "Je suis Aideline,\nvotre complice de mobilité !", "Voulez-vous que je vous\nprésente l'application ?" ];
     let currentStep = 0, isTyping = false;
     const textElement = document.getElementById('type-text'), hintElement = document.getElementById('continue-hint'), buttonGroup = document.getElementById('button-group'), mainScreen = document.getElementById('main-screen');
 
@@ -785,7 +825,7 @@
     function handleChoice(choice, event) {
         event.stopPropagation(); 
         if (choice === 'non') { mainScreen.style.display = 'none'; document.getElementById('login-screen').style.display = 'flex'; }
-        else if (choice === 'oui') { mainScreen.style.display = 'none'; startTuto(); }
+        else if (choice === 'oui') { mainScreen.style.display = 'none'; goToTutoStep('tuto-intro-1'); }
     }
     function switchAuthScreen(target) {
         if (target === 'login') { document.getElementById('register-screen').style.display = 'none'; document.getElementById('login-screen').style.display = 'flex'; }
@@ -794,7 +834,7 @@
 
     // TUTO LOGIQUE
     function hideAllTuto() {
-        ['tuto-splash-1', 'tuto-step-1', 'tuto-step-2', 'tuto-splash-2', 'tuto-step-4', 'tuto-step-5', 'tuto-splash-3', 'tuto-step-6', 'tuto-splash-4', 'tuto-step-7', 'tuto-step-8', 'tuto-step-9', 'tuto-step-10', 'tuto-step-11', 'tuto-step-12', 'tuto-splash-5', 'tuto-splash-6'].forEach(id => {
+        ['tuto-intro-1', 'tuto-intro-2', 'tuto-splash-1', 'tuto-step-1', 'tuto-step-2', 'tuto-splash-2', 'tuto-step-4', 'tuto-step-5', 'tuto-splash-3', 'tuto-step-6', 'tuto-splash-4', 'tuto-step-7', 'tuto-step-8', 'tuto-step-9', 'tuto-step-10', 'tuto-step-11', 'tuto-step-12', 'tuto-splash-5', 'tuto-splash-6'].forEach(id => {
             document.getElementById(id).style.display = 'none';
         });
     }
@@ -856,9 +896,7 @@
     }
 
     function finishTutoFlow() {
-        hideAllTuto();
-        document.getElementById('tuto-flow').style.display = 'none';
-        document.getElementById('auth-page').style.display = 'flex'; // Retour à l'écran de connexion initial par ex.
+        window.location.href = 'index.html';
     }
 
     function goBackFromTuto(target) {
@@ -874,6 +912,62 @@
             appScale = newScale;
             document.documentElement.style.setProperty('--app-scale', appScale);
         }
+    }
+
+    async function searchIntroAddress(val) {
+        const box = document.getElementById('intro-suggestions-box');
+        if (!val || val.length < 3) { box.style.display = 'none'; return; }
+        
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(async () => {
+            try {
+                const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(val)}&format=json&addressdetails=1&limit=3&countrycodes=fr`);
+                const data = await res.json();
+                
+                if (data && data.length > 0) {
+                    box.innerHTML = '';
+                    data.forEach(item => {
+                        let name = item.name || item.display_name.split(',')[0];
+                        if (item.address && item.address.house_number && item.address.road) {
+                            name = item.address.house_number + ' ' + item.address.road;
+                        } else if (item.address && item.address.road && item.address.city) {
+                            name = item.address.road + ', ' + item.address.city;
+                        } else {
+                            name = item.display_name;
+                        }
+
+                        box.innerHTML += `
+                            <div class="suggestion-item" style="padding: 12px; border-bottom: 1px solid #eee; background: white; cursor: pointer;" onclick="document.getElementById('intro-address-input').value = '${name.replace(/'/g, "\\'")}'; document.getElementById('intro-suggestions-box').style.display='none';">
+                                <span class="material-symbols-outlined" style="vertical-align: middle; margin-right: 8px; color: #9C1132; font-size:20px;">location_on</span>
+                                <span style="font-family:'Rubik', sans-serif; font-size:15px; vertical-align: middle;">${name}</span>
+                            </div>
+                        `;
+                    });
+                    box.style.display = 'block';
+                } else {
+                    box.style.display = 'none';
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        }, 500);
+    }
+
+    function addIntroContact() {
+        const list = document.getElementById('intro-contacts-list');
+        const block = document.createElement('div');
+        block.className = 'contact-block';
+        block.style.display = 'flex';
+        block.style.flexDirection = 'column';
+        block.style.gap = '8px';
+        block.style.marginTop = '10px';
+        block.style.paddingTop = '15px';
+        block.style.borderTop = '1px solid #eee';
+        block.innerHTML = `
+            <div class="fake-input-form" style="border: 1px solid #ccc; background: white;"><span class="material-symbols-outlined" style="color: #9C1132;">person</span> <input type="text" class="real-input" placeholder="Nom du contact (ex: Ami(e), Voisin...)"></div>
+            <div class="fake-input-form" style="border: 1px solid #ccc; background: white;"><span class="material-symbols-outlined" style="color: #9C1132;">phone</span> <input type="tel" class="real-input" placeholder="Num&eacute;ro de t&eacute;l&eacute;phone"></div>
+        `;
+        list.appendChild(block);
     }
 
     // AUTOCOMPLETION AVEC NOMINATIM OPENSTREETMAP (Gratuit, sans clé API)
