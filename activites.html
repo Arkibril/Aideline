@@ -97,6 +97,14 @@
         <h1>Activités pour vous</h1>
     </div>
 
+    <!-- SEARCH BAR -->
+    <div style="padding: 0 16px 16px 16px; background:var(--white);">
+        <div style="background:#F5F5F5; border-radius:12px; display:flex; align-items:center; padding:12px 16px; gap:8px;">
+            <span class="material-symbols-outlined" style="color:#777;">search</span>
+            <input type="text" id="search-input" placeholder="Chercher une activité ou un lieu..." style="border:none; background:transparent; font-size:16px; flex:1; outline:none;" onkeyup="filterActivities()">
+        </div>
+    </div>
+
     <!-- TABS -->
     <div class="categories-scroll">
         <div class="cat-pill active" onclick="activatePill(this)">Toutes</div>
@@ -105,6 +113,8 @@
         <div class="cat-pill" onclick="activatePill(this)">Sport Doux</div>
         <div class="cat-pill" onclick="activatePill(this)">Balade</div>
         <div class="cat-pill" onclick="activatePill(this)">Art</div>
+        <div class="cat-pill" onclick="activatePill(this)">Musique</div>
+        <div class="cat-pill" onclick="activatePill(this)">Jardinage</div>
     </div>
 
     <div class="content-scroll">
@@ -112,46 +122,46 @@
         <div style="font-size: 15px; font-weight: 600; color: #555; margin-bottom: 16px;">Recommandations à proximité</div>
 
         <!-- ACTIVITY 1 -->
-        <div class="activity-card" onclick="window.location.href='activite_detail.html'">
+        <div class="activity-card" data-category="Théâtre" data-name="Théâtre : Le Misanthrope" onclick="window.location.href='activite_detail.html'">
             <img src="https://images.unsplash.com/photo-1579930467727-b50a2575e9f8?auto=format&fit=crop&w=200&q=80" class="activity-img" alt="Theâtre">
             <div class="activity-info">
                 <div class="activity-title">Théâtre : Le Misanthrope</div>
                 <div class="activity-meta"><span class="material-symbols-outlined" style="font-size:16px;">schedule</span> Aujourd'hui, 15H00</div>
                 <div class="activity-badges">
-                    <span class="badge">Culture</span>
+                    <span class="badge">Théâtre</span>
                     <span class="badge accessible">Rythme adapté</span>
                 </div>
             </div>
         </div>
 
         <!-- ACTIVITY 2 -->
-        <div class="activity-card" onclick="window.location.href='activite_detail.html'">
+        <div class="activity-card" data-category="Sport Doux" data-name="Gym Douce Sénior" onclick="window.location.href='activite_detail.html'">
             <img src="https://images.unsplash.com/photo-1510251197825-4b35e412b186?auto=format&fit=crop&w=200&q=80" class="activity-img" alt="Gym douce">
             <div class="activity-info">
                 <div class="activity-title">Gym Douce Sénior</div>
                 <div class="activity-meta"><span class="material-symbols-outlined" style="font-size:16px;">schedule</span> Demain, 10H00</div>
                 <div class="activity-badges">
                     <span class="badge">Sport Doux</span>
-                    <span class="badge accessible">Accessible Access PMR</span>
+                    <span class="badge accessible">Accès PMR</span>
                 </div>
             </div>
         </div>
 
         <!-- ACTIVITY 3 -->
-        <div class="activity-card" onclick="window.location.href='activite_detail.html'">
+        <div class="activity-card" data-category="Cinéma" data-name="Ciné-Club Classique" onclick="window.location.href='activite_detail.html'">
             <img src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=200&q=80" class="activity-img" alt="Cinema">
             <div class="activity-info">
                 <div class="activity-title">Ciné-Club Classique</div>
                 <div class="activity-meta"><span class="material-symbols-outlined" style="font-size:16px;">schedule</span> Jeu. 24, 14H30</div>
                 <div class="activity-badges">
                     <span class="badge">Cinéma</span>
-                    <span class="badge accessible">Son amplicado</span>
+                    <span class="badge accessible">Son adapté</span>
                 </div>
             </div>
         </div>
 
         <!-- ACTIVITY 4 -->
-        <div class="activity-card" onclick="window.location.href='activite_detail.html'">
+        <div class="activity-card" data-category="Art" data-name="Atelier Aquarelle Guidée" onclick="window.location.href='activite_detail.html'">
             <img src="https://images.unsplash.com/photo-1544070019-33dd11ca47d8?auto=format&fit=crop&w=200&q=80" class="activity-img" alt="Peinture">
             <div class="activity-info">
                 <div class="activity-title">Atelier Aquarelle Guidée</div>
@@ -159,6 +169,58 @@
                 <div class="activity-badges">
                     <span class="badge">Art</span>
                     <span class="badge accessible">Rythme adapté</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ACTIVITY 5 -->
+        <div class="activity-card" data-category="Musique" data-name="Concert Jazz Acoustique" onclick="window.location.href='activite_detail.html'">
+            <img src="https://images.unsplash.com/photo-1511192336575-5a79af67a629?auto=format&fit=crop&w=200&q=80" class="activity-img" alt="Musique">
+            <div class="activity-info">
+                <div class="activity-title">Concert Jazz Acoustique</div>
+                <div class="activity-meta"><span class="material-symbols-outlined" style="font-size:16px;">schedule</span> Dim. 27, 16H00</div>
+                <div class="activity-badges">
+                    <span class="badge">Musique</span>
+                    <span class="badge accessible">Volume mesuré</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ACTIVITY 6 -->
+        <div class="activity-card" data-category="Balade" data-name="Balade contée Parc Floral" onclick="window.location.href='activite_detail.html'">
+            <img src="https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=200&q=80" class="activity-img" alt="Parc">
+            <div class="activity-info">
+                <div class="activity-title">Balade contée Parc Floral</div>
+                <div class="activity-meta"><span class="material-symbols-outlined" style="font-size:16px;">schedule</span> Mar. 29, 10H30</div>
+                <div class="activity-badges">
+                    <span class="badge">Balade</span>
+                    <span class="badge accessible">Terrain plat</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ACTIVITY 7 -->
+        <div class="activity-card" data-category="Jardinage" data-name="Initiation Permaculture" onclick="window.location.href='activite_detail.html'">
+            <img src="https://images.unsplash.com/photo-1416879598555-220b332d1f43?auto=format&fit=crop&w=200&q=80" class="activity-img" alt="Jardinage">
+            <div class="activity-info">
+                <div class="activity-title">Initiation Permaculture</div>
+                <div class="activity-meta"><span class="material-symbols-outlined" style="font-size:16px;">schedule</span> Mer. 30, 09H00</div>
+                <div class="activity-badges">
+                    <span class="badge">Jardinage</span>
+                    <span class="badge accessible">Pots surélevés</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ACTIVITY 8 -->
+        <div class="activity-card" data-category="Sport Doux" data-name="Yoga sur chaise" onclick="window.location.href='activite_detail.html'">
+            <img src="https://images.unsplash.com/photo-1603988363607-e1e4a66962c6?auto=format&fit=crop&w=200&q=80" class="activity-img" alt="Yoga">
+            <div class="activity-info">
+                <div class="activity-title">Yoga sur chaise</div>
+                <div class="activity-meta"><span class="material-symbols-outlined" style="font-size:16px;">schedule</span> Jeu. 31, 11H00</div>
+                <div class="activity-badges">
+                    <span class="badge">Sport Doux</span>
+                    <span class="badge accessible">Sans appuis sol</span>
                 </div>
             </div>
         </div>
@@ -183,6 +245,27 @@
         function activatePill(elem) {
             document.querySelectorAll('.cat-pill').forEach(el => el.classList.remove('active'));
             elem.classList.add('active');
+            filterActivities();
+        }
+
+        function filterActivities() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const activeCategory = document.querySelector('.cat-pill.active').innerText.trim();
+            const cards = document.querySelectorAll('.activity-card');
+
+            cards.forEach(card => {
+                const name = card.getAttribute('data-name').toLowerCase();
+                const category = card.getAttribute('data-category');
+                
+                const matchesQuery = name.includes(query);
+                const matchesCategory = (activeCategory === 'Toutes') || (category === activeCategory);
+
+                if(matchesQuery && matchesCategory) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
         }
     </script>
 </body>
