@@ -122,7 +122,7 @@
         <div style="font-size: 15px; font-weight: 600; color: #555; margin-bottom: 16px;">Recommandations à proximité</div>
 
         <!-- ACTIVITY 1 -->
-        <div class="activity-card" data-category="Théâtre" data-name="Théâtre : Le Misanthrope" onclick="window.location.href='activite_detail.html'">
+        <div class="activity-card" data-category="Théâtre" data-name="Théâtre : Le Misanthrope" data-price="11.45€" onclick="goToActivity(this)">
             <img src="https://images.unsplash.com/photo-1579930467727-b50a2575e9f8?auto=format&fit=crop&w=200&q=80" class="activity-img" alt="Theâtre">
             <div class="activity-info">
                 <div class="activity-title">Théâtre : Le Misanthrope</div>
@@ -135,7 +135,7 @@
         </div>
 
         <!-- ACTIVITY 2 -->
-        <div class="activity-card" data-category="Sport Doux" data-name="Gym Douce Sénior" onclick="window.location.href='activite_detail.html'">
+        <div class="activity-card" data-category="Sport Doux" data-name="Gym Douce Sénior" data-price="Gratuit" onclick="goToActivity(this)">
             <img src="https://images.unsplash.com/photo-1510251197825-4b35e412b186?auto=format&fit=crop&w=200&q=80" class="activity-img" alt="Gym douce">
             <div class="activity-info">
                 <div class="activity-title">Gym Douce Sénior</div>
@@ -148,7 +148,7 @@
         </div>
 
         <!-- ACTIVITY 3 -->
-        <div class="activity-card" data-category="Cinéma" data-name="Ciné-Club Classique" onclick="window.location.href='activite_detail.html'">
+        <div class="activity-card" data-category="Cinéma" data-name="Ciné-Club Classique" data-price="5.50€" onclick="goToActivity(this)">
             <img src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=200&q=80" class="activity-img" alt="Cinema">
             <div class="activity-info">
                 <div class="activity-title">Ciné-Club Classique</div>
@@ -161,7 +161,7 @@
         </div>
 
         <!-- ACTIVITY 4 -->
-        <div class="activity-card" data-category="Art" data-name="Atelier Aquarelle Guidée" onclick="window.location.href='activite_detail.html'">
+        <div class="activity-card" data-category="Art" data-name="Atelier Aquarelle Guidée" data-price="15.00€" onclick="goToActivity(this)">
             <img src="https://images.unsplash.com/photo-1544070019-33dd11ca47d8?auto=format&fit=crop&w=200&q=80" class="activity-img" alt="Peinture">
             <div class="activity-info">
                 <div class="activity-title">Atelier Aquarelle Guidée</div>
@@ -174,7 +174,7 @@
         </div>
 
         <!-- ACTIVITY 5 -->
-        <div class="activity-card" data-category="Musique" data-name="Concert Jazz Acoustique" onclick="window.location.href='activite_detail.html'">
+        <div class="activity-card" data-category="Musique" data-name="Concert Jazz Acoustique" data-price="20.00€" onclick="goToActivity(this)">
             <img src="https://images.unsplash.com/photo-1511192336575-5a79af67a629?auto=format&fit=crop&w=200&q=80" class="activity-img" alt="Musique">
             <div class="activity-info">
                 <div class="activity-title">Concert Jazz Acoustique</div>
@@ -187,7 +187,7 @@
         </div>
 
         <!-- ACTIVITY 6 -->
-        <div class="activity-card" data-category="Balade" data-name="Balade contée Parc Floral" onclick="window.location.href='activite_detail.html'">
+        <div class="activity-card" data-category="Balade" data-name="Balade contée Parc Floral" data-price="Gratuit" onclick="goToActivity(this)">
             <img src="https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=200&q=80" class="activity-img" alt="Parc">
             <div class="activity-info">
                 <div class="activity-title">Balade contée Parc Floral</div>
@@ -200,7 +200,7 @@
         </div>
 
         <!-- ACTIVITY 7 -->
-        <div class="activity-card" data-category="Jardinage" data-name="Initiation Permaculture" onclick="window.location.href='activite_detail.html'">
+        <div class="activity-card" data-category="Jardinage" data-name="Initiation Permaculture" data-price="10.00€" onclick="goToActivity(this)">
             <img src="https://images.unsplash.com/photo-1416879598555-220b332d1f43?auto=format&fit=crop&w=200&q=80" class="activity-img" alt="Jardinage">
             <div class="activity-info">
                 <div class="activity-title">Initiation Permaculture</div>
@@ -213,7 +213,7 @@
         </div>
 
         <!-- ACTIVITY 8 -->
-        <div class="activity-card" data-category="Sport Doux" data-name="Yoga sur chaise" onclick="window.location.href='activite_detail.html'">
+        <div class="activity-card" data-category="Sport Doux" data-name="Yoga sur chaise" data-price="8.00€" onclick="goToActivity(this)">
             <img src="https://images.unsplash.com/photo-1603988363607-e1e4a66962c6?auto=format&fit=crop&w=200&q=80" class="activity-img" alt="Yoga">
             <div class="activity-info">
                 <div class="activity-title">Yoga sur chaise</div>
@@ -266,6 +266,25 @@
                     card.style.display = 'none';
                 }
             });
+        }
+
+        function goToActivity(card) {
+            const title = card.querySelector('.activity-title').innerText;
+            const timeRaw = card.querySelector('.activity-meta').innerText.replace('schedule', '').trim();
+            const badge = card.querySelector('.badge.accessible').innerText;
+            const img = card.querySelector('img').src;
+            const price = card.getAttribute('data-price');
+            const category = card.getAttribute('data-category');
+            
+            const params = new URLSearchParams({
+                title: title,
+                time: timeRaw,
+                badge: badge,
+                img: img,
+                price: price,
+                category: category
+            });
+            window.location.href = 'activite_detail.html?' + params.toString();
         }
     </script>
 </body>

@@ -142,22 +142,28 @@
         .nav-item.active { opacity: 1; }
         .nav-item .material-symbols-outlined { font-size: 28px; margin-bottom: 4px; }
         .nav-item .nav-text { font-size: 14px; font-weight: 500; }
+
+        .badge { padding: 4px 8px; font-size: 12px; font-weight: 700; border-radius: 6px; border: 1px solid rgba(255,255,255,0.3); }
     </style>
 </head>
 <body>
 
     <!-- HERO SECTION -->
-    <div class="hero-section">
+    <div class="hero-section" id="act-bg" style="background: url('https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=1080&auto=format&fit=crop') center/cover no-repeat;">
         <div class="hero-overlay">
             <button class="back-btn" onclick="window.history.back()">
                 <span class="material-symbols-outlined">arrow_back</span>
             </button>
             
             <div class="hero-bottom">
-                <div class="hero-title">S&eacute;ance th&eacute;&acirc;tre : L'inf&acirc;me</div>
+                <div class="hero-title" id="act-title">S&eacute;ance th&eacute;&acirc;tre : L'inf&acirc;me</div>
                 <div class="hero-subtitle">
                     <span class="material-symbols-outlined">location_on</span>
-                    Th&eacute;&acirc;tre de la folie
+                    <span id="act-subtitle">Lieu de l'activité (À proximité)</span>
+                </div>
+                <div style="display:flex; gap:8px; margin-bottom:24px;">
+                    <span class="badge" id="act-cat" style="background:var(--primary); color:white;">Théâtre</span>
+                    <span class="badge" id="act-badge" style="background:rgba(76,175,80,0.9); color:white;">Rythme adapté</span>
                 </div>
             </div>
         </div>
@@ -171,28 +177,28 @@
                 <span class="material-symbols-outlined">calendar_month</span>
                 <div class="info-chip-content">
                     <div>Date</div>
-                    <div>Aujourd'hui</div>
+                    <div id="act-date">Aujourd'hui</div>
                 </div>
             </div>
             <div class="info-chip">
                 <span class="material-symbols-outlined">schedule</span>
                 <div class="info-chip-content">
                     <div>Heure</div>
-                    <div>12h35 - 14h00</div>
+                    <div id="act-time">15H00</div>
                 </div>
             </div>
             <div class="info-chip">
                 <span class="material-symbols-outlined">euro</span>
                 <div class="info-chip-content">
                     <div>Prix</div>
-                    <div>11.45€</div>
+                    <div id="act-price">11.45€</div>
                 </div>
             </div>
             <div class="info-chip">
-                <span class="material-symbols-outlined">group</span>
+                <span class="material-symbols-outlined">accessible_forward</span>
                 <div class="info-chip-content">
-                    <div>Places</div>
-                    <div>13 restantes</div>
+                    <div>Accessibilité</div>
+                    <div id="act-access">PMR</div>
                 </div>
             </div>
         </div>
@@ -247,5 +253,35 @@
             <span class="nav-text">Paramètre</span>
         </a>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const title = params.get('title');
+            
+            if(title) {
+                document.getElementById('act-title').innerText = title;
+                document.getElementById('act-bg').style.backgroundImage = `url('${params.get('img')}')`;
+                
+                const timeRaw = params.get('time');
+                if(timeRaw && timeRaw.includes(',')) {
+                    const parts = timeRaw.split(',');
+                    document.getElementById('act-date').innerText = parts[0].trim();
+                    document.getElementById('act-time').innerText = parts[1].trim();
+                } else if(timeRaw) {
+                    document.getElementById('act-date').innerText = timeRaw;
+                    document.getElementById('act-time').innerText = "--";
+                }
+                
+                document.getElementById('act-price').innerText = params.get('price') || "Gratuit";
+                document.getElementById('act-cat').innerText = params.get('category') || "Activité";
+                
+                const badge = params.get('badge');
+                if(badge) {
+                    document.getElementById('act-badge').innerText = badge;
+                    document.getElementById('act-access').innerText = badge;
+                }
+            }
+        });
+    </script>
 </body>
 </html>
