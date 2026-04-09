@@ -105,6 +105,35 @@
         .nav-item.active { opacity: 1; }
         .nav-item .material-symbols-outlined { font-size: 28px; margin-bottom: 4px; }
         .nav-item .nav-text { font-size: 14px; font-weight: 500; }
+
+        /* CUSTOM SCROLLABLE SPINNER NATIVE-LIKE */
+        .spinner-col {
+            position: relative;
+            background: #F5F5F5;
+            border-radius: 16px;
+            border: 2px solid var(--primary);
+            overflow: hidden;
+            width: 100px;
+        }
+        .spinner-view {
+            height: 80px; 
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .spinner-view::-webkit-scrollbar { display: none; }
+        .spinner-item {
+            height: 80px;
+            display: flex; align-items: center; justify-content: center;
+            scroll-snap-align: center;
+            font-size: 36px; font-weight: 700; color: var(--primary);
+        }
+        .spinner-arrow {
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer; color: var(--primary); font-size: 46px;
+        }
     </style>
 </head>
 <body>
@@ -201,8 +230,26 @@
             
             <div style="font-size:22px; font-weight:700; margin-bottom: 24px; color:#000;">À quelle heure le <span id="display-selected-day"></span> ?</div>
             
-            <div style="margin-bottom: 40px; display: flex; justify-content: center;">
-                <input type="time" id="native-time-picker" value="14:00" style="width: 100%; background: #F5F5F5; border: 2px solid var(--primary); padding: 20px; text-align: center; font-size: 46px; font-weight: 700; color: var(--primary); border-radius: 16px; outline: none; font-family: 'Rubik', sans-serif;">
+            <div style="display:flex; justify-content:center; align-items:center; gap: 16px; margin-bottom: 40px;">
+                <div style="display:flex; flex-direction:column; align-items:center;">
+                    <span class="material-symbols-outlined spinner-arrow" style="margin-bottom:8px;" onclick="scrollSpinner('hour-spinner', -1)">expand_less</span>
+                    <div class="spinner-col">
+                        <div class="spinner-view" id="hour-spinner">
+                            <!-- JS Generated -->
+                        </div>
+                    </div>
+                    <span class="material-symbols-outlined spinner-arrow" style="margin-top:8px;" onclick="scrollSpinner('hour-spinner', 1)">expand_more</span>
+                </div>
+                <div style="font-size:46px; font-weight:700;">:</div>
+                <div style="display:flex; flex-direction:column; align-items:center;">
+                    <span class="material-symbols-outlined spinner-arrow" style="margin-bottom:8px;" onclick="scrollSpinner('minute-spinner', -1)">expand_less</span>
+                    <div class="spinner-col">
+                        <div class="spinner-view" id="minute-spinner">
+                            <!-- JS Generated -->
+                        </div>
+                    </div>
+                    <span class="material-symbols-outlined spinner-arrow" style="margin-top:8px;" onclick="scrollSpinner('minute-spinner', 1)">expand_more</span>
+                </div>
             </div>
             
             <button style="width:100%; background:var(--primary); color:white; border:none; padding:20px; border-radius:24px; font-size:20px; font-weight:700; box-shadow:0 4px 12px rgba(100,12,49,0.2); margin-top:auto;" onclick="validerCalendar()">Confirmer cette date</button>
@@ -375,10 +422,42 @@
             btn.style.boxShadow = '0 4px 12px rgba(100,12,49,0.2)';
         }
 
+        let spinnersBuilt = false;
+        function buildSpinners() {
+            if (spinnersBuilt) return;
+            const hs = document.getElementById('hour-spinner');
+            const ms = document.getElementById('minute-spinner');
+            hs.innerHTML = ''; ms.innerHTML = '';
+            for(let i=0; i<24; i++) {
+                hs.innerHTML += '<div class="spinner-item">' + i.toString().padStart(2,'0') + '</div>';
+            }
+            for(let i=0; i<60; i++) {
+                ms.innerHTML += '<div class="spinner-item">' + i.toString().padStart(2,'0') + '</div>';
+            }
+            spinnersBuilt = true;
+        }
+
+        function scrollSpinner(id, dir) {
+            const el = document.getElementById(id);
+            const currentIdx = Math.round(el.scrollTop / 80);
+            let nextIdx = currentIdx + dir;
+            const maxIdx = id.includes('hour') ? 23 : 59;
+            if(nextIdx > maxIdx) nextIdx = 0;
+            if(nextIdx < 0) nextIdx = maxIdx;
+            el.scrollTo({ top: nextIdx * 80, behavior: 'smooth' });
+        }
+
+        function getSpinnerValue(id) {
+            const el = document.getElementById(id);
+            const idx = Math.round(el.scrollTop / 80);
+            return idx.toString().padStart(2, '0');
+        }
+
         function openCalendar(target) {
             currentTarget = target;
             selectedDay = null; // Reset
             buildCalendar();
+            buildSpinners();
             document.getElementById('btn-next-step').disabled = true;
             document.getElementById('btn-next-step').style.background = '#CCC';
             document.getElementById('btn-next-step').style.boxShadow = 'none';
@@ -393,6 +472,11 @@
             document.getElementById('display-selected-day').innerText = selectedDay + " Avril";
             document.getElementById('calendar-step-1').style.display = 'none';
             document.getElementById('calendar-step-2').style.display = 'flex';
+            
+            setTimeout(() => {
+                document.getElementById('hour-spinner').scrollTo({ top: 14 * 80, behavior: 'auto' });
+                document.getElementById('minute-spinner').scrollTo({ top: 0, behavior: 'auto' });
+            }, 10);
         }
 
         function goToDayStep() {
@@ -405,8 +489,10 @@
         }
 
         function validerCalendar() {
-            const timeVal = document.getElementById('native-time-picker').value || '14:00';
-            const textStr = selectedDay + " Avril 2026 à " + timeVal.replace(':', 'h');
+            const h = getSpinnerValue('hour-spinner');
+            const m = getSpinnerValue('minute-spinner');
+            const textStr = selectedDay + " Avril 2026 à " + h + "h" + m;
+
             if(currentTarget === 'debut') {
                 document.getElementById('debut-text').innerText = textStr;
                 document.getElementById('debut-text').style.color = '#000';
