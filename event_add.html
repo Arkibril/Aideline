@@ -111,24 +111,40 @@
             position: relative;
             background: #F5F5F5;
             border-radius: 16px;
-            border: 2px solid var(--primary);
             overflow: hidden;
             width: 100px;
+            height: 180px; /* 3 items of 60px */
+            border: 1px solid #CCC;
+        }
+        .spinner-highlight {
+            position: absolute;
+            top: 60px; left: 0; width: 100%; height: 60px;
+            border-top: 2px solid var(--primary);
+            border-bottom: 2px solid var(--primary);
+            background: rgba(100, 12, 49, 0.05); /* Ligh tint */
+            pointer-events: none; /* Let scroll events pass through */
+            z-index: 2;
         }
         .spinner-view {
-            height: 80px; 
+            height: 100%; 
             overflow-y: scroll;
             scroll-snap-type: y mandatory;
             scroll-behavior: smooth;
             scrollbar-width: none;
             -ms-overflow-style: none;
+            position: relative;
+            z-index: 1;
         }
         .spinner-view::-webkit-scrollbar { display: none; }
         .spinner-item {
-            height: 80px;
+            height: 60px;
             display: flex; align-items: center; justify-content: center;
             scroll-snap-align: center;
-            font-size: 36px; font-weight: 700; color: var(--primary);
+            font-size: 30px; font-weight: 700; color: #444;
+            opacity: 0.3; transition: all 0.2s;
+        }
+        .spinner-item.active {
+            font-size: 36px; color: var(--primary); opacity: 1;
         }
         .spinner-arrow {
             display: flex; justify-content: center; align-items: center;
@@ -234,7 +250,8 @@
                 <div style="display:flex; flex-direction:column; align-items:center;">
                     <span class="material-symbols-outlined spinner-arrow" style="margin-bottom:8px;" onclick="scrollSpinner('hour-spinner', -1)">expand_less</span>
                     <div class="spinner-col">
-                        <div class="spinner-view" id="hour-spinner">
+                        <div class="spinner-highlight"></div>
+                        <div class="spinner-view" id="hour-spinner" onscroll="updateSpinnerUI('hour-spinner')">
                             <!-- JS Generated -->
                         </div>
                     </div>
@@ -244,7 +261,8 @@
                 <div style="display:flex; flex-direction:column; align-items:center;">
                     <span class="material-symbols-outlined spinner-arrow" style="margin-bottom:8px;" onclick="scrollSpinner('minute-spinner', -1)">expand_less</span>
                     <div class="spinner-col">
-                        <div class="spinner-view" id="minute-spinner">
+                        <div class="spinner-highlight"></div>
+                        <div class="spinner-view" id="minute-spinner" onscroll="updateSpinnerUI('minute-spinner')">
                             <!-- JS Generated -->
                         </div>
                     </div>
@@ -427,29 +445,46 @@
             if (spinnersBuilt) return;
             const hs = document.getElementById('hour-spinner');
             const ms = document.getElementById('minute-spinner');
-            hs.innerHTML = ''; ms.innerHTML = '';
+            hs.innerHTML = '<div style="height:60px;"></div>'; 
+            ms.innerHTML = '<div style="height:60px;"></div>'; 
+
             for(let i=0; i<24; i++) {
-                hs.innerHTML += '<div class="spinner-item">' + i.toString().padStart(2,'0') + '</div>';
+                hs.innerHTML += '<div class="spinner-item" id="h-item-'+i+'">' + i.toString().padStart(2,'0') + '</div>';
             }
             for(let i=0; i<60; i++) {
-                ms.innerHTML += '<div class="spinner-item">' + i.toString().padStart(2,'0') + '</div>';
+                ms.innerHTML += '<div class="spinner-item" id="m-item-'+i+'">' + i.toString().padStart(2,'0') + '</div>';
             }
+            hs.innerHTML += '<div style="height:60px;"></div>';
+            ms.innerHTML += '<div style="height:60px;"></div>';
             spinnersBuilt = true;
+        }
+
+        function updateSpinnerUI(id) {
+            const el = document.getElementById(id);
+            const idx = Math.round(el.scrollTop / 60);
+            const children = el.querySelectorAll('.spinner-item');
+            children.forEach((c, i) => {
+                if(i === idx) {
+                    c.classList.add('active');
+                } else {
+                    c.classList.remove('active');
+                }
+            });
         }
 
         function scrollSpinner(id, dir) {
             const el = document.getElementById(id);
-            const currentIdx = Math.round(el.scrollTop / 80);
+            const currentIdx = Math.round(el.scrollTop / 60);
             let nextIdx = currentIdx + dir;
             const maxIdx = id.includes('hour') ? 23 : 59;
             if(nextIdx > maxIdx) nextIdx = 0;
             if(nextIdx < 0) nextIdx = maxIdx;
-            el.scrollTo({ top: nextIdx * 80, behavior: 'smooth' });
+            el.scrollTo({ top: nextIdx * 60, behavior: 'smooth' });
         }
 
         function getSpinnerValue(id) {
             const el = document.getElementById(id);
-            const idx = Math.round(el.scrollTop / 80);
+            const idx = Math.round(el.scrollTop / 60);
             return idx.toString().padStart(2, '0');
         }
 
@@ -474,8 +509,12 @@
             document.getElementById('calendar-step-2').style.display = 'flex';
             
             setTimeout(() => {
-                document.getElementById('hour-spinner').scrollTo({ top: 14 * 80, behavior: 'auto' });
-                document.getElementById('minute-spinner').scrollTo({ top: 0, behavior: 'auto' });
+                const hs = document.getElementById('hour-spinner');
+                const ms = document.getElementById('minute-spinner');
+                hs.scrollTo({ top: 14 * 60, behavior: 'auto' });
+                ms.scrollTo({ top: 0, behavior: 'auto' });
+                updateSpinnerUI('hour-spinner');
+                updateSpinnerUI('minute-spinner');
             }, 10);
         }
 
