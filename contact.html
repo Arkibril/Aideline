@@ -233,6 +233,35 @@
             </div>
         </div>
         
+        
+    </div>
+
+    <!-- TOAST COMPONENT -->
+    <div id="toast" style="display:none; position:fixed; top:80px; left:50%; transform:translateX(-50%); background:#333; color:white; padding:12px 24px; border-radius:30px; font-size:14px; font-weight:600; z-index:9999; box-shadow:0 4px 12px rgba(0,0,0,0.15); transition:opacity 0.3s; pointer-events: none; white-space: nowrap;">
+        Message
+    </div>
+
+    <!-- WIDGET AJOUT CONTACT CENTRÉ -->
+    <div id="add-contact-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:3000; align-items:center; justify-content:center; opacity:0; transition:opacity 0.3s;">
+        <div style="background:white; width:90%; max-width:340px; border-radius:24px; padding:24px; display:flex; flex-direction:column; box-shadow:0 10px 30px rgba(0,0,0,0.2); transform:scale(0.9); transition:transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);" id="add-contact-box">
+            
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <h3 style="font-size:20px; font-weight:700; margin:0; color:var(--primary);">Nouveau contact</h3>
+                <span class="material-symbols-outlined" style="cursor:pointer; color:#777;" onclick="closeContactWidget()">close</span>
+            </div>
+
+            <div style="margin-bottom:16px;">
+                <label style="display:block; font-size:14px; font-weight:600; margin-bottom:8px; color:#333;">Prénom / Nom</label>
+                <input type="text" id="new-contact-name" placeholder="Ex: Jean Dupont" style="width:100%; padding:14px 16px; border:1px solid #ccc; border-radius:12px; font-size:16px; outline:none;">
+            </div>
+
+            <div style="margin-bottom:24px;">
+                <label style="display:block; font-size:14px; font-weight:600; margin-bottom:8px; color:#333;">Numéro de téléphone</label>
+                <input type="tel" id="new-contact-phone" placeholder="06..." style="width:100%; padding:14px 16px; border:1px solid #ccc; border-radius:12px; font-size:16px; outline:none;">
+            </div>
+
+            <button style="width:100%; padding:16px; background:var(--primary); color:white; border:none; border-radius:16px; font-size:16px; font-weight:700; cursor:pointer;" onclick="saveNewContact()">Ajouter le contact</button>
+        </div>
     </div>
 
     <!-- ZONE BAS : NAVBAR -->
@@ -285,22 +314,63 @@
         }
 
         function addContact() {
-            const newName = prompt("Nom du nouveau contact :");
-            if (newName && newName.trim() !== "") {
-                const familyCard = document.querySelector('.contact-card');
-                const div = document.createElement('div');
-                div.className = 'contact-row';
-                div.onclick = () => actionCall(newName);
-                div.innerHTML = `
-                    <img src="https://i.pravatar.cc/150?u=${Math.random()}" alt="${newName}" class="avatar">
-                    <div class="contact-info">
-                        <div class="contact-name">${newName}</div>
-                    </div>
-                    <button class="call-btn" style="color:#666; margin-right:4px;" onclick="event.stopPropagation(); editContact(this)"><span class="material-symbols-outlined" style="font-size:24px; font-variation-settings: 'FILL' 0;">edit</span></button>
-                    <button class="call-btn"><span class="material-symbols-outlined">call</span></button>
-                `;
-                familyCard.appendChild(div);
+            const overlay = document.getElementById('add-contact-overlay');
+            const box = document.getElementById('add-contact-box');
+            overlay.style.display = 'flex';
+            setTimeout(() => {
+                overlay.style.opacity = '1';
+                box.style.transform = 'scale(1)';
+            }, 10);
+            document.getElementById('new-contact-name').focus();
+        }
+
+        function closeContactWidget() {
+            document.getElementById('new-contact-name').value = '';
+            document.getElementById('new-contact-phone').value = '';
+            const overlay = document.getElementById('add-contact-overlay');
+            const box = document.getElementById('add-contact-box');
+            overlay.style.opacity = '0';
+            box.style.transform = 'scale(0.9)';
+            setTimeout(() => overlay.style.display = 'none', 300);
+        }
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            if(!t) return;
+            t.innerText = msg;
+            t.style.display = 'block';
+            t.style.opacity = '1';
+            setTimeout(() => {
+                t.style.opacity = '0';
+                setTimeout(() => t.style.display = 'none', 300);
+            }, 2500);
+        }
+
+        function saveNewContact() {
+            const newName = document.getElementById('new-contact-name').value;
+            const newPhone = document.getElementById('new-contact-phone').value;
+            
+            if (newName.trim() === "") {
+                showToast("Veuillez entrer un nom !");
+                return;
             }
+
+            const familyCard = document.querySelector('.contact-card');
+            const div = document.createElement('div');
+            div.className = 'contact-row';
+            div.onclick = () => actionCall(newName);
+            div.innerHTML = `
+                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(newName)}&background=random&color=fff&size=150" alt="${newName}" class="avatar">
+                <div class="contact-info">
+                    <div class="contact-name">${newName}</div>
+                </div>
+                <button class="call-btn" style="color:#666; margin-right:4px;" onclick="event.stopPropagation(); editContact(this)"><span class="material-symbols-outlined" style="font-size:24px; font-variation-settings: 'FILL' 0;">edit</span></button>
+                <button class="call-btn"><span class="material-symbols-outlined">call</span></button>
+            `;
+            familyCard.appendChild(div);
+            
+            closeContactWidget();
+            showToast("Contact ajouté avec succès !");
         }
     </script>
 </body>
