@@ -802,7 +802,13 @@
 
 <script>
     // ONBOARDING
-    const steps = [ "Bienvenue !", "Je suis Aideline,\nvotre complice de mobilité !", "Voulez-vous que je vous\nprésente l'application ?" ];
+    const steps = [ 
+        "Bienvenue !", 
+        "Je suis Aideline, votre\ncompagnon de mobilité !", 
+        "Pensée pour les seniors,\nl'application vous aide aussi\navec votre agenda.",
+        "Aucun assistanat ici :\nvous restez totalement\nlibre de vos choix.",
+        "Voulez-vous que je vous\nprésente l'application ?" 
+    ];
     let currentStep = 0, isTyping = false;
     const textElement = document.getElementById('type-text'), hintElement = document.getElementById('continue-hint'), buttonGroup = document.getElementById('button-group'), mainScreen = document.getElementById('main-screen');
 
