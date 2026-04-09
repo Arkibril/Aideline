@@ -120,14 +120,16 @@
     <!-- CONTENT -->
     <div class="content-scroll">
         
+        <div style="font-size: 16px; font-weight: 700; color: #000; margin-bottom: 8px; margin-top: 12px;">Titre de l'évènement</div>
         <div class="input-box">
-            <input type="text" placeholder="Titre de l'événement">
+            <input type="text" placeholder="Ex: Rendez-vous médical, Théâtre...">
         </div>
 
+        <div style="font-size: 16px; font-weight: 700; color: #000; margin-bottom: 8px;">Lieu du rendez-vous</div>
         <div style="position:relative;">
             <div class="input-box">
                 <span class="material-symbols-outlined">near_me</span>
-                <input type="text" id="emplacement-input" placeholder="Emplacement" autocomplete="off" oninput="searchAddress(this.value)">
+                <input type="text" id="emplacement-input" placeholder="Où souhaitez-vous aller ?" autocomplete="off" oninput="searchAddress(this.value)">
             </div>
             <div id="suggestions-box" style="position: absolute; top: calc(100% - 10px); left: 0; width: 100%; z-index: 10; display: none; background: white; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); max-height: 200px; overflow-y: auto; margin-bottom:16px;"></div>
         </div>
@@ -148,16 +150,23 @@
         </div>
 
         <div class="dates-row">
-            <div class="input-box">
-                <input type="text" placeholder="Date de début">
+            <div style="flex: 1;">
+                <div style="font-size: 16px; font-weight: 700; color: #000; margin-bottom: 8px;">Début</div>
+                <div class="input-box" style="margin-bottom: 0;">
+                    <input type="datetime-local" style="font-size:14px; text-transform:uppercase;">
+                </div>
             </div>
-            <div class="input-box">
-                <input type="text" placeholder="Date de fin">
+            <div style="flex: 1;">
+                <div style="font-size: 16px; font-weight: 700; color: #000; margin-bottom: 8px;">Fin</div>
+                <div class="input-box" style="margin-bottom: 0;">
+                    <input type="datetime-local" style="font-size:14px; text-transform:uppercase;">
+                </div>
             </div>
         </div>
 
+        <div style="font-size: 16px; font-weight: 700; color: #000; margin-bottom: 8px; margin-top: 16px;">À ne pas oublier</div>
         <div class="input-box">
-            <input type="text" placeholder="À prendre (ex: carte vitale, ordonnance...)">
+            <input type="text" placeholder="Ex: Carte vitale, clés, ordonnance...">
         </div>
 
         <button class="btn-save" onclick="window.location.href='agenda.html'">Enregistrer l'événement</button>
