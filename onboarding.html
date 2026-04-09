@@ -249,9 +249,9 @@
         .cal-tab.active { color: #9C1132; border-bottom: 2px solid #9C1132; }
         .calendar-header-row { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-family: 'Rubik', sans-serif; font-size: 16px; font-weight: 700; color: #000; margin-bottom: 8px;}
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; padding: 0 4px;}
-        .cal-day { background-color: #9C1132; color: white; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 4px; font-family: 'Rubik', sans-serif; font-size: 16px; position: relative;}
-        .cal-day.disabled { background-color: transparent; color: #ccc; }
-        .cal-day.selected { background-color: white; color: #9C1132; border: 1px solid #9C1132; border-radius: 50%; font-weight: 700; transform: scale(1.1); z-index: 2;}
+        .cal-day { background-color: transparent; color: #000; border: 1px solid var(--primary); aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 4px; font-family: 'Rubik', sans-serif; font-size: 16px; position: relative;}
+        .cal-day.disabled { background-color: transparent; color: #ccc; border-color: transparent; }
+        .cal-day.selected { background-color: var(--primary); color: white; border: none; border-radius: 50%; font-weight: 700; transform: scale(1.1); z-index: 2;}
         .event-list-box { width: 100%; border: 1px solid var(--primary); border-radius: 8px; padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; cursor: pointer; background: white;}
         .event-list-box:active { background: #fdfdfd; }
         .event-grey-card { background-color: #EFEFEF; border-radius: 12px; padding: 16px; margin-top: 10px; width: 100%; box-sizing: border-box; }
@@ -294,7 +294,7 @@
         <button class="primary-btn google-btn" style="margin-bottom: 24px;"><span class="g-icon-fallback">G</span>Via google</button>
         <div class="input-group" style="margin-bottom: 20px;"><label>Ecrivez votre email :</label><div class="input-wrapper" style="height: 39px;"><input type="email" placeholder="example@gmail.com"></div></div>
         <div class="input-group" style="margin-bottom: 24px;"><label>Ecrivez votre mot de passe :</label><div class="input-wrapper" style="height: 39px;"><input type="password" placeholder=""><span class="material-symbols-outlined eye-icon">visibility</span></div></div>
-        <button class="primary-btn" style="margin-bottom: 20px;" onclick="window.location.href='index.html'">Se connecter</button>
+        <button class="primary-btn" style="margin-bottom: 20px;" onclick="goToIndexWithLoading('Connexion en cours...')">Se connecter</button>
         <div class="forgot-password">Mot de passe oublié?<br>Cliquez ici.</div>
         <div class="no-account-text">Vous n'avez pas de compte?</div>
         <div class="auth-link" onclick="switchAuthScreen('register')">S'inscrire</div>
@@ -307,7 +307,7 @@
         <div class="input-group" style="margin-bottom: 20px;"><label>Ecrivez votre email :</label><div class="input-wrapper" style="height: 36px;"><input type="email" placeholder="example@gmail.com"></div></div>
         <div class="input-group"><label>Ecrivez votre mot de passe :</label><div class="input-wrapper" style="height: 35px;"><input type="password" placeholder=""><span class="material-symbols-outlined eye-icon">visibility</span></div></div>
         <div class="checkbox-group"><input type="checkbox" id="terms" checked><label for="terms">J'accepte les <span>conditions g&eacute;n&eacute;rales</span> et la <span>politique de confidentialit&eacute;</span></label></div>
-        <button class="primary-btn" style="margin-bottom: 30px;" onclick="window.location.href='index.html'">S'inscrire</button>
+        <button class="primary-btn" style="margin-bottom: 30px;" onclick="goToIndexWithLoading('Création du compte...')">S'inscrire</button>
         <div class="already-account">Vous avez d&eacute;j&agrave; un compte?<br>Cliquez ici.</div>
         <div class="auth-link" style="margin-top: 10px;" onclick="switchAuthScreen('login')">Se connecter</div>
     </div>
@@ -793,6 +793,15 @@
         <div style="position: absolute; bottom: 60px; font-family: 'Rubik', sans-serif; font-style: italic; color: #555; font-size: 16px;">Cliquez n'importe o&ugrave; pour continuer</div>
     </div>
 
+    <!-- ECRAN DE CHARGEMENT FINAL -->
+    <div id="final-loading-screen" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 9999; flex-direction: column; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease;">
+        <div style="width: 50px; height: 50px; border: 4px solid #f3f3f3; border-top: 4px solid #9C1132; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+        <div id="loading-message" style="margin-top: 24px; font-family: 'Rubik', sans-serif; font-size: 18px; font-weight: 700; color: #9C1132;">Chargement...</div>
+    </div>
+    <style>
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+
 </div>
 
 <script>
@@ -896,7 +905,17 @@
     }
 
     function finishTutoFlow() {
-        window.location.href = 'index.html';
+        goToIndexWithLoading('Configuration de votre espace...');
+    }
+
+    function goToIndexWithLoading(message) {
+        const loader = document.getElementById('final-loading-screen');
+        if(message) document.getElementById('loading-message').textContent = message;
+        loader.style.display = 'flex';
+        setTimeout(() => { loader.style.opacity = '1'; }, 10);
+        setTimeout(() => {
+            window.location.href = 'index.html';
+        }, 1800);
     }
 
     function goBackFromTuto(target) {

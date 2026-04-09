@@ -147,6 +147,49 @@
             cursor: pointer;
         }
 
+        /* OVERLAYS CARTE (Recentrage / Nom de rue) */
+        .map-overlays {
+            position: absolute;
+            bottom: 24px;
+            left: 16px;
+            right: 16px;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            pointer-events: none; /* Laisse passer les clics vers la carte si c'est vide */
+        }
+        .recenter-btn {
+            pointer-events: auto;
+            width: 52px;
+            height: 52px;
+            background: var(--white);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+            color: #333;
+            cursor: pointer;
+            align-self: flex-end; /* A droite */
+        }
+        .street-banner {
+            pointer-events: auto;
+            background: var(--white);
+            color: var(--primary);
+            padding: 12px 20px;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+            align-self: center; /* Au centre en bas */
+            border: 2px solid var(--primary);
+        }
+
         /* STYLES DES ETAPES (Repris de prévisualisation) */
         .step-item {
             position: relative;
@@ -206,6 +249,15 @@
     <!-- ZONE CARTE -->
     <div class="map-container">
         <div id="map"></div>
+        <div class="map-overlays">
+            <div class="recenter-btn" onclick="recenterMap()">
+                <span class="material-symbols-outlined" style="color:var(--primary); font-size:28px;">my_location</span>
+            </div>
+            <div class="street-banner">
+                <span class="material-symbols-outlined">signpost</span>
+                Sur Rue de Lingolsheim
+            </div>
+        </div>
     </div>
 
     <!-- BOUTONS D'ACTIONS (Ajout des icônes) -->
@@ -329,16 +381,25 @@
             return (brng * 180 / Math.PI + 360) % 360;
         }
 
+        let mapInstance;
+        let userPos;
+
+        function recenterMap() {
+            if(mapInstance && userPos) {
+                mapInstance.setView(userPos, 19, { animate: true, duration: 0.5 });
+            }
+        }
+
         window.onload = async () => {
             // Initialisation de la carte avec fort zoom pour être collé à l'utilisateur
-            const map = L.map('map', { 
+            mapInstance = L.map('map', { 
                 zoomControl: false, 
                 attributionControl: false 
             }).setView([48.5580, 7.6830], 19); 
 
             L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { 
                 maxZoom: 20 
-            }).addTo(map);
+            }).addTo(mapInstance);
 
             const navIcon = L.divIcon({ className: 'nav-marker', iconSize: [22, 22] });
             const endIcon = L.divIcon({ className: 'custom-marker-dest', iconSize: [20, 20] });
@@ -352,44 +413,45 @@
                 const data = await response.json();
                 const coords = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
 
-                L.polyline(coords, { color: '#2b58ff', weight: 10, opacity: 1, lineJoin: 'round' }).addTo(map);
+                L.polyline(coords, { color: '#2b58ff', weight: 10, opacity: 1, lineJoin: 'round' }).addTo(mapInstance);
 
                 // Ajout Marqueur Cible / Arrivée à la fin
                 const finalPos = coords[coords.length - 1];
-                L.marker(finalPos, {icon: endIcon}).addTo(map)
+                L.marker(finalPos, {icon: endIcon}).addTo(mapInstance)
                  .bindTooltip("Déstination", {permanent: true, direction: "top", className: 'marker-label-dest', offset: [0,-8]});
 
                 // Set user pos (index 3 env.)
                 const myPosIndex = Math.min(3, coords.length - 2);
-                const myPos = coords[myPosIndex];
+                userPos = coords[myPosIndex];
                 const nextPos = coords[myPosIndex + 1];
                 
                 // Calcul du Bearing pour rotation exacte du cône bleu vers la rue
-                const angle = getBearing(myPos[0], myPos[1], nextPos[0], nextPos[1]);
+                const angle = getBearing(userPos[0], userPos[1], nextPos[0], nextPos[1]);
                 
                 // On stylise la div avec le tag css pour la rotation dynamiques du pseudo element (cone)
                 document.head.insertAdjacentHTML("beforeend", `<style>.nav-marker::before { transform: rotate(${angle}deg); }</style>`);
 
-                L.marker(myPos, {icon: navIcon}).addTo(map);
+                L.marker(userPos, {icon: navIcon}).addTo(mapInstance);
                 
                 // Centre ultra près et ajuste le zoom pour coller au regard
-                map.setView(myPos, 19);
+                mapInstance.setView(userPos, 19);
 
                 const b1 = coords[Math.floor(coords.length * 0.35)];
                 const b2 = coords[Math.floor(coords.length * 0.80)];
-                if(b1) L.marker(b1, {icon: benchIcon}).addTo(map).on('click', () => document.getElementById('pauseModal').style.display='flex');
-                if(b2) L.marker(b2, {icon: benchIcon}).addTo(map).on('click', () => document.getElementById('pauseModal').style.display='flex');
+                if(b1) L.marker(b1, {icon: benchIcon}).addTo(mapInstance).on('click', () => document.getElementById('pauseModal').style.display='flex');
+                if(b2) L.marker(b2, {icon: benchIcon}).addTo(mapInstance).on('click', () => document.getElementById('pauseModal').style.display='flex');
 
             } catch(e) {
                 // Fallback
                 const pathCoords = [ [48.5560, 7.6840], [48.5560, 7.6850], [48.5585, 7.6850], [48.5595, 7.6815] ];
-                L.polyline(pathCoords, { color: '#2b58ff', weight: 10, opacity: 1, lineJoin: 'round' }).addTo(map);
+                L.polyline(pathCoords, { color: '#2b58ff', weight: 10, opacity: 1, lineJoin: 'round' }).addTo(mapInstance);
                 
                 document.head.insertAdjacentHTML("beforeend", `<style>.nav-marker::before { transform: rotate(45deg); }</style>`);
                 
-                L.marker([48.5560, 7.6845], {icon: navIcon}).addTo(map);
-                L.marker(pathCoords[pathCoords.length - 1], {icon: endIcon}).addTo(map);
-                map.setView([48.5560, 7.6845], 19);
+                userPos = [48.5560, 7.6845];
+                L.marker(userPos, {icon: navIcon}).addTo(mapInstance);
+                L.marker(pathCoords[pathCoords.length - 1], {icon: endIcon}).addTo(mapInstance);
+                mapInstance.setView(userPos, 19);
             }
         };
     </script>

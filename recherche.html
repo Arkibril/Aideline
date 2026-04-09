@@ -207,7 +207,11 @@
             align-items: center;
             color: var(--white);
             cursor: pointer;
+            text-decoration: none;
+            opacity: 0.6;
+            transition: opacity 0.2s;
         }
+        .nav-item.active { opacity: 1; }
         .nav-item .material-symbols-outlined {
             font-size: 28px;
             margin-bottom: 4px;
@@ -277,23 +281,24 @@
     </div>
 
     <!-- BOTTOM NAVBAR -->
-    <div class="bottom-nav">
-        <div class="nav-item">
+    <style>.bottom-nav a { text-decoration: none !important; color: white !important; }</style>
+    <div class="bottom-nav" style="border-top-left-radius:0; border-top-right-radius:0; position:fixed; z-index:3000;">
+        <a href="map.html" class="nav-item active" id="nav-carte">
             <span class="material-symbols-outlined">location_on</span>
             <span class="nav-text">Carte</span>
-        </div>
-        <div class="nav-item" onclick="window.location.href='index.html'">
+        </a>
+        <a href="agenda.html" class="nav-item" id="nav-agenda">
             <span class="material-symbols-outlined">calendar_today</span>
             <span class="nav-text">Agenda</span>
-        </div>
-        <div class="nav-item">
+        </a>
+        <a href="contact.html" class="nav-item" id="nav-appel">
             <span class="material-symbols-outlined">call</span>
             <span class="nav-text">Appel</span>
-        </div>
-        <div class="nav-item">
+        </a>
+        <a href="parametre.html" class="nav-item" id="nav-param">
             <span class="material-symbols-outlined">settings</span>
-            <span class="nav-text">Param&egrave;tre</span>
-        </div>
+            <span class="nav-text">Paramètre</span>
+        </a>
     </div>
 
 </div>
