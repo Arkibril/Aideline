@@ -182,9 +182,24 @@
             Ajouter un évènement
         </button>
 
+        </button>
+
     </div>
 
-            <!-- BOTTOM NAVBAR -->
+    <!-- CALENDAR PERMISSION OVERLAY -->
+    <div id="agenda-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:3000; opacity:0; transition: opacity 0.4s ease;"></div>
+    
+    <div id="agenda-permission-sheet" style="display:none; position:fixed; bottom:0; left:0; width:100%; background:white; border-top-left-radius:24px; border-top-right-radius:24px; padding:24px 0; z-index:3001; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); transform: translateY(100%); padding-bottom: 30px;">
+        <div style="font-size: 24px; color: #000; margin-bottom: 8px; text-align:center;"><span class="material-symbols-outlined">calendar_today</span></div>
+        <div style="position: relative; text-align:center; margin-bottom: 16px;">
+            <span style="font-size: 16px; font-style: italic; color: #111;">Autoriser Aideline &agrave; acc&eacute;der &agrave; votre agenda</span>
+        </div>
+        <div style="width: 100%; border-top: 1px solid #ccc;"></div>
+        <div style="width: 100%; padding: 16px; font-size: 18px; font-style: italic; color: #111; border-bottom: 1px solid #ccc; cursor: pointer; text-align:center;" onclick="grantAgendaPermission()">Autoriser</div>
+        <div style="width: 100%; padding: 16px; font-size: 18px; font-style: italic; color: #111; cursor: pointer; text-align:center;" onclick="denyAgendaPermission()">Ne pas autoriser</div>
+    </div>
+
+    <!-- BOTTOM NAVBAR -->
     <style>.bottom-nav a { text-decoration: none !important; }</style>
     <div class="bottom-nav">
         <a href="map.html" class="nav-item" id="nav-carte"><span class="material-symbols-outlined">location_on</span><span class="nav-text">Carte</span></a>
@@ -217,7 +232,40 @@
             else { 
                 if(document.getElementById('nav-carte')) document.getElementById('nav-carte').classList.add('active'); 
             }
+
+            // PERMISSION AGENDA
+            setTimeout(() => {
+                const perm = localStorage.getItem('aideline_agenda_permission');
+                if(!perm && window.location.pathname.includes('agenda')) {
+                    document.getElementById('agenda-overlay').style.display = 'block';
+                    document.getElementById('agenda-permission-sheet').style.display = 'block';
+                    requestAnimationFrame(() => {
+                        document.getElementById('agenda-permission-sheet').style.transform = 'translateY(0)';
+                        document.getElementById('agenda-overlay').style.opacity = '1';
+                    });
+                }
+            }, 400);
         });
+
+        function grantAgendaPermission() {
+            localStorage.setItem('aideline_agenda_permission', 'granted');
+            closeAgendaPermission();
+        }
+
+        function denyAgendaPermission() {
+            // Optionnel : on pourrait stocker refusé
+            // localStorage.setItem('aideline_agenda_permission', 'denied');
+            closeAgendaPermission();
+        }
+
+        function closeAgendaPermission() {
+            document.getElementById('agenda-permission-sheet').style.transform = 'translateY(100%)';
+            document.getElementById('agenda-overlay').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('agenda-overlay').style.display = 'none';
+                document.getElementById('agenda-permission-sheet').style.display = 'none';
+            }, 400);
+        }
 
         function toggleView(view) {
             if(view === 'semaine') {
