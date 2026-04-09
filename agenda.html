@@ -124,7 +124,7 @@
         <button class="back-btn" onclick="window.history.back()">
             <span class="material-symbols-outlined">arrow_back</span>
         </button>
-        <h1>Agenda</h1>
+        <h1 id="display-month-name">Agenda</h1>
     </div>
 
     <!-- TABS -->
@@ -142,29 +142,12 @@
 
         <!-- GRID MOIS -->
         <div class="calendar-grid" id="grid-mois">
-            <div class="day-cell faded">31</div>
-            <div class="day-cell">1</div><div class="day-cell">2</div><div class="day-cell">3</div>
-            <div class="day-cell">4</div><div class="day-cell">5</div><div class="day-cell">6</div>
-            <div class="day-cell">7</div><div class="day-cell">8</div><div class="day-cell">9</div>
-            <div class="day-cell">10</div><div class="day-cell active" onclick="showEvents()">11</div><div class="day-cell">12</div>
-            <div class="day-cell">13</div><div class="day-cell">14</div><div class="day-cell">15</div>
-            <div class="day-cell">16</div><div class="day-cell">17</div><div class="day-cell">18</div>
-            <div class="day-cell">19</div><div class="day-cell">20</div><div class="day-cell">21</div>
-            <div class="day-cell">22</div><div class="day-cell">23</div><div class="day-cell">24</div>
-            <div class="day-cell">25</div><div class="day-cell">26</div><div class="day-cell">27</div>
-            <div class="day-cell">28</div><div class="day-cell">29</div><div class="day-cell">30</div>
-            <div class="day-cell faded">1</div><div class="day-cell faded">2</div><div class="day-cell faded">3</div><div class="day-cell faded">4</div>
+            <!-- Rendu dynamiquement via JS -->
         </div>
 
         <!-- GRID SEMAINE -->
         <div class="calendar-grid" id="grid-semaine" style="display:none;">
-            <div class="day-cell">7</div>
-            <div class="day-cell">8</div>
-            <div class="day-cell">9</div>
-            <div class="day-cell">10</div>
-            <div class="day-cell active" onclick="showEvents()">11</div>
-            <div class="day-cell">12</div>
-            <div class="day-cell">13</div>
+            <!-- Rendu dynamiquement via JS -->
         </div>
 
         <!-- LISTE EVÈNEMENT D'AUJOURD'HUI -->
@@ -233,6 +216,8 @@
                 if(document.getElementById('nav-carte')) document.getElementById('nav-carte').classList.add('active'); 
             }
 
+            renderDynamicCalendar();
+
             // PERMISSION AGENDA
             setTimeout(() => {
                 const perm = localStorage.getItem('aideline_agenda_permission');
@@ -248,17 +233,16 @@
         });
 
         function grantAgendaPermission() {
-            localStorage.setItem('aideline_agenda_permission', 'granted');
-            closeAgendaPermission();
+            localStorage.setItem('aideline_agenda_permission', 'true');
+            hideAgendaPermission();
         }
 
         function denyAgendaPermission() {
-            // Optionnel : on pourrait stocker refusé
-            // localStorage.setItem('aideline_agenda_permission', 'denied');
-            closeAgendaPermission();
+            localStorage.setItem('aideline_agenda_permission', 'false');
+            hideAgendaPermission();
         }
 
-        function closeAgendaPermission() {
+        function hideAgendaPermission() {
             document.getElementById('agenda-permission-sheet').style.transform = 'translateY(100%)';
             document.getElementById('agenda-overlay').style.opacity = '0';
             setTimeout(() => {
@@ -268,22 +252,78 @@
         }
 
         function toggleView(view) {
-            if(view === 'semaine') {
-                document.getElementById('tab-mois').classList.remove('active');
-                document.getElementById('tab-semaine').classList.add('active');
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('tab-' + view).classList.add('active');
+            
+            if(view === 'mois') {
+                document.getElementById('grid-mois').style.display = 'grid';
+                document.getElementById('grid-semaine').style.display = 'none';
+            } else {
                 document.getElementById('grid-mois').style.display = 'none';
                 document.getElementById('grid-semaine').style.display = 'grid';
-            } else {
-                document.getElementById('tab-semaine').classList.remove('active');
-                document.getElementById('tab-mois').classList.add('active');
-                document.getElementById('grid-semaine').style.display = 'none';
-                document.getElementById('grid-mois').style.display = 'grid';
             }
         }
 
         function showEvents() {
-            // Affiche le conteneur des évènements avec l'animation
             document.getElementById('events-container').style.display = 'block';
+        }
+
+        function renderDynamicCalendar() {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = today.getMonth();
+            const date = today.getDate();
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            
+            let startDay = firstDay === 0 ? 6 : firstDay - 1; 
+
+            const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+            document.getElementById('display-month-name').innerText = monthNames[month] + " " + year;
+
+            const gridMois = document.getElementById('grid-mois');
+            gridMois.innerHTML = '';
+            
+            const prevMonthDays = new Date(year, month, 0).getDate();
+            for (let i = startDay - 1; i >= 0; i--) {
+                gridMois.innerHTML += `<div class="day-cell faded">${prevMonthDays - i}</div>`;
+            }
+            
+            for (let i = 1; i <= daysInMonth; i++) {
+                if (i < date) {
+                    gridMois.innerHTML += `<div class="day-cell faded">${i}</div>`;
+                } else if (i === date) {
+                    gridMois.innerHTML += `<div class="day-cell active" onclick="showEvents()">${i}</div>`;
+                } else {
+                    gridMois.innerHTML += `<div class="day-cell">${i}</div>`;
+                }
+            }
+            
+            const totalCells = gridMois.children.length;
+            const remainingCells = totalCells > 35 ? 42 - totalCells : 35 - totalCells;
+            for (let i = 1; i <= remainingCells; i++) {
+                gridMois.innerHTML += `<div class="day-cell faded">${i}</div>`;
+            }
+
+            const gridSemaine = document.getElementById('grid-semaine');
+            gridSemaine.innerHTML = '';
+            const currentDayOfWk = today.getDay() === 0 ? 6 : today.getDay() - 1; 
+            
+            for (let i = 0; i < 7; i++) {
+                const diff = i - currentDayOfWk;
+                const d = new Date(today);
+                d.setDate(today.getDate() + diff);
+                
+                const dayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+                const isFaded = d < dayStart;
+                const isActive = diff === 0;
+
+                let cls = 'day-cell';
+                if (isFaded) cls += ' faded';
+                if (isActive) cls += ' active';
+
+                gridSemaine.innerHTML += `<div class="${cls}" ${isActive ? 'onclick="' + "showEvents()" + '"' : ''}>${d.getDate()}</div>`;
+            }
         }
     </script>
 </body>
