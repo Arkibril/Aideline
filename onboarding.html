@@ -502,37 +502,33 @@
         <div class="tuto-subtitle" style="margin-top:20px;"><strong>Apprenons &agrave; utiliser l'application :</strong><br><span>Enregistrer une adresse</span></div>
         <div class="tuto-divider"></div>
 
-        <div class="tuto-placeholder-img">
-            <div style="text-align: center; color: white; display:flex; flex-direction: column; gap: 6px; width: 100%;">
-                <div style="font-style: italic; font-family: 'Rubik', sans-serif; font-size: 24px;">Adresse</div>
-                <div style="font-style: italic; font-family: 'Rubik', sans-serif; font-size: 16px;">Nom de la rue, code postale</div>
-                <div style="font-style: italic; font-family: 'Rubik', sans-serif; font-size: 16px;">Que voulez-vous faire?</div>
-            </div>
-
-            <!-- Ligne de séparation subtile interne -->
-            <div style="width: 100%; border-bottom: 2px solid rgba(0,0,0,0.15); margin: 6px 0;"></div>
-
-            <!-- TOOLTIP -->
-            <div style="position: relative; width: 295px; margin: 0 auto;">
-                <div style="background-color: white; border: 2px solid #333; border-radius: 4px; padding: 12px;
-                            font-size: 16px; font-family: 'Rubik', sans-serif; font-weight: 700; text-align: center; color: #000; position: relative;">
-                    Apr&egrave;s avoir cliquer sur votre adresse,<br>Cliquez ici pour la mettre en favoris
-                    <!-- Arrow down -->
-                    <div style="position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent; border-top: 8px solid #333;"></div>
-                    <div style="position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 6px solid #fff;"></div>
+        <div class="tuto-placeholder-img" style="background: rgba(0,0,0,0.5); padding: 0; justify-content: center; height: auto;">
+            <div style="width:340px; background-color:var(--white); border-radius:14px; display:flex; flex-direction:column; overflow:visible; box-shadow: 0 4px 20px rgba(0,0,0,0.3); margin: 30px 0;">
+                
+                <div style="padding:24px 16px 20px 16px; text-align:center; border-bottom:1px solid #E0E0E0;">
+                    <div style="font-size:22px; color:#000; font-weight:700; margin-bottom:12px;">Adresse</div>
+                    <div style="font-size:14px; color:#111; font-weight:400; margin-bottom:8px;">Nom de la rue, code postale</div>
+                    <div style="font-size:14px; color:#555;">Que voulez-vous faire?</div>
                 </div>
-            </div>
-            
-            <!-- BUTTON FAVORIS -->
-            <div style="text-align: center; color: white; font-style: italic; font-family: 'Rubik', sans-serif; font-size: 22px; padding: 12px 0; cursor: pointer; width: 100%;" onclick="alert('Ajouté en favoris !')">
-                Ajoutez au favoris
-            </div>
 
-            <div style="width: 100%; border-bottom: 2px solid rgba(0,0,0,0.15);"></div>
+                <!-- TOOLTIP -->
+                <div style="position: absolute; top: 110px; left: 50%; width: 310px; transform: translateX(-50%); z-index: 10;">
+                    <div style="background-color: white; border: 2px solid #333; border-radius: 4px; padding: 12px;
+                                font-size: 16px; font-family: 'Rubik', sans-serif; font-weight: 700; text-align: center; color: #000; position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+                        Apr&egrave;s avoir cliquer sur votre adresse,<br>Cliquez ici pour la mettre en favoris
+                        <div style="position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent; border-top: 8px solid #333;"></div>
+                        <div style="position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 6px solid #fff;"></div>
+                    </div>
+                </div>
 
-            <!-- BUTTON ANNULER -->
-            <div style="text-align: center; color: rgba(255,255,255,0.6); filter: blur(0.5px); font-style: italic; font-family: 'Rubik', sans-serif; font-weight: 700; font-size: 20px; padding: 12px 0; cursor: pointer; width: 100%;" onclick="goToTutoStep('tuto-step-5')">
-                Annuler
+                <div style="padding:18px 16px; text-align:center; border-bottom:1px solid #E0E0E0; cursor:pointer;" onclick="alert('Ajouté en favoris !')">
+                    <div style="font-style:italic; font-size:20px; color:#000; font-weight:500;">Ajoutez au favoris</div>
+                </div>
+
+                <div style="padding:18px 16px; text-align:center; cursor:pointer;" onclick="goToTutoStep('tuto-step-5')">
+                    <div style="font-style:italic; font-size:20px; color:#000; font-weight:500;">Annuler</div>
+                </div>
+                
             </div>
         </div>
 

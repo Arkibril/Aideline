@@ -515,28 +515,28 @@
     <div id="transportModal" class="bottom-sheet" style="z-index: 4000; align-items:center; justify-content:center;">
         <div class="sheet-overlay" onclick="closeTransportModal()"></div>
         
-        <div style="position:relative; z-index:4001; width:380px; background-color:var(--white); border:2px solid var(--primary); border-radius:14px; display:flex; flex-direction:column; overflow:hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+        <div style="position:relative; z-index:4001; width:340px; background-color:var(--white); border-radius:14px; display:flex; flex-direction:column; overflow:hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
             
             <!-- SECTION 1: HEADER -->
-            <div style="padding:24px 16px 20px 16px; text-align:center; border-bottom:2px solid var(--primary);">
-                <div style="font-style:italic; font-size:24px; color:var(--primary); font-weight:700; margin-bottom:12px;">Adresse</div>
-                <div id="modalAddressDetails" style="font-style:italic; font-size:16px; color:#111; font-weight:500; margin-bottom:12px;">Nom de la rue, code postale</div>
-                <div style="font-style:italic; font-size:16px; color:#555;">Que voulez-vous faire?</div>
+            <div style="padding:24px 16px 20px 16px; text-align:center; border-bottom:1px solid #E0E0E0;">
+                <div style="font-size:22px; color:#000; font-weight:700; margin-bottom:12px;">Adresse</div>
+                <div id="modalAddressDetails" style="font-size:14px; color:#111; font-weight:400; margin-bottom:8px;">Nom de la rue, code postale</div>
+                <div style="font-size:14px; color:#555;">Que voulez-vous faire?</div>
             </div>
             
             <!-- SECTION 2: CHOISIR ITINERAIRE -->
-            <div style="padding:22px 16px; text-align:center; border-bottom:2px solid var(--primary); cursor:pointer; background:var(--white);" onclick="actionChooseRoute()">
-                <div style="font-style:italic; font-size:22px; color:var(--primary); font-weight:600;">Choisir un itinéraire</div>
+            <div style="padding:18px 16px; text-align:center; border-bottom:1px solid #E0E0E0; cursor:pointer; background:var(--white);" onclick="actionChooseRoute()">
+                <div style="font-style:italic; font-size:20px; color:#000; font-weight:500;">Choisir un itinéraire</div>
             </div>
             
             <!-- SECTION 3: FAVORIS -->
-            <div style="padding:22px 16px; text-align:center; border-bottom:2px solid var(--primary); cursor:pointer; background:var(--white);" onclick="actionAddFavorite()">
-                <div style="font-style:italic; font-size:22px; color:var(--primary); font-weight:600;">Ajoutez au favoris</div>
+            <div style="padding:18px 16px; text-align:center; border-bottom:1px solid #E0E0E0; cursor:pointer; background:var(--white);" onclick="actionAddFavorite()">
+                <div style="font-style:italic; font-size:20px; color:#000; font-weight:500;">Ajoutez au favoris</div>
             </div>
             
             <!-- SECTION 4: ANNULER -->
-            <div style="padding:22px 16px; text-align:center; cursor:pointer; background:var(--white);" onclick="closeTransportModal()">
-                <div style="font-style:italic; font-size:22px; color:var(--primary); font-weight:600;">Annuler</div>
+            <div style="padding:18px 16px; text-align:center; cursor:pointer; background:var(--white);" onclick="closeTransportModal()">
+                <div style="font-style:italic; font-size:20px; color:#000; font-weight:500;">Annuler</div>
             </div>
 
         </div>
