@@ -124,9 +124,12 @@
             <input type="text" placeholder="Titre de l'événement">
         </div>
 
-        <div class="input-box">
-            <span class="material-symbols-outlined">near_me</span>
-            <input type="text" placeholder="Emplacement">
+        <div style="position:relative;">
+            <div class="input-box">
+                <span class="material-symbols-outlined">near_me</span>
+                <input type="text" id="emplacement-input" placeholder="Emplacement" autocomplete="off" oninput="searchAddress(this.value)">
+            </div>
+            <div id="suggestions-box" style="position: absolute; top: calc(100% - 10px); left: 0; width: 100%; z-index: 10; display: none; background: white; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); max-height: 200px; overflow-y: auto; margin-bottom:16px;"></div>
         </div>
 
         <div style="font-size: 16px; font-weight: 700; color: #000; margin-bottom: 12px; margin-top: 12px;">Étiquette de l'évènement</div>
@@ -154,7 +157,7 @@
         </div>
 
         <div class="input-box">
-            <input type="text" placeholder="Notes">
+            <input type="text" placeholder="À prendre (ex: carte vitale, ordonnance...)">
         </div>
 
         <button class="btn-save" onclick="window.location.href='agenda.html'">Enregistrer l'événement</button>
@@ -230,6 +233,51 @@
                 document.getElementById('custom-cat-input').value = '';
                 document.getElementById('custom-cat-box').style.display = 'none';
             }
+        }
+
+        let searchTimeout;
+        async function searchAddress(val) {
+            const box = document.getElementById('suggestions-box');
+            if (!val || val.length < 3) { box.style.display = 'none'; return; }
+            
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(async () => {
+                try {
+                    const [resNom, resGouv] = await Promise.all([
+                        fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(val)}&limit=3&addressdetails=1&countrycodes=fr`).catch(() => null),
+                        fetch(`https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(val)}&limit=3`).catch(() => null)
+                    ]);
+                    
+                    const dataNom = resNom && resNom.ok ? await resNom.json() : [];
+                    const rawGouv = resGouv && resGouv.ok ? await resGouv.json() : {features:[]};
+                    
+                    const dataGouv = (rawGouv.features || []).map(f => {
+                        return { name: f.properties.name, display_name: f.properties.context || f.properties.city };
+                    });
+
+                    let combined = [...dataGouv, ...dataNom].slice(0, 5);
+
+                    if (combined.length > 0) {
+                        box.innerHTML = '';
+                        combined.forEach(item => {
+                            let name = item.name || (item.address && (item.address.road || item.address.city)) || item.display_name;
+                            let details = item.display_name ? item.display_name.split(',')[0] : '';
+                            box.innerHTML += `
+                                <div style="padding: 12px; border-bottom: 1px solid #eee; cursor: pointer;" onclick="document.getElementById('emplacement-input').value = '${name.replace(/'/g, "\\'")}'; document.getElementById('suggestions-box').style.display='none';">
+                                    <span class="material-symbols-outlined" style="vertical-align: middle; margin-right: 8px; color: #640C31; font-size:20px;">location_on</span>
+                                    <span style="font-family:'Rubik', sans-serif; font-size:15px; font-weight:500; vertical-align: middle; color:#000;">${name} <span style="font-size:13px;color:#777;font-weight:400;">${details}</span></span>
+                                </div>
+                            `;
+                        });
+                        box.style.display = 'block';
+                    } else {
+                        box.style.display = 'none';
+                    }
+                } catch (e) {
+                    console.error(e);
+                    box.style.display = 'none';
+                }
+            }, 600);
         }
     </script>
 </body>
