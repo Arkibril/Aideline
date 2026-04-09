@@ -219,13 +219,13 @@
                     </div>
                 </div>
 
-                <div class="settings-row">
+                <div class="settings-row" onclick="cycleSpeed()">
                     <div class="row-icon" style="background: rgba(255, 152, 0, 0.1); color: #FF9800;">
                         <span class="material-symbols-outlined">directions_walk</span>
                     </div>
                     <div class="row-label">Vitesse de marche</div>
                     <div class="row-right" style="display:flex; align-items:center;">
-                        <span class="value-text">Normale</span>
+                        <span class="value-text" id="speed-val">Normale</span>
                         <span class="material-symbols-outlined chevron">chevron_right</span>
                     </div>
                 </div>
@@ -358,6 +358,12 @@
                 if(document.getElementById('nav-carte')) document.getElementById('nav-carte').classList.add('active'); 
             }
         });
+
+        function cycleSpeed() {
+            const s = document.getElementById('speed-val');
+            if(s.innerText === 'Normale') s.innerText = 'Lente';
+            else s.innerText = 'Normale';
+        }
     </script>
 </body>
 </html>

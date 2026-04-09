@@ -164,7 +164,10 @@
     <div class="content-scroll">
         
         <!-- SECTION FAMILLE -->
-        <h2 class="section-title">FAMILLE</h2>
+        <div style="display:flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+            <h2 class="section-title" style="margin-bottom: 0;">FAMILLE</h2>
+            <div style="font-size:14px; font-weight:700; color:var(--primary); cursor:pointer;" onclick="addContact()">+ Ajouter</div>
+        </div>
         <div class="contact-card">
             <!-- Photos de profils générées pour la démo -->
             <div class="contact-row" onclick="actionCall('Jérôme')">
@@ -172,6 +175,7 @@
                 <div class="contact-info">
                     <div class="contact-name">Jérôme</div>
                 </div>
+                <button class="call-btn" style="color:#666; margin-right:4px;" onclick="event.stopPropagation(); editContact(this)"><span class="material-symbols-outlined" style="font-size:24px; font-variation-settings: 'FILL' 0;">edit</span></button>
                 <button class="call-btn"><span class="material-symbols-outlined">call</span></button>
             </div>
             
@@ -180,6 +184,7 @@
                 <div class="contact-info">
                     <div class="contact-name">Marianne</div>
                 </div>
+                <button class="call-btn" style="color:#666; margin-right:4px;" onclick="event.stopPropagation(); editContact(this)"><span class="material-symbols-outlined" style="font-size:24px; font-variation-settings: 'FILL' 0;">edit</span></button>
                 <button class="call-btn"><span class="material-symbols-outlined">call</span></button>
             </div>
 
@@ -188,6 +193,7 @@
                 <div class="contact-info">
                     <div class="contact-name">Daphnée</div>
                 </div>
+                <button class="call-btn" style="color:#666; margin-right:4px;" onclick="event.stopPropagation(); editContact(this)"><span class="material-symbols-outlined" style="font-size:24px; font-variation-settings: 'FILL' 0;">edit</span></button>
                 <button class="call-btn"><span class="material-symbols-outlined">call</span></button>
             </div>
         </div>
@@ -264,6 +270,38 @@
                 if(document.getElementById('nav-carte')) document.getElementById('nav-carte').classList.add('active'); 
             }
         });
+
+        function actionCall(name) {
+            alert('Appel en cours vers ' + name + '...');
+        }
+
+        function editContact(btn) {
+            const contactRow = btn.closest('.contact-row');
+            const nameEl = contactRow.querySelector('.contact-name');
+            const newName = prompt("Modifier le nom du contact :", nameEl.innerText);
+            if (newName && newName.trim() !== "") {
+                nameEl.innerText = newName.trim();
+            }
+        }
+
+        function addContact() {
+            const newName = prompt("Nom du nouveau contact :");
+            if (newName && newName.trim() !== "") {
+                const familyCard = document.querySelector('.contact-card');
+                const div = document.createElement('div');
+                div.className = 'contact-row';
+                div.onclick = () => actionCall(newName);
+                div.innerHTML = `
+                    <img src="https://i.pravatar.cc/150?u=${Math.random()}" alt="${newName}" class="avatar">
+                    <div class="contact-info">
+                        <div class="contact-name">${newName}</div>
+                    </div>
+                    <button class="call-btn" style="color:#666; margin-right:4px;" onclick="event.stopPropagation(); editContact(this)"><span class="material-symbols-outlined" style="font-size:24px; font-variation-settings: 'FILL' 0;">edit</span></button>
+                    <button class="call-btn"><span class="material-symbols-outlined">call</span></button>
+                `;
+                familyCard.appendChild(div);
+            }
+        }
     </script>
 </body>
 </html>
