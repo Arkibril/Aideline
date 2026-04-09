@@ -12,7 +12,7 @@
     
     <style>
         :root {
-            --primary: #9C1132;
+            --primary: #640C31;
             --white: #FFFFFF;
             --black: #000000;
             --text-dark: rgba(26, 23, 23, 0.83); 
@@ -161,14 +161,14 @@
         .mock-app-content { width: 100%; padding: 24px 0; display: flex; flex-direction: column; }
         .mock-user-info { display: flex; flex-direction: column; align-items: flex-start; margin-bottom: 16px; }
         .mock-logo { width: 50px; height: 50px; margin-bottom: 4px; }
-        .mock-welcome { font-family: 'Rubik', sans-serif; font-size: 16px; font-weight: 700; color: #9C1132; margin-bottom: 16px;}
+        .mock-welcome { font-family: 'Rubik', sans-serif; font-size: 16px; font-weight: 700; color: #640C31; margin-bottom: 16px;}
         
-        .mock-search-bar { width: 100%; height: 68px; border: 2px solid #9C1132; border-radius: 34px; padding: 0 20px; display: flex; align-items: center; background: white; margin-bottom: 24px; box-sizing: border-box;}
+        .mock-search-bar { width: 100%; height: 68px; border: 2px solid #640C31; border-radius: 34px; padding: 0 20px; display: flex; align-items: center; background: white; margin-bottom: 24px; box-sizing: border-box;}
         .mock-search-bar .material-symbols-outlined { font-size: 28px; color: #000; }
         .mock-search-bar input { flex: 1; border: none; outline: none; margin: 0 12px; font-family: 'Rubik', sans-serif; font-style: italic; font-size: 16px; color: #555; background: transparent; }
         
         .mock-tiles-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; width: 100%; }
-        .mock-tile { background-color: #9C1132; border-radius: 8px; aspect-ratio: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; cursor: pointer;}
+        .mock-tile { background-color: #640C31; border-radius: 8px; aspect-ratio: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; cursor: pointer;}
         .mock-tile .material-symbols-outlined { font-size: 24px; margin-bottom: 4px; }
         .mock-tile .tile-label { font-size: 16px; font-weight: 700; font-family: 'Rubik', sans-serif; text-align: center;}
 
@@ -246,7 +246,7 @@
         /* TUTO AGENDA CALENDRIER */
         .calendar-tabs { display: flex; width: 100%; border-bottom: 1px solid #ddd; margin-bottom: 16px; }
         .cal-tab { flex: 1; text-align: center; padding: 12px 0; font-family: 'Rubik', sans-serif; font-weight: 700; font-size: 16px; color: #aaa; }
-        .cal-tab.active { color: #9C1132; border-bottom: 2px solid #9C1132; }
+        .cal-tab.active { color: #640C31; border-bottom: 2px solid #640C31; }
         .calendar-header-row { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-family: 'Rubik', sans-serif; font-size: 16px; font-weight: 700; color: #000; margin-bottom: 8px;}
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; padding: 0 4px;}
         .cal-day { background-color: transparent; color: #000; border: 1px solid var(--primary); aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 4px; font-family: 'Rubik', sans-serif; font-size: 16px; position: relative;}
@@ -257,15 +257,15 @@
         .event-grey-card { background-color: #EFEFEF; border-radius: 12px; padding: 16px; margin-top: 10px; width: 100%; box-sizing: border-box; }
 
         /* TUTO AGENDA FORMAULAIRE */
-        .add-event-btn { border: 2px solid #9C1132; border-radius: 40px; padding: 14px 20px; color: #000; font-weight: 700; font-size: 16px; font-family: 'Rubik', sans-serif; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; background: white; width: 80%; margin: 0 auto; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .add-event-btn { border: 2px solid #640C31; border-radius: 40px; padding: 14px 20px; color: #000; font-weight: 700; font-size: 16px; font-family: 'Rubik', sans-serif; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; background: white; width: 80%; margin: 0 auto; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
         .add-event-btn:active { background-color: #f7e6ea; }
         .fake-input-form { background-color: #f0f0f0; border-radius: 4px; padding: 14px 16px; display: flex; align-items: center; gap: 8px; box-sizing: border-box;}
         .real-input { border: none; background: transparent; font-family: 'Rubik', sans-serif; font-size: 16px; color: #111; flex: 1; outline: none; padding: 0; min-width: 0; }
         .real-input::placeholder { font-style: italic; color: #777; font-weight: 400; }
         .tuto-radio-label { display: flex; align-items: center; gap: 8px; font-family: 'Rubik', sans-serif; font-style: italic; font-size: 16px; font-weight: 500; color: #111; cursor: pointer; flex: 1; margin: 0; }
-        .tuto-radio-label input[type="radio"] { width: 18px; height: 18px; accent-color: #9C1132; margin: 0; }
+        .tuto-radio-label input[type="radio"] { width: 18px; height: 18px; accent-color: #640C31; margin: 0; }
         .italic-placeholder { font-family: 'Rubik', sans-serif; font-style: italic; font-size: 16px; color: #777; }
-        .event-submit-btn { background-color: #9C1132; color: #fff; text-align: center; font-family: 'Rubik', sans-serif; font-weight: 700; font-size: 16px; padding: 16px; border-radius: 8px; border: none; width: 100%; margin-top: auto; margin-bottom: 24px; cursor: pointer; }
+        .event-submit-btn { background-color: #640C31; color: #fff; text-align: center; font-family: 'Rubik', sans-serif; font-weight: 700; font-size: 16px; padding: 16px; border-radius: 8px; border: none; width: 100%; margin-top: auto; margin-bottom: 24px; cursor: pointer; }
         .event-submit-btn:active { background-color: #8c0c2a; }
 
     </style>
@@ -322,7 +322,7 @@
         <div style="width: 100%; display: flex; flex-direction: column; gap: 16px; margin-top: 40px; padding: 0 16px; box-sizing: border-box;">
             <div style="font-family:'Rubik', sans-serif; font-size:16px; text-align:center; color:#555; margin-bottom: 8px;">Ceci permettra de retrouver rapidement<br>le chemin de la maison.</div>
             <div style="position:relative; width: 100%;">
-                <div class="fake-input-form" style="border: 1px solid #ccc; background: white;"><span class="material-symbols-outlined" style="color: #9C1132;">home</span> <input type="text" class="real-input" id="intro-address-input" oninput="searchIntroAddress(this.value)" placeholder="123 rue de la colombe, 75001 Paris"></div>
+                <div class="fake-input-form" style="border: 1px solid #ccc; background: white;"><span class="material-symbols-outlined" style="color: #640C31;">home</span> <input type="text" class="real-input" id="intro-address-input" oninput="searchIntroAddress(this.value)" placeholder="123 rue de la colombe, 75001 Paris"></div>
                 <div class="suggestions-box" id="intro-suggestions-box" style="position: absolute; top: calc(100% + 5px); left: 0; width: 100%; z-index: 10; display: none; margin: 0; max-height: 200px; overflow-y: auto;"></div>
             </div>
             <button class="event-submit-btn" style="margin-top: 30px; margin-bottom: 0;" onclick="goToTutoStep('tuto-intro-2')">Enregistrer l'adresse</button>
@@ -340,12 +340,12 @@
             <div style="font-family:'Rubik', sans-serif; font-size:16px; text-align:center; color:#555; margin-bottom: 8px;">Permet d'appeler un proche avec le<br>bouton d'urgence tr&egrave;s facilement.</div>
             <div id="intro-contacts-list" style="display:flex; flex-direction:column; gap:12px;">
                 <div class="contact-block" style="display:flex; flex-direction:column; gap:8px;">
-                    <div class="fake-input-form" style="border: 1px solid #ccc; background: white;"><span class="material-symbols-outlined" style="color: #9C1132;">person</span> <input type="text" class="real-input" placeholder="Nom du contact (ex: Cécile Dubois)"></div>
-                    <div class="fake-input-form" style="border: 1px solid #ccc; background: white;"><span class="material-symbols-outlined" style="color: #9C1132;">phone</span> <input type="tel" class="real-input" placeholder="Num&eacute;ro de t&eacute;l&eacute;phone"></div>
+                    <div class="fake-input-form" style="border: 1px solid #ccc; background: white;"><span class="material-symbols-outlined" style="color: #640C31;">person</span> <input type="text" class="real-input" placeholder="Nom du contact (ex: Cécile Dubois)"></div>
+                    <div class="fake-input-form" style="border: 1px solid #ccc; background: white;"><span class="material-symbols-outlined" style="color: #640C31;">phone</span> <input type="tel" class="real-input" placeholder="Num&eacute;ro de t&eacute;l&eacute;phone"></div>
                 </div>
             </div>
             
-            <button class="continue-btn-outline" style="border: 2px dashed #9C1132; color: #9C1132; margin-top:10px; background: #fff4f6;" onclick="addIntroContact()">+ Ajouter un contact</button>
+            <button class="continue-btn-outline" style="border: 2px dashed #640C31; color: #640C31; margin-top:10px; background: #fff4f6;" onclick="addIntroContact()">+ Ajouter un contact</button>
 
             <button class="event-submit-btn" style="margin-top: 30px; margin-bottom: 0;" onclick="startTuto()">Enregistrer les contacts</button>
             <button class="continue-btn-outline" style="margin-top: 10px; border:none; color: #777;" onclick="startTuto()">Passer cette &eacute;tape</button>
@@ -626,7 +626,7 @@
         
         <!-- Fausse entete calendrier floutée -->
         <div style="filter: blur(4px); opacity: 0.5; width: 100%; display: flex; justify-content: space-around; margin: 20px 0 10px 0;">
-            <div style="color:#9C1132; font-weight:bold; font-size:16px;">Mois</div>
+            <div style="color:#640C31; font-weight:bold; font-size:16px;">Mois</div>
             <div style="color:#ccc; font-weight:bold; font-size:16px;">Semaine</div>
         </div>
         <div style="filter: blur(4px); opacity: 0.5; width: 100%; border-bottom: 1px solid #ddd; margin-bottom: 16px;"></div>
@@ -708,7 +708,7 @@
         <div class="tuto-subtitle" style="margin-top:20px;"><strong>Apprenons &agrave; utiliser l'application :</strong><br><span>AGENDA</span></div>
         
         <div style="width: 100%; border-bottom: 1px solid #ddd; margin-bottom: 16px; margin-top: 20px; display: flex;">
-            <div style="flex:1; text-align:center; padding-bottom:12px; border-bottom: 2px solid #9C1132; color: #9C1132; font-family:'Rubik', sans-serif; font-weight:700;">Mois</div>
+            <div style="flex:1; text-align:center; padding-bottom:12px; border-bottom: 2px solid #640C31; color: #640C31; font-family:'Rubik', sans-serif; font-weight:700;">Mois</div>
             <div style="flex:1; text-align:center; padding-bottom:12px; color: #aaa; font-family:'Rubik', sans-serif; font-weight:700;">Semaine</div>
         </div>
         
@@ -791,8 +791,8 @@
 
     <!-- ECRAN DE CHARGEMENT FINAL -->
     <div id="final-loading-screen" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 9999; flex-direction: column; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease;">
-        <div style="width: 50px; height: 50px; border: 4px solid #f3f3f3; border-top: 4px solid #9C1132; border-radius: 50%; animation: spin 1s linear infinite;"></div>
-        <div id="loading-message" style="margin-top: 24px; font-family: 'Rubik', sans-serif; font-size: 18px; font-weight: 700; color: #9C1132;">Chargement...</div>
+        <div style="width: 50px; height: 50px; border: 4px solid #f3f3f3; border-top: 4px solid #640C31; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+        <div id="loading-message" style="margin-top: 24px; font-family: 'Rubik', sans-serif; font-size: 18px; font-weight: 700; color: #640C31;">Chargement...</div>
     </div>
     <style>
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -953,7 +953,7 @@
 
                         box.innerHTML += `
                             <div class="suggestion-item" style="padding: 12px; border-bottom: 1px solid #eee; background: white; cursor: pointer;" onclick="document.getElementById('intro-address-input').value = '${name.replace(/'/g, "\\'")}'; document.getElementById('intro-suggestions-box').style.display='none';">
-                                <span class="material-symbols-outlined" style="vertical-align: middle; margin-right: 8px; color: #9C1132; font-size:20px;">location_on</span>
+                                <span class="material-symbols-outlined" style="vertical-align: middle; margin-right: 8px; color: #640C31; font-size:20px;">location_on</span>
                                 <span style="font-family:'Rubik', sans-serif; font-size:15px; vertical-align: middle;">${name}</span>
                             </div>
                         `;
@@ -979,8 +979,8 @@
         block.style.paddingTop = '15px';
         block.style.borderTop = '1px solid #eee';
         block.innerHTML = `
-            <div class="fake-input-form" style="border: 1px solid #ccc; background: white;"><span class="material-symbols-outlined" style="color: #9C1132;">person</span> <input type="text" class="real-input" placeholder="Nom du contact (ex: Ami(e), Voisin...)"></div>
-            <div class="fake-input-form" style="border: 1px solid #ccc; background: white;"><span class="material-symbols-outlined" style="color: #9C1132;">phone</span> <input type="tel" class="real-input" placeholder="Num&eacute;ro de t&eacute;l&eacute;phone"></div>
+            <div class="fake-input-form" style="border: 1px solid #ccc; background: white;"><span class="material-symbols-outlined" style="color: #640C31;">person</span> <input type="text" class="real-input" placeholder="Nom du contact (ex: Ami(e), Voisin...)"></div>
+            <div class="fake-input-form" style="border: 1px solid #ccc; background: white;"><span class="material-symbols-outlined" style="color: #640C31;">phone</span> <input type="tel" class="real-input" placeholder="Num&eacute;ro de t&eacute;l&eacute;phone"></div>
         `;
         list.appendChild(block);
     }
