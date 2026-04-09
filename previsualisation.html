@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Prévisualisation de l'itinéraire - Aideline</title>
+
+    <!-- Polices et Icônes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <style>
+        :root {
+            --primary: #9C1132;
+            --white: #FFFFFF;
+            --bottom-nav-bg: #9C1132;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Rubik', sans-serif; -webkit-tap-highlight-color: transparent;}
+        
+        body { 
+            width: 100vw; 
+            height: 100vh; 
+            overflow: hidden; 
+            background: var(--white); 
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ---------------------------------
+           SECTION CARTE (Haut de l'écran)
+        --------------------------------- */
+        .map-section {
+            position: relative;
+            width: 100%;
+            height: 42%; /* S'adapte à la proportion du screenshot */
+            flex-shrink: 0;
+            z-index: 10; /* Z-index supérieur pour que le bouton flotte SUR la partie blanche */
+        }
+        #map {
+            width: 100%; 
+            height: 100%; 
+        }
+
+        /* BOUTON RETOUR CIRCULAIRE */
+        .back-btn-container {
+            position: absolute;
+            top: 40px;
+            left: 16px;
+            width: 48px;
+            height: 48px;
+            background: var(--white);
+            border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            z-index: 1000;
+            cursor: pointer;
+        }
+        .back-btn-container .material-symbols-outlined { color: #000; font-size: 28px; }
+
+        /* BOUTON FLOTTANT "APPUYER POUR DEMARRER" */
+        .start-btn-container {
+            position: absolute;
+            bottom: -28px; /* Déborde volontairement et de façon centrée sur la partie blanche */
+            right: 16px; 
+            background: var(--primary);
+            border-radius: 30px;
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(156, 17, 50, 0.4);
+            z-index: 1000;
+            cursor: pointer;
+        }
+        .start-btn-container .material-symbols-outlined {
+            color: var(--white);
+            font-size: 28px;
+        }
+        .start-btn-container span {
+            color: var(--white);
+            font-size: 15px; /* Ajusté pour ressembler à la maquette */
+            font-weight: 600;
+        }
+
+        /* CUSTOM MARKERS LEAFLET */
+        .custom-marker-vous, .custom-marker-dest {
+            background: #2b58ff; border: 3px solid white; border-radius: 50%; box-shadow: 0 0 4px rgba(0,0,0,0.5);
+            width: 100%; height: 100%;
+        }
+        .marker-label-vous, .marker-label-dest {
+            font-size: 14px; font-weight: 800; color: #2b58ff; background: transparent; border: none; box-shadow: none;
+            text-shadow: -1px -1px 0 #FFF, 1px -1px 0 #FFF, -1px 1px 0 #FFF, 1px 1px 0 #FFF;
+        }
+
+        /* MARQUEURS BANC */
+        .custom-marker-bench {
+            background: var(--white);
+            border: 2px solid #000;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+        .marker-label-bench {
+            font-size: 13px; font-weight: 700; color: #111; background: transparent; border: none; box-shadow: none;
+            text-shadow: -1px -1px 0 #FFF, 1px -1px 0 #FFF, -1px 1px 0 #FFF, 1px 1px 0 #FFF;
+        }
+
+        /* ---------------------------------
+           SECTION ETAPES (Bas de l'écran)
+        --------------------------------- */
+        .steps-section {
+            flex: 1;
+            background: var(--white);
+            z-index: 2;
+            overflow-y: auto;
+            padding: 40px 16px 90px 16px; /* Padding top augmenté pour bien dégager le bouton flottant */
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* L'en-tête Temps estimé & Arrivée */
+        .summary-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 24px;
+        }
+        .summary-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary);
+        }
+        .summary-left .material-symbols-outlined { font-size: 38px; }
+        .summary-left .time-val {
+            display: flex; flex-direction: column; align-items: center;
+            font-weight: 800; font-size: 20px; line-height: 1.1;
+        }
+        .summary-left .time-val span { font-size: 14px; font-weight: 500; }
+        .summary-right {
+            border: 1px solid rgba(0,0,0,0.1);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 14px;
+            color: #111;
+            font-style: italic;
+            text-align: right;
+            line-height: 1.4;
+        }
+        .summary-right strong { font-weight: 800; font-size: 15px;}
+
+        /* Les blocs étapes (les frames XML bordées de rouge) */
+        .step-item {
+            position: relative;
+            border: 1.5px solid var(--primary);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+            background: var(--white);
+        }
+        
+        /* La fameuse ligne verticale noire reliant les cadres */
+        .step-item::before {
+            content: '';
+            position: absolute;
+            bottom: -25.5px; /* Traverse la marge de 24px vers le prochain bloc */
+            left: 24px;
+            width: 8px;
+            height: 24px;
+            background-color: #1a2233; /* Couleur gris/bleu foncé ligne */
+            z-index: 0;
+        }
+        .step-item:last-child::before {
+            display: none; /* Pas de ligne en dessous du dernier bloc */
+        }
+        .step-item:last-child {
+            margin-bottom: 0;
+        }
+
+        /* BOTTOM NAVBAR (Fixe) */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0; left: 0; width: 100%; height: 70px;
+            background-color: var(--bottom-nav-bg);
+            display: flex; justify-content: space-around; align-items: center;
+            border-top: 1px solid rgba(0,0,0,0.1);
+            z-index: 2000;
+        }
+        .nav-item {
+            display: flex; flex-direction: column; align-items: center;
+            color: var(--white); cursor: pointer;
+        }
+        .nav-item .material-symbols-outlined { font-size: 28px; margin-bottom: 4px; }
+        .nav-item .nav-text { font-size: 14px; font-weight: 500; }
+
+    </style>
+</head>
+<body>
+
+    <!-- PARTIE HAUTE : CARTE -->
+    <div class="map-section">
+        <div id="map"></div>
+
+        <div class="back-btn-container" onclick="window.history.back()">
+            <span class="material-symbols-outlined">arrow_back</span>
+        </div>
+
+        <div class="start-btn-container" onclick="lancerNavigation()">
+            <span class="material-symbols-outlined">directions_walk</span>
+            <span>Appuyer pour démarrer</span>
+        </div>
+    </div>
+
+    <!-- PARTIE BASSE : ITINERAIRE BLANC -->
+    <div class="steps-section">
+        
+        <!-- EN TÊTE (Temps + Info) -->
+        <div class="summary-header">
+            <div class="summary-left">
+                <span class="material-symbols-outlined">directions_walk</span>
+                <div class="time-val">14<span>min</span></div>
+                <span class="material-symbols-outlined" style="font-size:32px;">sports_score</span>
+            </div>
+            <div class="summary-right">
+                Heure d'arrivée<br>prévu : <strong>17H34</strong>
+            </div>
+        </div>
+
+        <!-- LISTE ETAPES (Boxes bordées) -->
+        <div class="step-item">
+            <div style="font-style: italic; font-size: 16px; font-weight: 500; color: #111;">Partir de chez vous à <strong style="font-weight: 800;">16H45</strong></div>
+            <div style="font-style: italic; font-size: 15px; color: #666; margin-top: 6px;">6 autres trajets possibles dans l'heure &gt;</div>
+        </div>
+
+        <div class="step-item" style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 12px; flex: 1;">
+                <span class="material-symbols-outlined" style="font-size: 32px; color: #111;">directions_walk</span>
+                <span style="font-style: italic; font-size: 16px; font-weight: 500; color: #111; line-height: 1.2;">Marcher jusqu'au lieu de rendez vous</span>
+            </div>
+            <div style="font-style: italic; font-size: 14px; font-weight: 600; color: #111; text-align: right; min-width: 80px;">
+                Durée <strong style="font-weight: 800;">1min</strong>
+            </div>
+        </div>
+
+        <div class="step-item" style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="font-style: italic; font-size: 16px; font-weight: 600; color: #111; line-height: 1.2;">Vous arrivez à votre destination !</div>
+            <div style="font-style: italic; font-size: 14px; color: #111; font-weight: 600; text-align: right;">
+                Arriver à <strong style="font-weight: 800;">17h34</strong>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- WIDGET COTE DE RUE -->
+    <div id="sideModal" style="position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); z-index: 5000; display:none; align-items:center; justify-content:center;">
+        <div style="position:relative; width:340px; background-color:var(--white); border-radius:14px; display:flex; flex-direction:column; overflow:hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+            <div style="padding:24px 16px 20px 16px; text-align:center; border-bottom:1px solid rgba(0,0,0,0.2);">
+                <div style="font-size:24px; color:#111; font-weight:500; margin-bottom:12px;">Coté de rue</div>
+                <div style="font-size:16px; color:#333; line-height:1.4;">Êtes-vous sur le côté gauche<br>ou droite de la rue?</div>
+            </div>
+            <div style="padding:20px 16px; text-align:center; border-bottom:1px solid rgba(0,0,0,0.2); cursor:pointer;" onclick="gotoTransition()">
+                <div style="font-style:italic; font-size:22px; color:#111;">Gauche</div>
+            </div>
+            <div style="padding:20px 16px; text-align:center; cursor:pointer;" onclick="gotoTransition()">
+                <div style="font-style:italic; font-size:22px; color:#111;">Droite</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NAVBAR BAS -->
+    <div class="bottom-nav">
+        <div class="nav-item">
+            <span class="material-symbols-outlined">location_on</span>
+            <span class="nav-text">Carte</span>
+        </div>
+        <div class="nav-item">
+            <span class="material-symbols-outlined">calendar_today</span>
+            <span class="nav-text">Agenda</span>
+        </div>
+        <div class="nav-item">
+            <span class="material-symbols-outlined">call</span>
+            <span class="nav-text">Appel</span>
+        </div>
+        <div class="nav-item">
+            <span class="material-symbols-outlined">settings</span>
+            <span class="nav-text">Paramètre</span>
+        </div>
+    </div>
+
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        function lancerNavigation() {
+            document.getElementById('sideModal').style.display = 'flex';
+        }
+
+        function gotoTransition() {
+            window.location.href = 'transition.html';
+        }
+
+        window.onload = () => {
+            const map = L.map('map', { 
+                zoomControl: false,
+                attributionControl: false
+            }).setView([40.7306, -73.8643], 15); // Centré près du "Rego Park" vu dans votre capture
+
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+                maxZoom: 19
+            }).addTo(map);
+
+            // Points approximatifs basés sur la disposition de l'image
+            const startPoint = [40.7340, -73.8710];
+            const midPoint1 = [40.7310, -73.8650];
+            const midPoint2 = [40.7280, -73.8580];
+            const endPoint =   [40.7275, -73.8550];
+
+            const routeLine = L.polyline([startPoint, midPoint1, midPoint2, endPoint], {
+                color: '#2b58ff',
+                weight: 6,
+                opacity: 1,
+                lineJoin: 'round'
+            }).addTo(map);
+
+            // Marker Depart
+            const startIcon = L.divIcon({ className: 'custom-marker-vous', iconSize: [20, 20] });
+            L.marker(startPoint, {icon: startIcon}).addTo(map).bindTooltip("Vous", {permanent: true, direction: "top", className: 'marker-label-vous', offset: [0,-8]});
+
+            // Marker Bancs (Lieux de repos) le long du trajet
+            // Dessin SVG très simple symbolisant un banc public
+            const benchSvg = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18v-4"></path><path d="M20 18v-4"></path><path d="M4 10h16v4H4z"></path><path d="M7 6v4"></path><path d="M17 6v4"></path></svg>`;
+            const benchIcon = L.divIcon({ 
+                className: 'custom-marker-bench', 
+                html: benchSvg, 
+                iconSize: [28, 28],
+                iconAnchor: [14, 14]
+            });
+            L.marker(midPoint1, {icon: benchIcon}).addTo(map)
+                .bindTooltip("Pause possible", {permanent: true, direction: "top", className: 'marker-label-bench', offset: [0,-12]});
+                
+            L.marker(midPoint2, {icon: benchIcon}).addTo(map)
+                .bindTooltip("Pause possible", {permanent: true, direction: "top", className: 'marker-label-bench', offset: [0,-12]});
+
+            // Marker Arrivée
+            const endIcon = L.divIcon({ className: 'custom-marker-dest', iconSize: [20, 20] });
+            L.marker(endPoint, {icon: endIcon}).addTo(map).bindTooltip("Déstination", {permanent: true, direction: "top", className: 'marker-label-dest', offset: [0,-8]});
+
+            map.fitBounds(routeLine.getBounds(), { padding: [50, 50], paddingBottomRight: [50, 100] });
+        };
+    </script>
+</body>
+</html>

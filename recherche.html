@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aideline - Recherche</title>
+    <!-- Chargement des polices et icÃ´nes Material -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    
+    <style>
+        :root {
+            --primary: #9C1132;
+            --white: #FFFFFF;
+            --black: #000000;
+            --bg-color: #FAFAFA;
+            --text-dark: #000000;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Rubik', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Rubik', sans-serif;
+            font-size: 16px;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .mobile-container {
+            width: 100%;
+            max-width: 412px;
+            height: 100vh;
+            max-height: 917px;
+            background-color: var(--white);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* HEADER */
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            height: 56px;
+            background: var(--white);
+            position: relative;
+            z-index: 10;
+        }
+        .header .back-btn {
+            font-size: 28px; /* Plus gros */
+            color: #000;
+            cursor: pointer;
+            position: absolute;
+            left: 16px;
+        }
+        .header .title {
+            flex: 1;
+            text-align: center;
+            font-size: 22px; /* Titre plus important */
+            font-weight: 600;
+            color: #000;
+        }
+
+        /* MAIN SEARCH SCROLL */
+        .search-scroll {
+            flex: 1;
+            display: block;
+            overflow-y: auto;
+            background-color: var(--white);
+            padding-bottom: 90px;
+        }
+
+        /* SEARCH INPUT */
+        .search-container {
+            padding: 16px;
+        }
+        .search-input-box {
+            width: 100%;
+            height: 54px;
+            border: 1px solid var(--primary);
+            border-radius: 27px;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            background: var(--white);
+        }
+        .search-input-box .material-symbols-outlined { font-size: 24px; color: #000; }
+        .search-input-box input {
+            flex: 1;
+            border: none;
+            outline: none;
+            background: transparent;
+            font-family: 'Rubik', sans-serif;
+            font-size: 16px;
+            color: #777;
+            margin: 0 12px;
+        }
+
+        /* QUICK ACTIONS */
+        .quick-actions-scroll {
+            display: flex;
+            overflow-x: auto;
+            gap: 12px;
+            padding: 0 16px 24px 16px;
+            scrollbar-width: none;
+        }
+        .quick-actions-scroll::-webkit-scrollbar { display: none; }
+        .pill {
+            display: flex;
+            align-items: center;
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 10px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        .pill .material-symbols-outlined { font-size: 20px; margin-right: 8px; }
+        .pill span:not(.material-symbols-outlined) { font-family: 'Rubik', sans-serif; font-size: 16px; font-weight: 600; }
+
+        /* LIST HEADERS */
+        .section-headline {
+            display: flex;
+            align-items: center;
+            margin: 24px 16px 12px 16px;
+        }
+        .section-headline span {
+            font-style: italic;
+            font-size: 16px; /* Update Ã  16px mini */
+            color: #000;
+            white-space: nowrap;
+            margin-right: 12px;
+            font-weight: 500;
+        }
+        .section-headline .line {
+            flex: 1;
+            height: 1px;
+            background-color: #555;
+        }
+
+        /* ADDRESS CARDS & SUGGESTIONS */
+        .address-card, .suggestions-box {
+            margin: 0 16px 24px 16px;
+            border: 1px solid var(--primary);
+            border-radius: 12px;
+            background: var(--white);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .suggestions-box {
+            width: calc(100% - 32px);
+            margin: 0 auto;
+            display: none;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .address-item, .suggestion-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 16px;
+            border-bottom: 1px solid #1A1A1B; /* SÃ©parateur noir de la maquette */
+            cursor: pointer;
+        }
+        .address-item:last-child, .suggestion-item:last-child { border-bottom: none; }
+        .address-item:active, .suggestion-item:active { background-color: #f9f9f9; }
+        .address-icon { font-size: 28px; color: #111; margin-right: 20px; }
+        .address-text { flex: 1; display: flex; flex-direction: column; }
+        .address-type { font-size: 16px; color: #111; margin-bottom: 4px; font-weight: 500; }
+        .address-name { font-size: 18px; font-weight: 700; color: #111; margin-bottom: 2px;}
+        .address-dist { font-size: 16px; color: #444; }
+        .address-chevron { font-size: 28px; color: #111; }
+
+        /* BOTTOM NAVBAR (IDENTIQUE A INDEX.HTML) */
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 72px;
+            background-color: var(--primary);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0 16px;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--white);
+            cursor: pointer;
+        }
+        .nav-item .material-symbols-outlined {
+            font-size: 28px;
+            margin-bottom: 4px;
+        }
+        .nav-item .nav-text {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="mobile-container">
+    
+    <div class="header">
+        <span class="material-symbols-outlined back-btn" onclick="window.history.back()">arrow_back</span>
+        <div class="title">Rechercher</div>
+    </div>
+
+    <div class="search-scroll">
+        <!-- SEARCH INPUT -->
+        <div class="search-container">
+            <div class="search-input-box" id="search-box">
+                <span class="material-symbols-outlined">search</span>
+                <input type="text" id="searchInput" placeholder="Ecrivez votre adresse ici..." autofocus autocomplete="off">
+                <span class="material-symbols-outlined" id="clearBtn" style="display:none; cursor:pointer;" onclick="clearSearch()">close</span>
+                <span class="material-symbols-outlined" id="micBtn">mic</span>
+            </div>
+        </div>
+
+        <!-- AUTOCOMPLETE BOX -->
+        <div class="suggestions-box" id="suggestionsBox"></div>
+
+        <!-- CONTENU PAR DEFAUT (CachÃ© pendant la recherche) -->
+        <div id="defaultContent">
+            <!-- QUICK ACTIONS (PILLS) -->
+            <div class="quick-actions-scroll">
+                <div class="pill">
+                    <span class="material-symbols-outlined">home</span>
+                    <span>Maison</span>
+                </div>
+                <div class="pill">
+                    <span class="material-symbols-outlined">bookmark_border</span>
+                    <span>Favoris</span>
+                </div>
+                <div class="pill">
+                    <span class="material-symbols-outlined">bakery_dining</span>
+                    <span>Boulangerie</span>
+                </div>
+            </div>
+
+            <!-- ADRESSES RECENTES -->
+            <div class="section-headline">
+                <span>Adresses r&eacute;centes</span>
+                <div class="line"></div>
+            </div>
+            <div class="address-card" id="recentContainer"></div>
+
+            <!-- ADRESSES FAVORITES -->
+            <div class="section-headline">
+                <span>Adresses favorites</span>
+                <div class="line"></div>
+            </div>
+            <div class="address-card" id="favoritesContainer"></div>
+        </div>
+    </div>
+
+    <!-- BOTTOM NAVBAR -->
+    <div class="bottom-nav">
+        <div class="nav-item">
+            <span class="material-symbols-outlined">location_on</span>
+            <span class="nav-text">Carte</span>
+        </div>
+        <div class="nav-item" onclick="window.location.href='index.html'">
+            <span class="material-symbols-outlined">calendar_today</span>
+            <span class="nav-text">Agenda</span>
+        </div>
+        <div class="nav-item">
+            <span class="material-symbols-outlined">call</span>
+            <span class="nav-text">Appel</span>
+        </div>
+        <div class="nav-item">
+            <span class="material-symbols-outlined">settings</span>
+            <span class="nav-text">Param&egrave;tre</span>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    const searchInput = document.getElementById('searchInput');
+    const suggestionsBox = document.getElementById('suggestionsBox');
+    const clearBtn = document.getElementById('clearBtn');
+    const micBtn = document.getElementById('micBtn');
+    const recentContainer = document.getElementById('recentContainer');
+    const favoritesContainer = document.getElementById('favoritesContainer');
+    const defaultContent = document.getElementById('defaultContent');
+    let debounceTimer;
+
+    searchInput.addEventListener('input', function() {
+        const query = this.value.trim();
+        
+        if (query.length > 0) {
+            clearBtn.style.display = 'block';
+            micBtn.style.display = 'none';
+            defaultContent.style.display = 'none'; // CACHER FILTRES ET RÃ‰CENTS
+        } else {
+            clearBtn.style.display = 'none';
+            micBtn.style.display = 'block';
+            suggestionsBox.style.display = 'none';
+            defaultContent.style.display = 'block'; // RÃ‰AFFICHER
+            return;
+        }
+
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            fetchNominatim(query);
+        }, 600);
+    });
+
+    function clearSearch() {
+        searchInput.value = '';
+        clearBtn.style.display = 'none';
+        micBtn.style.display = 'block';
+        suggestionsBox.style.display = 'none';
+        defaultContent.style.display = 'block'; // RÃ‰AFFICHER
+        searchInput.focus();
+    }
+
+    // MAPPER NOMINATIM VERS ICONES/TEXTE FRANCAIS
+    function getPlaceInfo(type, nominatimClass) {
+        const place = { icon: 'location_on', text: 'Lieu' };
+        if (!type && !nominatimClass) return place;
+
+        const t = (type || '').toLowerCase();
+        const c = (nominatimClass || '').toLowerCase();
+
+        if (t === 'city' || t === 'town' || t === 'village' || t === 'administrative' || c === 'boundary') {
+            place.icon = 'apartment';
+            place.text = 'Ville';
+        } else if (t === 'station' || t === 'train_station' || t === 'subway' || c === 'railway') {
+            place.icon = 'train';
+            place.text = 'Gare';
+        } else if (t === 'bar' || t === 'pub' || t === 'nightclub') {
+            place.icon = 'local_bar';
+            place.text = 'Bar';
+        } else if (t === 'bakery') {
+            place.icon = 'bakery_dining';
+            place.text = 'Boulangerie';
+        } else if (t === 'restaurant' || t === 'cafe' || t === 'fast_food') {
+            place.icon = 'restaurant';
+            place.text = 'Restaurant';
+        } else if (t === 'pharmacy') {
+            place.icon = 'local_pharmacy';
+            place.text = 'Pharmacie';
+        } else if (t === 'supermarket' || t === 'mall' || t === 'shop' || c === 'shop') {
+            place.icon = 'storefront';
+            place.text = 'Commerce';
+        } else if (t === 'park' || t === 'garden' || t === 'forest' || c === 'leisure') {
+            place.icon = 'park';
+            place.text = 'Parc';
+        } else if (t === 'bank') {
+            place.icon = 'account_balance';
+            place.text = 'Banque';
+        } else if (t === 'hospital' || t === 'clinic' || t === 'doctors') {
+            place.icon = 'local_hospital';
+            place.text = 'SantÃ©';
+        } else if (t === 'school' || t === 'university' || t === 'college' || t === 'kindergarten') {
+            place.icon = 'school';
+            place.text = 'Ã‰cole';
+        } else if (c === 'highway' || t === 'residential' || t === 'pedestrian' || t === 'yes' || t === 'road') {
+            place.icon = 'signpost';
+            place.text = 'Rue';
+        } else if (t === 'house' || t === 'building') {
+            place.icon = 'home';
+            place.text = 'BÃ¢timent';
+        } else {
+            let rawTex = t.replace(/_/g, ' ');
+            place.text = rawTex.charAt(0).toUpperCase() + rawTex.slice(1);
+        }
+        return place;
+    }
+
+    async function fetchNominatim(query) {
+        suggestionsBox.style.display = 'flex';
+        suggestionsBox.innerHTML = '<div style="padding:16px; font-style:italic; font-family:Rubik, sans-serif; color:#555;">Recherche...</div>';
+        
+        try {
+            const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=5&addressdetails=1&countrycodes=fr`);
+            const data = await response.json();
+            
+            suggestionsBox.innerHTML = '';
+            
+            if(data.length === 0) {
+                suggestionsBox.innerHTML = '<div style="padding:16px; font-style:italic; font-family:Rubik, sans-serif; color:#555;">Aucun résultat trouvé.</div>';
+                return;
+            }
+
+            data.forEach(item => {
+                const name = item.name || item.address.road || item.address.city || "Lieu inconnu";
+                const details = item.display_name;
+                const placeInfo = getPlaceInfo(item.type, item.class); // Nominatim utilise 'class' pas 'category'
+                
+                const div = document.createElement('div');
+                div.className = 'suggestion-item';
+                div.innerHTML = `
+                    <span class="material-symbols-outlined address-icon">${placeInfo.icon}</span>
+                    <div class="address-text">
+                        <div class="address-type">${placeInfo.text}</div>
+                        <div class="address-name">${name}</div>
+                        <div class="address-dist">${details.split(',')[0]}...</div>
+                    </div>
+                    <span class="material-symbols-outlined address-chevron">chevron_right</span>
+                `;
+                
+                div.onclick = () => {
+                    searchInput.value = name;
+                    suggestionsBox.style.display = 'none';
+                    const defaultContent = document.getElementById('defaultContent');
+                    if(defaultContent) defaultContent.style.display = 'block';
+                    saveRecent(name, details, placeInfo.text, placeInfo.icon);
+                    window.location.href = 'itineraire.html?dest=' + encodeURIComponent(name);
+                };
+                suggestionsBox.appendChild(div);
+            });
+            
+        } catch (error) {
+            suggestionsBox.innerHTML = '<div style="padding:16px; color:red; font-family:Rubik, sans-serif;">Erreur de connexion internet.</div>';
+        }
+    }
+
+    // LOCALSTORAGE ET DOM
+    function saveRecent(name, details, textualType, iconName) {
+        let recents = JSON.parse(localStorage.getItem('aideline_recents') || '[]');
+        recents = recents.filter(r => r.name !== name);
+        
+        recents.unshift({ name, details, type: textualType, icon: iconName });
+        if(recents.length > 5) recents.pop();
+        
+        localStorage.setItem('aideline_recents', JSON.stringify(recents));
+        renderRecents();
+    }
+
+    function selectDirect(name) {
+        window.location.href = 'itineraire.html?dest=' + encodeURIComponent(name);
+    }
+
+    function renderRecents() {
+        const rc = document.getElementById('recentContainer');
+        if(!rc) return;
+        let recents = JSON.parse(localStorage.getItem('aideline_recents') || '[]');
+        rc.innerHTML = '';
+        
+        if(recents.length === 0) {
+            rc.innerHTML = '<div style="padding:16px; font-family:Rubik, sans-serif; font-size: 16px; color:#777; font-style:italic;">Aucune adresse récente. Vos recherches apparaîtront ici.</div>';
+            rc.style.border = "none";
+            return;
+        }
+
+        rc.style.border = "1px solid var(--primary)";
+        recents.forEach(r => {
+            const div = document.createElement('div');
+            div.className = 'address-item';
+            div.onclick = () => selectDirect(r.name);
+            div.innerHTML = `
+                <span class="material-symbols-outlined address-icon">history</span>
+                <div class="address-text">
+                    <div class="address-type">${r.type || 'Lieu'}</div>
+                    <div class="address-name">${r.name}</div>
+                    <div class="address-dist"></div>
+                </div>
+                <span class="material-symbols-outlined address-chevron">chevron_right</span>
+            `;
+            rc.appendChild(div);
+        });
+    }
+
+    function renderFavorites() {
+        const fc = document.getElementById('favoritesContainer');
+        if(!fc) return;
+        let favs = JSON.parse(localStorage.getItem('aideline_favs') || '[]');
+        fc.innerHTML = '';
+        
+        if(favs.length === 0) {
+            fc.innerHTML = '<div style="padding:16px; font-family:Rubik, sans-serif; font-size: 16px; color:#777; font-style:italic;">Aucune adresse favorite. Pour ajouter un favori, sélectionnez une destination puis appuyez sur l\'icône marque-page.</div>';
+            fc.style.border = "none";
+            return;
+        }
+
+        fc.style.border = "1px solid var(--primary)";
+        favs.forEach(f => {
+            const div = document.createElement('div');
+            div.className = 'address-item';
+            div.onclick = () => selectDirect(f.name);
+            div.innerHTML = `
+                <span class="material-symbols-outlined address-icon">${f.icon || 'bookmark'}</span>
+                <div class="address-text">
+                    <div class="address-type">${f.type || 'Lieu'}</div>
+                    <div class="address-name">${f.name}</div>
+                    <div class="address-dist"></div>
+                </div>
+                <span class="material-symbols-outlined address-chevron">chevron_right</span>
+            `;
+            fc.appendChild(div);
+        });
+    }
+
+    window.onload = () => {
+        searchInput.focus();
+        renderRecents();
+        renderFavorites();
+    };
+</script>
+</body>
+</html>
+

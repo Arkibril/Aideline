@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Paramètres - Aideline</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    
+    <style>
+        :root { 
+            --primary: #9C1132;
+            --white: #FFFFFF;
+            --bg-color: #FAFAFA;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Rubik', sans-serif; -webkit-tap-highlight-color: transparent;}
+        
+        body { 
+            width: 100vw; 
+            height: 100vh; 
+            overflow: hidden; 
+            background: var(--bg-color); /* Un léger gris pour le fond des interfaces de réglages */
+            display: flex; flex-direction: column;
+        }
+
+        /* HEADER */
+        .top-header {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px 16px 20px 16px;
+            background: var(--white);
+            z-index: 10;
+        }
+        .back-btn {
+            position: absolute;
+            left: 16px;
+            background: none; border: none; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .back-btn .material-symbols-outlined { font-size: 28px; color: #000; font-weight: 500;}
+        .top-header h1 {
+            font-size: 20px;
+            font-weight: 500;
+            color: #000;
+        }
+
+        /* CONTENT SCROLL */
+        .content-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 16px 100px 16px;
+        }
+
+        /* PROFIL HEADER */
+        .profile-section {
+            display: flex;
+            align-items: center;
+            background: var(--white);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            cursor: pointer;
+        }
+        .profile-pic {
+            width: 64px; height: 64px; border-radius: 50%;
+            background-image: url('cecile.png');
+            background-size: cover; background-position: center;
+            margin-right: 16px;
+        }
+        .profile-info { flex: 1; }
+        .profile-name { font-size: 18px; font-weight: 700; color: #000; margin-bottom: 4px; }
+        .profile-sub { font-size: 14px; color: #666; font-weight: 400; }
+        .profile-section .chevron { font-size: 26px; color: #999; }
+
+        /* SETTINGS GROUP */
+        .settings-group {
+            margin-bottom: 24px;
+        }
+        .group-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #555;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            margin-left: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .settings-card {
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+        .settings-row {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            border-bottom: 1px solid rgba(0,0,0,0.08);
+            cursor: pointer;
+        }
+        .settings-row:last-child { border-bottom: none; }
+        .settings-row:active { background: #F8F8F8; }
+        
+        .row-icon {
+            width: 32px; height: 32px;
+            border-radius: 8px;
+            background: rgba(156, 17, 50, 0.1); /* Light primary */
+            color: var(--primary);
+            display: flex; align-items: center; justify-content: center;
+            margin-right: 16px;
+        }
+        .row-icon .material-symbols-outlined { font-size: 20px; font-variation-settings: 'FILL' 1; }
+        
+        .row-label {
+            flex: 1;
+            font-size: 16px;
+            font-weight: 500;
+            color: #000;
+        }
+        
+        .row-right .chevron { font-size: 24px; color: #999; }
+        .row-right .value-text { font-size: 14px; color: #666; margin-right: 8px; }
+
+        /* TOGGLE SWITCH */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 46px; height: 26px;
+        }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #D1D1D6; transition: .3s; border-radius: 26px;
+        }
+        .slider:before {
+            position: absolute; content: ""; height: 22px; width: 22px; left: 2px; bottom: 2px;
+            background-color: white; transition: .3s; border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        input:checked + .slider { background-color: var(--primary); }
+        input:checked + .slider:before { transform: translateX(20px); }
+
+        /* BOUTON DÉCONNEXION */
+        .logout-btn {
+            width: 100%;
+            background: var(--white);
+            color: var(--primary);
+            font-size: 16px; font-weight: 700;
+            padding: 16px;
+            border: none; border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-top: 10px;
+        }
+
+        /* NAVBAR BAS */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0; left: 0; width: 100%; height: 70px;
+            background-color: var(--primary);
+            display: flex; justify-content: space-around; align-items: center;
+            border-top: 1px solid rgba(0,0,0,0.1);
+            z-index: 2000;
+        }
+        .nav-item {
+            display: flex; flex-direction: column; align-items: center;
+            color: var(--white); cursor: pointer; text-decoration: none;
+            opacity: 0.7;
+        }
+        .nav-item.active { opacity: 1; }
+        .nav-item .material-symbols-outlined { font-size: 28px; margin-bottom: 4px; }
+        .nav-item .nav-text { font-size: 14px; font-weight: 500; }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <div class="top-header">
+        <button class="back-btn" onclick="window.history.back()">
+            <span class="material-symbols-outlined">arrow_back</span>
+        </button>
+        <h1>Paramètres</h1>
+    </div>
+
+    <!-- CONTENU SCROLLABLE -->
+    <div class="content-scroll">
+        
+        <!-- PROFIL -->
+        <div class="profile-section">
+            <div class="profile-pic"></div>
+            <div class="profile-info">
+                <div class="profile-name">Cécile Dubois</div>
+                <div class="profile-sub">Gérer mon compte</div>
+            </div>
+            <span class="material-symbols-outlined chevron">chevron_right</span>
+        </div>
+
+        <!-- NAVIGATION & MOBILITE -->
+        <div class="settings-group">
+            <div class="group-title">Navigation & Accessibilité</div>
+            <div class="settings-card">
+                
+                <div class="settings-row" onclick="window.location.href='adresses_favorites.html'">
+                    <div class="row-icon" style="background: rgba(156, 17, 50, 0.1); color: var(--primary);">
+                        <span class="material-symbols-outlined">bookmark</span>
+                    </div>
+                    <div class="row-label">Adresses favorites</div>
+                    <div class="row-right">
+                        <span class="material-symbols-outlined chevron">chevron_right</span>
+                    </div>
+                </div>
+
+                <div class="settings-row">
+                    <div class="row-icon" style="background: rgba(255, 152, 0, 0.1); color: #FF9800;">
+                        <span class="material-symbols-outlined">directions_walk</span>
+                    </div>
+                    <div class="row-label">Vitesse de marche</div>
+                    <div class="row-right" style="display:flex; align-items:center;">
+                        <span class="value-text">Normale</span>
+                        <span class="material-symbols-outlined chevron">chevron_right</span>
+                    </div>
+                </div>
+
+                <div class="settings-row">
+                    <div class="row-icon" style="background: rgba(33, 150, 243, 0.1); color: #2196F3;">
+                        <span class="material-symbols-outlined">stairs</span>
+                    </div>
+                    <div class="row-label">Éviter les escaliers</div>
+                    <div class="row-right">
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="settings-row">
+                    <div class="row-icon" style="background: rgba(76, 175, 80, 0.1); color: #4CAF50;">
+                        <span class="material-symbols-outlined">record_voice_over</span>
+                    </div>
+                    <div class="row-label">Guidage vocal complet</div>
+                    <div class="row-right">
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- SECURITE -->
+        <div class="settings-group">
+            <div class="group-title">Sécurité</div>
+            <div class="settings-card">
+                
+                <div class="settings-row" onclick="window.location.href='contact.html'">
+                    <div class="row-icon" style="background: rgba(244, 67, 54, 0.1); color: #F44336;">
+                        <span class="material-symbols-outlined">emergency</span>
+                    </div>
+                    <div class="row-label">Contacts d'urgence</div>
+                    <div class="row-right">
+                        <span class="material-symbols-outlined chevron">chevron_right</span>
+                    </div>
+                </div>
+
+                <div class="settings-row">
+                    <div class="row-icon" style="background: rgba(156, 39, 176, 0.1); color: #9C27B0;">
+                        <span class="material-symbols-outlined">share_location</span>
+                    </div>
+                    <div class="row-label">Partager ma position GPS</div>
+                    <div class="row-right">
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- APPLICATION -->
+        <div class="settings-group">
+            <div class="group-title">Application</div>
+            <div class="settings-card">
+                
+                <div class="settings-row">
+                    <div class="row-icon" style="background: rgba(96, 125, 139, 0.1); color: #607D8B;">
+                        <span class="material-symbols-outlined">notifications</span>
+                    </div>
+                    <div class="row-label">Notifications</div>
+                    <div class="row-right">
+                        <span class="material-symbols-outlined chevron">chevron_right</span>
+                    </div>
+                </div>
+
+                <div class="settings-row">
+                    <div class="row-icon" style="background: rgba(158, 158, 158, 0.1); color: #9E9E9E;">
+                        <span class="material-symbols-outlined">info</span>
+                    </div>
+                    <div class="row-label">À propos d'Aideline</div>
+                    <div class="row-right">
+                        <span class="value-text">v1.2.3</span>
+                        <span class="material-symbols-outlined chevron">chevron_right</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <button class="logout-btn">Se déconnecter</button>
+
+    </div>
+
+    <!-- NAVBAR BAS -->
+            <!-- BOTTOM NAVBAR -->
+    <style>.bottom-nav a { text-decoration: none !important; }</style>
+    <div class="bottom-nav">
+        <a href="index.html" class="nav-item" id="nav-carte">
+            <span class="material-symbols-outlined">location_on</span>
+            <span class="nav-text">Carte</span>
+        </a>
+        <a href="agenda.html" class="nav-item" id="nav-agenda">
+            <span class="material-symbols-outlined">calendar_today</span>
+            <span class="nav-text">Agenda</span>
+        </a>
+        <a href="contact.html" class="nav-item" id="nav-appel">
+            <span class="material-symbols-outlined">call</span>
+            <span class="nav-text">Appel</span>
+        </a>
+        <a href="parametre.html" class="nav-item" id="nav-param">
+            <span class="material-symbols-outlined">settings</span>
+            <span class="nav-text">Paramètre</span>
+        </a>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const p = window.location.pathname;
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            if(p.includes('agenda') || p.includes('event_')) { 
+                if(document.getElementById('nav-agenda')) document.getElementById('nav-agenda').classList.add('active'); 
+            }
+            else if(p.includes('contact')) { 
+                if(document.getElementById('nav-appel')) document.getElementById('nav-appel').classList.add('active'); 
+            }
+            else if(p.includes('param')) { 
+                if(document.getElementById('nav-param')) document.getElementById('nav-param').classList.add('active'); 
+            }
+            else { 
+                if(document.getElementById('nav-carte')) document.getElementById('nav-carte').classList.add('active'); 
+            }
+        });
+    </script>
+</body>
+</html>

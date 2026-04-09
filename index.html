@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aideline - Accueil</title>
+    <!-- Chargement des polices et icônes Material -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    
+    <style>
+        :root {
+            --primary: #9C1132;
+            --white: #FFFFFF;
+            --black: #000000;
+            --bg-color: #FAFAFA;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Rubik', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #e0e0e0;
+        }
+
+        .mobile-container {
+            width: 100%;
+            max-width: 412px;
+            height: 100vh;
+            max-height: 917px;
+            background-color: var(--white);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Conteneur principal scrollable */
+        .content-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0 16px 90px 16px; /* Padding bottom pour la nav bar */
+            display: block; /* Fix shrink / Hug content */
+        }
+
+        /* HEADER / PROFIL */
+        .top-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .header-logo {
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-bottom: 4px;
+        }
+        .header-welcome {
+            font-family: 'Rubik', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .header-right {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .profile-pic {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #ddd; /* Placeholder avant insertion de vraie image */
+            object-fit: cover;
+            margin-bottom: 4px;
+        }
+        .profile-name {
+            font-family: 'Rubik', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* SEARCH BAR */
+        .search-container {
+            width: 100%;
+            height: 50px;
+            border: 1.5px solid var(--primary);
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            background: var(--white);
+            margin-bottom: 24px;
+            cursor: pointer;
+        }
+        .search-container .material-symbols-outlined {
+            font-size: 26px;
+            color: #000;
+        }
+        .search-container input {
+            flex: 1;
+            border: none;
+            outline: none;
+            background: transparent;
+            font-family: 'Rubik', sans-serif;
+            font-style: italic;
+            font-size: 16px;
+            color: #333;
+            margin: 0 12px;
+        }
+
+        /* GRID TUILES */
+        .tiles-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            width: 100%;
+            margin-bottom: 30px;
+        }
+        .tile {
+            background-color: var(--primary);
+            border-radius: 8px;
+            aspect-ratio: 1.1; /* Proche du carré rectangulaire */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: var(--white);
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .tile:active {
+            opacity: 0.9;
+        }
+        .tile .material-symbols-outlined {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+        .tile .tile-label {
+            font-family: 'Rubik', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        /* RENDEZ-VOUS SECTION */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 16px;
+        }
+        .section-title {
+            font-family: 'Rubik', sans-serif;
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--black);
+        }
+        .section-link {
+            font-family: 'Rubik', sans-serif;
+            font-size: 16px;
+            font-style: italic;
+            color: var(--black);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        .section-link .material-symbols-outlined {
+            font-size: 16px;
+            margin-left: 2px;
+        }
+
+        /* EVENT CARD */
+        .event-card {
+            border: 1px solid var(--primary);
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            background-color: var(--white);
+        }
+        .event-info {
+            flex: 1;
+            padding-right: 16px;
+        }
+        .event-title {
+            font-family: 'Rubik', sans-serif;
+            font-size: 16px;
+            color: #333;
+        }
+        .event-title strong {
+            font-weight: 800;
+            color: #000;
+        }
+        .event-date {
+            font-family: 'Rubik', sans-serif;
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--black);
+            margin-top: 4px;
+            margin-bottom: 12px;
+        }
+        .divider-line {
+            width: 100%;
+            height: 1px;
+            background-color: #333;
+            margin: 8px 0;
+        }
+        .event-address {
+            font-family: 'Rubik', sans-serif;
+            font-size: 16px;
+            color: #333;
+            line-height: 1.4;
+            margin: 8px 0;
+        }
+        .btn-go-now {
+            width: 100%;
+            border: 1px solid var(--primary);
+            border-radius: 20px;
+            padding: 10px 0;
+            text-align: center;
+            font-family: 'Rubik', sans-serif;
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--black);
+            background: transparent;
+            margin-top: 12px;
+            cursor: pointer;
+        }
+        
+        .event-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 16px;
+            padding-top: 10px;
+        }
+        .action-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #333;
+            cursor: pointer;
+        }
+        .action-item .material-symbols-outlined {
+            color: var(--primary);
+            font-size: 26px;
+            margin-bottom: 4px;
+        }
+        .action-item .action-text {
+            font-family: 'Rubik', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        /* SERVICES CAROUSEL */
+        .scrolling-wrapper {
+            display: flex;
+            overflow-x: auto;
+            gap: 16px;
+            padding-bottom: 8px;
+            scrollbar-width: none; /* Firefox */
+        }
+        .scrolling-wrapper::-webkit-scrollbar {
+            display: none; /* Safari and Chrome */
+        }
+        .service-card {
+            width: 164px;
+            height: auto;
+            min-height: 232px;
+            background-color: var(--primary);
+            border-radius: 8px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            color: var(--white);
+            flex-shrink: 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .service-card .material-symbols-outlined { margin-bottom: 12px; font-size: 28px; }
+        .service-title { font-family: 'Rubik', sans-serif; font-size: 16px; font-weight: 800; margin-bottom: 4px; line-height: 1.2; }
+        .service-sub { font-family: 'Rubik', sans-serif; font-size: 14px; margin-bottom: 24px; line-height: 1.3; opacity: 0.95; }
+        .service-action { display: flex; justify-content: space-between; align-items: flex-end; font-family: 'Rubik', sans-serif; font-size: 16px; font-weight: 800; margin-top: auto; line-height: 1.2; }
+
+        /* ACTIVITIES CAROUSEL */
+        .activity-card {
+            min-width: 240px;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+        .activity-img {
+            width: 100%;
+            height: 130px;
+            border-radius: 8px;
+            object-fit: cover;
+            margin-bottom: 8px;
+        }
+        .activity-title { font-family: 'Rubik', sans-serif; font-size: 16px; font-weight: 800; color: #111; line-height: 1.2; margin-bottom: 4px;}
+        .activity-sub { font-family: 'Rubik', sans-serif; font-size: 16px; color: #333; }
+
+        /* BANNERS */
+        .legal-banner {
+            background-color: var(--primary);
+            border-radius: 8px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            color: var(--white);
+            margin-top: 16px;
+            margin-bottom: 16px;
+            cursor: pointer;
+        }
+        .legal-banner .material-symbols-outlined { font-size: 24px; margin-right: 16px; }
+        .legal-text { flex: 1; }
+        .legal-title { font-family: 'Rubik', sans-serif; font-size: 16px; font-weight: 700; }
+        .legal-sub { font-family: 'Rubik', sans-serif; font-size: 16px; }
+
+        .help-banner {
+            background-color: var(--primary);
+            border-radius: 8px;
+            padding: 24px 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            color: var(--white);
+            margin-bottom: 16px;
+        }
+        .help-banner .material-symbols-outlined { font-size: 32px; margin-bottom: 8px; }
+        .help-title { font-family: 'Rubik', sans-serif; font-size: 16px; font-weight: 800; margin-bottom: 4px; }
+        .help-sub { font-family: 'Rubik', sans-serif; font-size: 16px; margin-bottom: 16px; }
+        .btn-contact {
+            border: 1px solid var(--white);
+            border-radius: 20px;
+            padding: 8px 24px;
+            font-family: 'Rubik', sans-serif;
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--white);
+            background: transparent;
+            cursor: pointer;
+        }
+
+        .footer-text {
+            font-family: 'Rubik', sans-serif;
+            font-size: 16px;
+            text-align: center;
+            color: #555;
+            margin-bottom: 12px;
+        }
+
+        /* BOTTOM NAVBAR */
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 72px;
+            background-color: var(--primary);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0 16px;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--white);
+            cursor: pointer;
+            width: 64px;
+        }
+        .nav-item:active {
+            opacity: 0.8;
+        }
+        .nav-item .material-symbols-outlined {
+            font-size: 26px;
+            margin-bottom: 4px;
+        }
+        .nav-item .nav-text {
+            font-family: 'Rubik', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="mobile-container">
+    
+    <div class="content-scroll">
+        <!-- HEADER -->
+        <div class="top-header">
+            <div class="header-left">
+                <img src="Vector.svg" alt="Aideline Logo" style="width: 52px; height: auto; margin-right: 12px;">
+                <div class="header-welcome">Bienvenue, sur Aideline<br></div>
+            </div>
+            <div class="header-right">
+                <!-- Remplacer le background gris par l'image de profil src="" -->
+                <!-- L'image locale générée par IA pour Cécile -->
+                <div class="profile-pic" style="background-image: url('cecile.png'); background-size: cover; background-position: center;"></div>
+                <div class="profile-name">Cecile</div>
+            </div>
+        </div>
+
+        <!-- RECHERCHE -->
+        <div class="search-container" onclick="window.location.href='recherche.html'">
+            <span class="material-symbols-outlined">search</span>
+            <input type="text" placeholder="Ecrivez votre adresse ici..." style="pointer-events: none;" readonly>
+            <span class="material-symbols-outlined">mic</span>
+        </div>
+
+        <!-- TUILES -->
+        <div class="tiles-grid">
+            <div class="tile" onclick="window.location.href='recherche.html'">
+                <span class="material-symbols-outlined">home</span>
+                <span class="tile-label">Maison</span>
+            </div>
+            <div class="tile" onclick="window.location.href='adresses_favorites.html'">
+                <span class="material-symbols-outlined">bookmark</span>
+                <span class="tile-label">Favoris</span>
+            </div>
+            <div class="tile" onclick="window.location.href='boulangerie.html'">
+                <span class="material-symbols-outlined">storefront</span>
+                <span class="tile-label">Commerces</span>
+            </div>
+            <div class="tile">
+                <span class="material-symbols-outlined">account_balance</span>
+                <span class="tile-label">Banques</span>
+            </div>
+            <div class="tile" onclick="window.location.href='boulangerie.html'">
+                <span class="material-symbols-outlined">bakery_dining</span>
+                <span class="tile-label">Boulangerie</span>
+            </div>
+            <div class="tile">
+                <span class="material-symbols-outlined">local_hospital</span>
+                <span class="tile-label">Sant&eacute;</span>
+            </div>
+        </div>
+
+        <!-- RENDEZ-VOUS SECTION -->
+        <div class="section-header">
+            <div class="section-title">Vos prochains rendez-vous :</div>
+            <div class="section-link">Tout voir <span class="material-symbols-outlined">arrow_forward</span></div>
+        </div>
+
+        <!-- EVENT CARD 1 -->
+        <div class="event-card">
+            <div class="event-info">
+                <div class="event-title"><strong>RDV</strong> Docteur M. Tombola</div>
+                <div class="event-date">16 mars &bull; 18h 15</div>
+                <div class="divider-line"></div>
+                <div class="event-address">
+                    10 avenue des Maronniers<br>
+                    75016 PARIS
+                </div>
+                <div class="divider-line"></div>
+                <button class="btn-go-now">Y aller maintenant</button>
+            </div>
+            <div class="event-actions">
+                <div class="action-item">
+                    <span class="material-symbols-outlined">notifications</span>
+                    <span class="action-text">Alarme</span>
+                </div>
+                <div class="action-item" style="margin-top: 8px;">
+                    <span class="material-symbols-outlined" style="color: #000;">check</span>
+                    <span class="action-text">Documents</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- EVENT CARD 2 -->
+        <div class="event-card" style="margin-bottom: 32px;">
+            <div class="event-info">
+                <div class="event-title"><strong>RDV</strong> Docteur M. Tombola</div>
+                <div class="event-date">16 mars &bull; 18h 15</div>
+                <div class="divider-line"></div>
+                <div class="event-address">
+                    10 avenue des Maronniers<br>
+                    75016 PARIS
+                </div>
+                <div class="divider-line"></div>
+                <button class="btn-go-now">Y aller maintenant</button>
+            </div>
+            <div class="event-actions">
+                <div class="action-item">
+                    <span class="material-symbols-outlined">notifications</span>
+                    <span class="action-text">Alarme</span>
+                </div>
+                <div class="action-item" style="margin-top: 8px;">
+                    <span class="material-symbols-outlined" style="color: #000;">check</span>
+                    <span class="action-text">Documents</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION: BIEN PLUS QUE DE LA MARCHE -->
+        <div class="section-header">
+            <div class="section-title">Bien plus que de la marche !</div>
+            <div class="section-link">Tout voir <span class="material-symbols-outlined">arrow_forward</span></div>
+        </div>
+        
+        <div class="scrolling-wrapper" style="margin-bottom: 32px;">
+            <div class="service-card">
+                <span class="material-symbols-outlined">airport_shuttle</span>
+                <div class="service-title">Bus &agrave; la<br>demande</div>
+                <div class="service-sub">R&eacute;server un trajet TAD<br>IDFM (zones rurales 78)</div>
+                <div class="service-action">R&eacute;servez<br>un trajet <span class="material-symbols-outlined" style="font-size: 22px; margin:0;">arrow_outward</span></div>
+            </div>
+            
+            <div class="service-card">
+                <span class="material-symbols-outlined">volunteer_activism</span>
+                <div class="service-title" style="margin-bottom: 8px;">Aide &agrave; Domicile</div>
+                <div class="service-sub">Retrouvez le planning de vos auxiliaires de vie et organisez vos trajets de sant&eacute; ensemble.</div>
+                <div class="service-action">Faire la<br>demande <span class="material-symbols-outlined" style="font-size: 22px; margin:0;">arrow_outward</span></div>
+            </div>
+            
+            <div class="service-card">
+                <span class="material-symbols-outlined">local_taxi</span>
+                <div class="service-title" style="margin-bottom: 8px;">Service de taxi</div>
+                <div class="service-sub">Avec notre partenaire<br>Uber Assist</div>
+                <div class="service-action">R&eacute;servez<br>un trajet <span class="material-symbols-outlined" style="font-size: 22px; margin:0;">arrow_outward</span></div>
+            </div>
+            
+            <div class="service-card">
+                <span class="material-symbols-outlined">confirmation_number</span>
+                <div class="service-title" style="margin-bottom: 8px;">Billets & Pass</div>
+                <div class="service-sub">Acheter un ticket</div>
+                <div class="service-action">R&eacute;servez<br>un ticket <span class="material-symbols-outlined" style="font-size: 22px; margin:0;">arrow_outward</span></div>
+            </div>
+        </div>
+
+        <!-- SECTION: LES ACTIVITÉS PROCHES -->
+        <div class="section-header">
+            <div class="section-title">Les activit&eacute;s proches</div>
+            <div class="section-link">Tout voir <span class="material-symbols-outlined">arrow_forward</span></div>
+        </div>
+        
+        <div class="scrolling-wrapper" style="margin-bottom: 24px;">
+            <div class="activity-card">
+                <!-- Utilisation de Picsum pour éviter le blocage réseau d'Unsplash -->
+                <img src="https://picsum.photos/400/200?random=1" alt="Théâtre" class="activity-img">
+                <div class="activity-title">S&eacute;ance th&eacute;&acirc;tre : L'inf&acirc;me</div>
+                <div class="activity-sub">Th&eacute;&acirc;tre de la folie &bull; 12H35 &bull; 11.45&euro;</div>
+            </div>
+            <div class="activity-card">
+                <!-- Utilisation de Picsum pour éviter le blocage réseau d'Unsplash -->
+                <img src="https://picsum.photos/400/200?random=2" alt="Château" class="activity-img">
+                <div class="activity-title">Visite guid&eacute;e du ch&acirc;teau</div>
+                <div class="activity-sub">Place d'Armes &bull; 14H00 &bull; Gratuit</div>
+            </div>
+        </div>
+
+        <!-- BANNERS -->
+        <div class="legal-banner">
+            <span class="material-symbols-outlined">help</span>
+            <div class="legal-text">
+                <div class="legal-title">Informations l&eacute;gales</div>
+                <div class="legal-sub">Conditions g&eacute;n&eacute;rales de ventes</div>
+            </div>
+            <span class="material-symbols-outlined" style="margin:0;">chevron_right</span>
+        </div>
+
+        <div class="help-banner">
+            <span class="material-symbols-outlined">contact_support</span>
+            <div class="help-title">Besoin d'aide ?</div>
+            <div class="help-sub">Nous sommes la pour vous</div>
+            <button class="btn-contact">Nous contacter</button>
+        </div>
+
+        <div class="footer-text">
+            Aideline 2026 AllRightReserved . V1.2.3.4
+        </div>
+
+    </div>
+
+            <!-- BOTTOM NAVBAR -->
+    <style>.bottom-nav a { text-decoration: none !important; }</style>
+    <div class="bottom-nav">
+        <a href="index.html" class="nav-item" id="nav-carte">
+            <span class="material-symbols-outlined">location_on</span>
+            <span class="nav-text">Carte</span>
+        </a>
+        <a href="agenda.html" class="nav-item" id="nav-agenda">
+            <span class="material-symbols-outlined">calendar_today</span>
+            <span class="nav-text">Agenda</span>
+        </a>
+        <a href="contact.html" class="nav-item" id="nav-appel">
+            <span class="material-symbols-outlined">call</span>
+            <span class="nav-text">Appel</span>
+        </a>
+        <a href="parametre.html" class="nav-item" id="nav-param">
+            <span class="material-symbols-outlined">settings</span>
+            <span class="nav-text">Paramètre</span>
+        </a>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const p = window.location.pathname;
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            if(p.includes('agenda') || p.includes('event_')) { 
+                if(document.getElementById('nav-agenda')) document.getElementById('nav-agenda').classList.add('active'); 
+            }
+            else if(p.includes('contact')) { 
+                if(document.getElementById('nav-appel')) document.getElementById('nav-appel').classList.add('active'); 
+            }
+            else if(p.includes('param')) { 
+                if(document.getElementById('nav-param')) document.getElementById('nav-param').classList.add('active'); 
+            }
+            else { 
+                if(document.getElementById('nav-carte')) document.getElementById('nav-carte').classList.add('active'); 
+            }
+        });
+    </script>
+</body>
+</html>
+

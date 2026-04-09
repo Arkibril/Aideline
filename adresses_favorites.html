@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Adresses favorites - Aideline</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    
+    <style>
+        :root { 
+            --primary: #9C1132;
+            --white: #FFFFFF;
+            --text-dark: #111;
+            --text-light: #555;
+            --bg-light: #F8F8F8;
+            --border-color: #E0E0E0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Rubik', sans-serif; -webkit-tap-highlight-color: transparent;}
+        
+        body { 
+            width: 100vw; height: 100vh; overflow: hidden; 
+            background: var(--white); display: flex; flex-direction: column;
+        }
+
+        /* HEADER */
+        .top-header {
+            position: relative; display: flex; align-items: center; justify-content: center;
+            padding: 24px 16px 20px 16px; background: var(--white); z-index: 10;
+        }
+        .back-btn {
+            position: absolute; left: 16px; background: none; border: none; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .back-btn .material-symbols-outlined { font-size: 28px; color: #000; font-weight: 500;}
+        
+        .add-btn {
+            position: absolute; right: 16px; background: none; border: none; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .add-btn .material-symbols-outlined { font-size: 32px; color: var(--primary); font-weight: 500;}
+
+        .top-header h1 { font-size: 20px; font-weight: 500; color: #000; }
+
+        /* CONTENT */
+        .content-scroll {
+            flex: 1; overflow-y: auto; padding: 0 16px 100px 16px;
+        }
+
+        /* SECTION TITLES */
+        .section-header {
+            display: flex; align-items: center; margin-top: 24px; margin-bottom: 12px;
+        }
+        .section-header span {
+            font-size: 13px; font-weight: 600; font-style: italic; color: #333; white-space: nowrap; margin-right: 12px;
+        }
+        .section-header .line {
+            flex: 1; height: 1px; background-color: #888;
+        }
+
+        /* CARD CONTAINERS */
+        .list-card {
+            background: var(--white);
+            border: 1px solid var(--primary);
+            border-radius: 12px;
+            display: flex; flex-direction: column;
+        }
+
+        /* ROWS */
+        .list-row {
+            display: flex; align-items: center; padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--white); cursor: pointer;
+        }
+        .list-row:first-child { border-top-left-radius: 12px; border-top-right-radius: 12px; }
+        .list-row:last-child { border-bottom: none; border-bottom-left-radius: 12px; border-bottom-right-radius: 12px; }
+        .list-row:active { background: var(--bg-light); }
+
+        /* ICONS */
+        .icon-left {
+            font-size: 28px; color: #000; margin-right: 16px; font-weight: 300;
+        }
+        .icon-right {
+            font-size: 24px; color: #000; font-weight: 600; margin-left: 8px;
+        }
+
+        /* ROW TEXTS */
+        .item-info { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+        .item-category { font-size: 10px; color: var(--text-light); margin-bottom: 2px; font-weight: 600;}
+        .item-title { font-size: 16px; font-weight: 700; color: #000; margin-bottom: 4px; }
+        .item-address { font-size: 11px; color: #333; line-height: 1.3; font-weight: 500; }
+
+        /* NAVBAR BAS */
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 70px;
+            background-color: var(--primary); display: flex; justify-content: space-around; align-items: center;
+        }
+        .bottom-nav a { text-decoration: none !important; }
+        .nav-item {
+            display: flex; flex-direction: column; align-items: center;
+            color: var(--white); cursor: pointer; opacity: 0.7;
+        }
+        .nav-item.active { opacity: 1; }
+        .nav-item .material-symbols-outlined { font-size: 28px; margin-bottom: 4px; }
+        .nav-item .nav-text { font-size: 14px; font-weight: 500; }
+
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <div class="top-header">
+        <button class="back-btn" onclick="window.history.back()">
+            <span class="material-symbols-outlined">arrow_back</span>
+        </button>
+        <h1>Adresses favorites</h1>
+        <button class="add-btn" onclick="window.location.href='adresses_add.html'">
+            <span class="material-symbols-outlined">add</span>
+        </button>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content-scroll">
+
+        <!-- Enregistrées -->
+        <div class="section-header">
+            <span>Adresses enregistrées</span>
+            <div class="line"></div>
+        </div>
+
+        <div class="list-card">
+            
+            <div class="list-row" onclick="window.location.href='itineraire.html?dest=22+Avenue+Montaigne'">
+                <span class="material-symbols-outlined icon-left">bookmark</span>
+                <div class="item-info">
+                    <div class="item-category">Ville</div>
+                    <div class="item-title">22 Avenue Montaigne</div>
+                    <div class="item-address">75008 Paris</div>
+                </div>
+                <span class="material-symbols-outlined icon-right">chevron_right</span>
+            </div>
+
+            <div class="list-row" onclick="window.location.href='itineraire.html?dest=Gare+du+Nord'">
+                <span class="material-symbols-outlined icon-left">bookmark</span>
+                <div class="item-info">
+                    <div class="item-category">Gare</div>
+                    <div class="item-title">Gare du Nord</div>
+                    <div class="item-address">18 Rue de Dunkerque, Paris</div>
+                </div>
+                <span class="material-symbols-outlined icon-right">chevron_right</span>
+            </div>
+
+            <div class="list-row" onclick="window.location.href='itineraire.html?dest=Hôpital+Saint-Louis'">
+                <span class="material-symbols-outlined icon-left">bookmark</span>
+                <div class="item-info">
+                    <div class="item-category">Hôpital</div>
+                    <div class="item-title">Hôpital Saint-Louis</div>
+                    <div class="item-address">177 Rue de Versailles, 78150 Le<br>Chesnay-Rocquencourt</div>
+                </div>
+                <span class="material-symbols-outlined icon-right">chevron_right</span>
+            </div>
+
+        </div>
+
+        <!-- Récurrence -->
+        <div class="section-header">
+            <span>Adresses enregistrées par récurrence</span>
+            <div class="line"></div>
+        </div>
+
+        <div class="list-card">
+            
+            <div class="list-row" onclick="window.location.href='itineraire.html?dest=Centre+Cardiologique+du+Nord'">
+                <span class="material-symbols-outlined icon-left">history</span>
+                <div class="item-info">
+                    <div class="item-category">Hôpital</div>
+                    <div class="item-title">Centre Cardiologique<br>du Nord</div>
+                    <div class="item-address">49 Avenue de Saint-Cloud, 78000<br>Versailles</div>
+                </div>
+                <span class="material-symbols-outlined icon-right">chevron_right</span>
+            </div>
+
+            <div class="list-row" onclick="window.location.href='itineraire.html?dest=Gare+de+Versailles'">
+                <span class="material-symbols-outlined icon-left">history</span>
+                <div class="item-info">
+                    <div class="item-category">Gare</div>
+                    <div class="item-title">Gare de Versailles<br>Chantiers</div>
+                    <div class="item-address">78000 Versailles</div>
+                </div>
+                <span class="material-symbols-outlined icon-right">chevron_right</span>
+            </div>
+
+            <div class="list-row">
+                <span class="material-symbols-outlined icon-left">history</span>
+                <div class="item-info">
+                    <div class="item-category">Magasin</div>
+                    <div class="item-title">Fnac Paris</div>
+                    <div class="item-address">75001 Paris</div>
+                </div>
+                <span class="material-symbols-outlined icon-right">chevron_right</span>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- BOTTOM NAVBAR -->
+    <style>.bottom-nav a { text-decoration: none !important; }</style>
+    <div class="bottom-nav">
+        <a href="index.html" class="nav-item" id="nav-carte">
+            <span class="material-symbols-outlined">location_on</span>
+            <span class="nav-text">Carte</span>
+        </a>
+        <a href="agenda.html" class="nav-item" id="nav-agenda">
+            <span class="material-symbols-outlined">calendar_today</span>
+            <span class="nav-text">Agenda</span>
+        </a>
+        <a href="contact.html" class="nav-item" id="nav-appel">
+            <span class="material-symbols-outlined">call</span>
+            <span class="nav-text">Appel</span>
+        </a>
+        <a href="parametre.html" class="nav-item" id="nav-param">
+            <span class="material-symbols-outlined">settings</span>
+            <span class="nav-text">Paramètre</span>
+        </a>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const p = window.location.pathname;
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            if(p.includes('agenda') || p.includes('event_')) { 
+                if(document.getElementById('nav-agenda')) document.getElementById('nav-agenda').classList.add('active'); 
+            }
+            else if(p.includes('contact')) { 
+                if(document.getElementById('nav-appel')) document.getElementById('nav-appel').classList.add('active'); 
+            }
+            else if(p.includes('param')) { 
+                if(document.getElementById('nav-param')) document.getElementById('nav-param').classList.add('active'); 
+            }
+            else { 
+                if(document.getElementById('nav-carte')) document.getElementById('nav-carte').classList.add('active'); 
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Agenda - Aideline</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    
+    <style>
+        :root { 
+            --primary: #9C1132;
+            --white: #FFFFFF;
+            --gray-bg: #F5F5F5;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Rubik', sans-serif; -webkit-tap-highlight-color: transparent;}
+        
+        body { 
+            width: 100vw; height: 100vh; overflow: hidden; 
+            background: var(--white); display: flex; flex-direction: column;
+        }
+
+        /* HEADER */
+        .top-header {
+            position: relative; display: flex; align-items: center; justify-content: center;
+            padding: 24px 16px 20px 16px; background: var(--white); z-index: 10;
+        }
+        .back-btn {
+            position: absolute; left: 16px; background: none; border: none; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .back-btn .material-symbols-outlined { font-size: 28px; color: #000; font-weight: 500;}
+        .top-header h1 { font-size: 20px; font-weight: 500; color: #000; }
+
+        /* TABS */
+        .tabs {
+            display: flex; border-bottom: 1px solid rgba(0,0,0,0.1); width: 100%;
+        }
+        .tab-btn {
+            flex: 1; padding: 16px 0; text-align: center; font-size: 16px; font-weight: 700;
+            cursor: pointer; background: white; border: none;
+            color: #AAA; border-bottom: 2px solid transparent; transition: 0.3s;
+        }
+        .tab-btn.active {
+            color: var(--primary); border-bottom: 2px solid var(--primary);
+        }
+
+        /* SCROLL CONTENT */
+        .content-scroll {
+            flex: 1; overflow-y: auto; padding: 16px 16px 100px 16px;
+        }
+
+        /* CALENDAR */
+        .calendar-header {
+            display: grid; grid-template-columns: repeat(7, 1fr); text-align: center;
+            font-size: 12px; font-weight: 700; color: #000; margin-bottom: 12px;
+        }
+        .calendar-grid {
+            display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-bottom: 24px;
+        }
+        .day-cell {
+            aspect-ratio: 1; border: 1px solid var(--primary); border-radius: 4px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px; font-weight: 500; color: #000; cursor: pointer;
+        }
+        .day-cell.faded { color: #CCC; border-color: transparent; }
+        .day-cell.active { background: var(--primary); color: white; border-color: var(--primary); cursor: pointer; transition: transform 0.1s;}
+        .day-cell.active:active { transform: scale(0.92); }
+
+        /* LISTE EVENEMENTS */
+        #events-container {
+            display: none;
+            width: 100%;
+            animation: slideUpFade 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title { font-size: 16px; font-weight: 700; color: #000; margin-bottom: 12px; }
+        .event-card {
+            border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; padding: 16px;
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 24px; cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .event-name { font-size: 15px; font-weight: 700; color: #111; }
+        .event-time { font-size: 15px; font-weight: 500; color: #333; }
+
+        /* BUTTON AJOUT */
+        .btn-add {
+            width: 100%; border: 1px solid var(--primary); border-radius: 24px;
+            padding: 16px; display: flex; align-items: center; justify-content: center;
+            gap: 8px; background: transparent; font-size: 16px; font-weight: 700;
+            color: #000; cursor: pointer;
+        }
+        .btn-add:active { background: #FFF5F7; }
+
+        /* NAVBAR BAS */
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 70px;
+            background-color: var(--primary); display: flex; justify-content: space-around; align-items: center;
+            z-index: 2000;
+        }
+        .nav-item {
+            display: flex; flex-direction: column; align-items: center;
+            color: var(--white); cursor: pointer; text-decoration: none; opacity: 0.7;
+        }
+        .nav-item.active { opacity: 1; }
+        .nav-item .material-symbols-outlined { font-size: 28px; margin-bottom: 4px; }
+        .nav-item .nav-text { font-size: 14px; font-weight: 500; }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <div class="top-header">
+        <button class="back-btn" onclick="window.history.back()">
+            <span class="material-symbols-outlined">arrow_back</span>
+        </button>
+        <h1>Agenda</h1>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+        <button class="tab-btn active" id="tab-mois" onclick="toggleView('mois')">Mois</button>
+        <button class="tab-btn" id="tab-semaine" onclick="toggleView('semaine')">Semaine</button>
+    </div>
+
+    <div class="content-scroll">
+        
+        <!-- CALENDAR HEADER -->
+        <div class="calendar-header">
+            <div>Dim</div><div>Lun</div><div>Mar</div><div>Mer</div><div>Jeu</div><div>Ven</div><div>Sam</div>
+        </div>
+
+        <!-- GRID MOIS -->
+        <div class="calendar-grid" id="grid-mois">
+            <div class="day-cell faded">31</div>
+            <div class="day-cell">1</div><div class="day-cell">2</div><div class="day-cell">3</div>
+            <div class="day-cell">4</div><div class="day-cell">5</div><div class="day-cell">6</div>
+            <div class="day-cell">7</div><div class="day-cell">8</div><div class="day-cell">9</div>
+            <div class="day-cell">10</div><div class="day-cell active" onclick="showEvents()">11</div><div class="day-cell">12</div>
+            <div class="day-cell">13</div><div class="day-cell">14</div><div class="day-cell">15</div>
+            <div class="day-cell">16</div><div class="day-cell">17</div><div class="day-cell">18</div>
+            <div class="day-cell">19</div><div class="day-cell">20</div><div class="day-cell">21</div>
+            <div class="day-cell">22</div><div class="day-cell">23</div><div class="day-cell">24</div>
+            <div class="day-cell">25</div><div class="day-cell">26</div><div class="day-cell">27</div>
+            <div class="day-cell">28</div><div class="day-cell">29</div><div class="day-cell">30</div>
+            <div class="day-cell faded">1</div><div class="day-cell faded">2</div><div class="day-cell faded">3</div><div class="day-cell faded">4</div>
+        </div>
+
+        <!-- GRID SEMAINE -->
+        <div class="calendar-grid" id="grid-semaine" style="display:none;">
+            <div class="day-cell">7</div>
+            <div class="day-cell">8</div>
+            <div class="day-cell">9</div>
+            <div class="day-cell">10</div>
+            <div class="day-cell active" onclick="showEvents()">11</div>
+            <div class="day-cell">12</div>
+            <div class="day-cell">13</div>
+        </div>
+
+        <!-- LISTE EVÈNEMENT D'AUJOURD'HUI -->
+        <div id="events-container">
+            <div class="section-title">Evènement d'aujourd'hui</div>
+            <div class="event-card" onclick="window.location.href='event_detail.html'">
+                <div class="event-name">RDV chez Dr Konaté</div>
+                <div class="event-time">10H - 12H</div>
+            </div>
+        </div>
+
+        <!-- BOUTON AJOUTER -->
+        <button class="btn-add" onclick="window.location.href='event_add.html'">
+            <span class="material-symbols-outlined" style="font-size:26px;">add</span>
+            Ajouter un évènement
+        </button>
+
+    </div>
+
+            <!-- BOTTOM NAVBAR -->
+    <style>.bottom-nav a { text-decoration: none !important; }</style>
+    <div class="bottom-nav">
+        <a href="index.html" class="nav-item" id="nav-carte">
+            <span class="material-symbols-outlined">location_on</span>
+            <span class="nav-text">Carte</span>
+        </a>
+        <a href="agenda.html" class="nav-item" id="nav-agenda">
+            <span class="material-symbols-outlined">calendar_today</span>
+            <span class="nav-text">Agenda</span>
+        </a>
+        <a href="contact.html" class="nav-item" id="nav-appel">
+            <span class="material-symbols-outlined">call</span>
+            <span class="nav-text">Appel</span>
+        </a>
+        <a href="parametre.html" class="nav-item" id="nav-param">
+            <span class="material-symbols-outlined">settings</span>
+            <span class="nav-text">Paramètre</span>
+        </a>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const p = window.location.pathname;
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            if(p.includes('agenda') || p.includes('event_')) { 
+                if(document.getElementById('nav-agenda')) document.getElementById('nav-agenda').classList.add('active'); 
+            }
+            else if(p.includes('contact')) { 
+                if(document.getElementById('nav-appel')) document.getElementById('nav-appel').classList.add('active'); 
+            }
+            else if(p.includes('param')) { 
+                if(document.getElementById('nav-param')) document.getElementById('nav-param').classList.add('active'); 
+            }
+            else { 
+                if(document.getElementById('nav-carte')) document.getElementById('nav-carte').classList.add('active'); 
+            }
+        });
+
+        function toggleView(view) {
+            if(view === 'semaine') {
+                document.getElementById('tab-mois').classList.remove('active');
+                document.getElementById('tab-semaine').classList.add('active');
+                document.getElementById('grid-mois').style.display = 'none';
+                document.getElementById('grid-semaine').style.display = 'grid';
+            } else {
+                document.getElementById('tab-semaine').classList.remove('active');
+                document.getElementById('tab-mois').classList.add('active');
+                document.getElementById('grid-semaine').style.display = 'none';
+                document.getElementById('grid-mois').style.display = 'grid';
+            }
+        }
+
+        function showEvents() {
+            // Affiche le conteneur des évènements avec l'animation
+            document.getElementById('events-container').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

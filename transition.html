@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Transition - Aideline</title>
+    <!-- Police Rubik -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+    
+    <style>
+        body { 
+            margin: 0; padding: 0; width: 100vw; height: 100vh; overflow: hidden;
+            background-color: #9C1132;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            font-family: 'Rubik', sans-serif; color: white;
+        }
+        
+        .spinner {
+            width: 60px; height: 60px;
+            border: 6px solid rgba(255,255,255,0.2); 
+            border-top: 6px solid #FFFFFF;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 30px;
+        }
+        
+        @keyframes spin { 
+            0% { transform: rotate(0deg); } 
+            100% { transform: rotate(360deg); } 
+        }
+        
+        h1 { 
+            font-size: 24px; 
+            font-weight: 500; 
+            font-style: italic; 
+            text-align: center; 
+            padding: 0 30px;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="spinner"></div>
+    <h1>Calcul de votre meilleur itinéraire en cours...</h1>
+    
+    <script>
+        // Redirection automatique après 2 secondes (2000 ms)
+        setTimeout(() => {
+            window.location.href = 'navigation.html';
+        }, 2000);
+    </script>
+</body>
+</html>
