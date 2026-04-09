@@ -201,18 +201,8 @@
             
             <div style="font-size:22px; font-weight:700; margin-bottom: 24px; color:#000;">À quelle heure le <span id="display-selected-day"></span> ?</div>
             
-            <div style="display:flex; gap:16px; align-items: center; justify-content: center; margin-bottom: 40px;">
-                <div style="flex:1; display:flex; flex-direction:column; align-items:center;">
-                    <span class="material-symbols-outlined" style="font-size:46px; color:var(--primary); cursor:pointer; margin-bottom:8px;" onclick="changeHour(1)">expand_less</span>
-                    <div id="hour-val" style="background:#F5F5F5; border-radius:16px; padding:20px; text-align:center; font-size:36px; font-weight:700; color:var(--primary); border: 2px solid var(--primary); width:100%;">14</div>
-                    <span class="material-symbols-outlined" style="font-size:46px; color:var(--primary); cursor:pointer; margin-top:8px;" onclick="changeHour(-1)">expand_more</span>
-                </div>
-                <div style="font-size:46px; font-weight:700; margin-top: -8px;">:</div>
-                <div style="flex:1; display:flex; flex-direction:column; align-items:center;">
-                    <span class="material-symbols-outlined" style="font-size:46px; color:var(--primary); cursor:pointer; margin-bottom:8px;" onclick="changeMinute(1)">expand_less</span>
-                    <div id="minute-val" style="background:#F5F5F5; border-radius:16px; padding:20px; text-align:center; font-size:36px; font-weight:700; color:var(--primary); border: 2px solid var(--primary); width:100%;">00</div>
-                    <span class="material-symbols-outlined" style="font-size:46px; color:var(--primary); cursor:pointer; margin-top:8px;" onclick="changeMinute(-1)">expand_more</span>
-                </div>
+            <div style="margin-bottom: 40px; display: flex; justify-content: center;">
+                <input type="time" id="native-time-picker" value="14:00" style="width: 100%; background: #F5F5F5; border: 2px solid var(--primary); padding: 20px; text-align: center; font-size: 46px; font-weight: 700; color: var(--primary); border-radius: 16px; outline: none; font-family: 'Rubik', sans-serif;">
             </div>
             
             <button style="width:100%; background:var(--primary); color:white; border:none; padding:20px; border-radius:24px; font-size:20px; font-weight:700; box-shadow:0 4px 12px rgba(100,12,49,0.2); margin-top:auto;" onclick="validerCalendar()">Confirmer cette date</button>
@@ -385,20 +375,6 @@
             btn.style.boxShadow = '0 4px 12px rgba(100,12,49,0.2)';
         }
 
-        function changeHour(val) {
-            currentHour += val;
-            if(currentHour > 23) currentHour = 0;
-            if(currentHour < 0) currentHour = 23;
-            document.getElementById('hour-val').innerText = currentHour.toString().padStart(2, '0');
-        }
-
-        function changeMinute(val) {
-            currentMinute += val;
-            if(currentMinute >= 60) currentMinute = 0;
-            if(currentMinute < 0) currentMinute = 59;
-            document.getElementById('minute-val').innerText = currentMinute.toString().padStart(2, '0');
-        }
-
         function openCalendar(target) {
             currentTarget = target;
             selectedDay = null; // Reset
@@ -429,8 +405,8 @@
         }
 
         function validerCalendar() {
-            const timeStr = currentHour.toString().padStart(2, '0') + ":" + currentMinute.toString().padStart(2, '0');
-            const textStr = selectedDay + " Avril 2026 à " + timeStr;
+            const timeVal = document.getElementById('native-time-picker').value || '14:00';
+            const textStr = selectedDay + " Avril 2026 à " + timeVal.replace(':', 'h');
             if(currentTarget === 'debut') {
                 document.getElementById('debut-text').innerText = textStr;
                 document.getElementById('debut-text').style.color = '#000';
