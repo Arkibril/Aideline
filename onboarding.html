@@ -66,7 +66,7 @@
 
         .main-screen {
             flex: 1;
-            display: flex;flex-direction: column;justify-content: center;align-items: center;
+            display: none;flex-direction: column;justify-content: center;align-items: center;
             padding: 24px 16px;text-align: center;position: relative;z-index: 5;cursor: pointer; box-sizing: border-box;
         }
 
@@ -284,6 +284,23 @@
             <button class="btn" onclick="handleChoice('non', event)">Non</button>
         </div>
         <div class="continue-hint" id="continue-hint">Cliquez n'importe où pour continuer</div>
+    </div>
+
+
+    <!-- ECRAN RGPD INITIAL -->
+    <div class="auth-screen" id="rgpd-screen" style="display: flex; position: absolute; top:0; left:0; width:100%; height:100%; padding:40px 24px; z-index: 8; background: var(--white); box-sizing: border-box;">
+        <div class="logo-container" style="margin-bottom: 20px;"><img src="Vector.svg" alt="Logo Aideline" class="logo" style="width: 80px;"></div>
+        <h1 class="page-title" style="margin-bottom: 24px; font-size: 28px;">Confidentialité &<br>Données</h1>
+        <div style="font-family:'Rubik', sans-serif; font-size:16px; color:#444; text-align:justify; margin-bottom: 20px; line-height: 1.5; overflow-y:auto; flex:1;">
+            Bienvenue sur <strong>Aideline</strong>.<br><br>
+            Dans le cadre du Règlement Général sur la Protection des Données (RGPD), nous avons besoin de votre consentement explicite pour traiter vos données personnelles (localisation GPS, contacts d'urgence, agenda).<br><br>
+            Ces données sont utilisées <strong>strictement</strong> pour assurer votre sécurité et le fonctionnement du guidage. Elles ne sont pas partagées à des fins publicitaires.<br><br>
+            Vous pourrez supprimer vos données à tout moment depuis les Paramètres.
+        </div>
+        <div style="width:100%; display:flex; flex-direction:column; gap:12px; margin-bottom: 10px;">
+            <button class="primary-btn" onclick="acceptRGPD()">J'accepte et je continue</button>
+            <button class="continue-btn-outline" style="margin:0; height: 46px; border-color: #888; color: #555;" onclick="alert('L\'application requiert ces autorisations pour fonctionner.')">Refuser</button>
+        </div>
     </div>
 
 
@@ -812,7 +829,16 @@
     let currentStep = 0, isTyping = false;
     const textElement = document.getElementById('type-text'), hintElement = document.getElementById('continue-hint'), buttonGroup = document.getElementById('button-group'), mainScreen = document.getElementById('main-screen');
 
-    setTimeout(() => { document.getElementById('screen-0').classList.add('hidden'); setTimeout(() => { typeText(steps[currentStep]); }, 800); }, 1500);
+    setTimeout(() => { document.getElementById('screen-0').classList.add('hidden'); }, 1500);
+
+    function acceptRGPD() {
+        document.getElementById('rgpd-screen').style.opacity = '0';
+        setTimeout(() => {
+            document.getElementById('rgpd-screen').style.display = 'none';
+            document.getElementById('main-screen').style.display = 'flex';
+            setTimeout(() => { typeText(steps[currentStep]); }, 400);
+        }, 300);
+    }
 
     mainScreen.addEventListener('click', () => {
         if (isTyping) return; 
