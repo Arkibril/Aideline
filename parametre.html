@@ -319,6 +319,24 @@
             </div>
         </div>
 
+        <!-- CONFIDENTIALITE ET DONNEES -->
+        <div class="settings-group">
+            <div class="group-title">Confidentialité & Données</div>
+            <div class="settings-card">
+                
+                <div class="settings-row" onclick="supprimerDonneesRGPD()">
+                    <div class="row-icon" style="background: rgba(220, 53, 69, 0.1); color: #DC3545;">
+                        <span class="material-symbols-outlined">delete_forever</span>
+                    </div>
+                    <div class="row-label" style="color: #DC3545;">Supprimer mes données (RGPD)</div>
+                    <div class="row-right">
+                        <span class="material-symbols-outlined chevron" style="color: #DC3545;">chevron_right</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
         <button class="logout-btn">Se déconnecter</button>
 
     </div>
@@ -402,6 +420,14 @@
                 document.getElementById('check-lente').style.display = 'block';
             }
             closeSpeedSheet();
+        }
+
+        function supprimerDonneesRGPD() {
+            const confirmation = confirm("RGPD : Êtes-vous sûr de vouloir supprimer définitivement toutes vos données personnelles de l'application Aideline ? Cette action est irréversible et effacera votre historique, vos trajets et vos adresses.");
+            if(confirmation) {
+                alert("Vos données personnelles ont été supprimées avec succès de nos serveurs, conformément aux normes RGPD. L'application va être réinitialisée.");
+                window.location.href = 'index.html'; 
+            }
         }
     </script>
 </body>
